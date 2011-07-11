@@ -19,24 +19,37 @@ import java.net.*;
  */
 public class Clock {
 
+    // Para obtener el tiempo, hacer NtpMessage.originateTimestamp
+    public Clock(){
+        askTime();
+    }
 
     /**
      *
      * Solicita la hora a un servidor NTP que esté disponible.
      */
 
-    public void askTime() throws IOException{
+    public void askTime(){
 
-
+        try{
         DatagramSocket socket = new DatagramSocket();
-        InetAddress address = InetAddress.getByName("ntp.cais.rnp.br");
+        InetAddress address = InetAddress.getByName(Config.ntpServers[0]);
         byte[] buf = new NtpMessage().toByteArray();
         DatagramPacket packet = new DatagramPacket(buf, buf.length, address,
                 123);
         socket.send(packet);
         socket.receive(packet);
-        System.out.println((new NtpMessage(buf)).toString());
+        NtpMessage msg = new NtpMessage(buf);
+
+        System.out.println(msg.toString());
+        }catch(Exception e){
+            System.out.println("Imposible conectar con NTP");
+        }
     }
 
+    public static void main(String args[]){
+
+        Clock e = new Clock();
+    }
 
 }
