@@ -23,6 +23,8 @@ public class Config {
     
     
     public final static String dirMulticast = "224.0.0.24";
+
+    public final static String[] ntpServers = {"ntp.cais.rnp.br"};
     
 
 }
