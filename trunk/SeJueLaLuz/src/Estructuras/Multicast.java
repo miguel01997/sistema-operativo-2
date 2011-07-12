@@ -122,7 +122,7 @@ public class Multicast implements Runnable {
     }
     
     /*Guarda referencia a manejador de archivo*/
-    public void setManjadorArchivo(manejoServArch ma){
+    public void setManjadorServArch(manejoServArch ma){
        this.ma = ma;
     }
     

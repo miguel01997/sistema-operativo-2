@@ -22,7 +22,7 @@ public class Servidor {
         
         Multicast multi = new Multicast();
         //Se envia a multicas referencia al manejador de archivos
-        multi.setManjadorArchivo(m);
+        multi.setManjadorServArch(m);
         
         //Me quedo escuchando infinito
         multi.run();
