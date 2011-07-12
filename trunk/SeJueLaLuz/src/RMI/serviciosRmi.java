@@ -6,6 +6,7 @@
 package RMI;
 
 import Estructuras.manejoServArch;
+import Estructuras.Clock;
 
 
 public class serviciosRmi extends java.rmi.server.UnicastRemoteObject
@@ -25,6 +26,9 @@ implements interfazServicioRmi {
     
     //Para manejar los archivos existentes en el servidor
     private manejoServArch ma;
+
+    // Referencia al reloj del servidor.
+    public static Clock clock;
     
     //CONSTRUCTOR
     public serviciosRmi() throws java.rmi.RemoteException{
@@ -33,7 +37,8 @@ implements interfazServicioRmi {
         ocupado = false;
         ce=new controlEjecucion();
         //Crea el directorio de descarga
-        ma = new manejoServArch(); 
+        ma = new manejoServArch();
+        clock = new Clock();
     }
     
     //CONSTRUCTOR
@@ -43,6 +48,7 @@ implements interfazServicioRmi {
        ce=new controlEjecucion();
        //Crea el directorio de descarga
        ma = new manejoServArch(directorio);
+       clock = new Clock();
     }
     
     
