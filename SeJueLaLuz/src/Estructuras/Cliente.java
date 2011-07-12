@@ -25,7 +25,7 @@ import java.util.logging.Logger;
  */
 public class Cliente {
 //ip del servidor
-        String ip = "192.168.1.125";
+        String ip = "192.168.1.193";
         
         String directorioDescarga = Config.dirDes;
         final int puerto = Config.puerto;
@@ -44,10 +44,15 @@ public class Cliente {
     
     public void iniciar(){
         try {
+
                 sr = (interfazServicioRmi)
                 Naming.lookup( "rmi://"+ip+":"+puerto+"/Servicio");                
                 //lista de ficheros en el servidor
                 this.listarArchivos(sr);
+
+                //para preguntar cuáles servidores están activos
+                this.servidoresActivos();
+                
                 //Detener proceso en servidor
                 //sr.terminarEjecucion("p.class");
                 
@@ -313,9 +318,13 @@ public class Cliente {
        }
        return "";
     }
-    
-    
-    
-    
 
+    /*Envia mensaje por la dirección multicast
+     * para preguntar por los servidores activos
+     */
+    private void servidoresActivos(){
+         Multicast multi = new Multicast();
+                 multi.enviarMensaje("Activo?");
+                 multi.run();
+    }
 }
