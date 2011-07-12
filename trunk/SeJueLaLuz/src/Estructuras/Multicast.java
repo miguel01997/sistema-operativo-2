@@ -98,7 +98,9 @@ public class Multicast implements Runnable {
         String msj = new String(packet.getData(),0,packet.getLength());
                 
         //AQUI SE CREARIA UN HILO NUEVO PARA TRATAR LO QUE ESCUCHE DEL MULTICAST
-        System.out.println("Leo del Multicas: "+msj);
+        Mensajes mensaje = new Mensajes(msj);
+        mensaje.run();
+        System.out.println("Leo del Multicast: "+msj);
     }
 
     
