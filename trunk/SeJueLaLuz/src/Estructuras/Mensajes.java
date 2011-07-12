@@ -24,8 +24,6 @@ public class Mensajes implements Runnable{
 
     private String respuesta = "";
 
-    private infoRed inf;
-
     Multicast multi = new Multicast();
 
 
@@ -35,20 +33,12 @@ public class Mensajes implements Runnable{
 
 
     public void run() {
-        
         if(msj.equals("activo?")){
-            respuesta = "estoy " + inf.miIp() + " "+ inf.miHost();
+            respuesta = "estoy " + infoRed.miIp() + " "+ infoRed.miHost();
             System.out.println("Esta es la respuesta "+ respuesta);
-            
             multi.enviarMensaje(respuesta);
-          
-
-         }else if(msj.equals("Actualice")){
-
-
-         }
-        
+         }else if(msj.startsWith("listo")){
+           
+         }        
     }
-
-
 }
