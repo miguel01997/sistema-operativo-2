@@ -5,14 +5,6 @@
 
 package Estructuras;
 
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.net.MulticastSocket;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -33,12 +25,18 @@ public class Mensajes implements Runnable{
 
 
     public void run() {
+
         if(msj.equals("activo?")){
             respuesta = "estoy " + infoRed.miIp() + " "+ infoRed.miHost();
             System.out.println("Esta es la respuesta "+ respuesta);
             multi.enviarMensaje(respuesta);
          }else if(msj.startsWith("listo")){
+
+
+         }else if(msj.startsWith("estoy")){
+            char[] chars = msj.toCharArray();
+            char ip = chars[2];
            
-         }        
+         }
     }
 }
