@@ -29,7 +29,7 @@ public class Mensajes implements Runnable{
     Multicast multi = new Multicast();
 
 
-    public Mensajes(String mensaje, MulticastSocket socket) {
+    public Mensajes(String mensaje) {
         msj = mensaje;
     }
 
