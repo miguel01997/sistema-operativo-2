@@ -26,7 +26,7 @@ public class Cliente {
         
         
         //Para manejo de los servidores
-        manejoServArch ma;
+        private manejoServArch ma;
         
         
         String directorioDescarga = Config.dirDes;
@@ -46,7 +46,12 @@ public class Cliente {
     
     public void iniciar(){
         try {
-               //Pregunta por servidores vivos.
+                //Se afilia al multicas
+                Multicast mul = new Multicast();
+                mul.setManjadorServArch(ma);
+                
+            
+                //Pregunta por servidores vivos.
 
                
                 sr = (interfazServicioRmi)
