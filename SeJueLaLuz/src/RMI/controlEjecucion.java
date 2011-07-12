@@ -6,8 +6,12 @@
 package RMI;
 
 import Estructuras.Config;
+import Estructuras.Mensajes;
+import Estructuras.Multicast;
+import Estructuras.infoRed;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -178,16 +182,22 @@ public class controlEjecucion {
  Clase creada para correr la aplicacion en un Hilo
  */
 class proceso implements Runnable{
-   private String clase;
-   
+
+    private String clase;
+  
    Thread th;
-        
+
+   Multicast multi = new Multicast();
     /*Proceso en ejecución*/
     private Process proc;
     
         public void run() {
            ejecutarClase();
-        
+           Date fecha = new Date();
+           String mensaje = "listo "+ infoRed.miIp() +" "+ infoRed.miHost()+" "+
+                   clase +" "+fecha;
+           multi.enviarMensaje(mensaje);
+           multi.run();
         }
 
     public proceso(String clase) {
