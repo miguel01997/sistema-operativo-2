@@ -1,5 +1,6 @@
 //Prueba Multicast
 import Estructuras.Multicast;
+import Estructuras.infoRed;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,7 +27,7 @@ public class pMulticast {
             Logger.getLogger(pMulticast.class.getName()).log(Level.SEVERE, null, ex);
         }*/
         
-        m.enviarMensaje("Activo!!???");
+        m.enviarMensaje("Alguien me escucha ToT");
         
         
     }

@@ -50,7 +50,6 @@ public class Cliente {
                 //Se afilia al multicas
                 Multicast mul = new Multicast();
                 mul.setManjadorServArch(ma);
-                 
                 prueba();
               
     }
