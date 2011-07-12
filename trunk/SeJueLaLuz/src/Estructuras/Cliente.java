@@ -39,6 +39,7 @@ public class Cliente {
     public Cliente() {
         //Crea directorio de descarga
         this.crearDirDescarga();
+        ma = new manejoServArch();
     }
     
     
