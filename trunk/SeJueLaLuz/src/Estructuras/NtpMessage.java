@@ -424,8 +424,23 @@ public class NtpMessage
 		
 		return date + fractionSting;
 	}
-	
-	
+
+        /*
+         * Funcion agregada para devolver el tiempo en valor long (milisegundos).
+         */
+	public static long toLongms(double timestamp)
+	{
+		if(timestamp==0) return 0;
+
+		// timestamp is relative to 1900, utc is used by Java and is relative
+		// to 1970
+		double utc = timestamp - (2208988800.0);
+
+		// milliseconds
+		long ms = (long) (utc * 1000.0);
+
+		return ms;
+	}
 	
 	/**
 	 * Returns a string representation of a reference identifier according

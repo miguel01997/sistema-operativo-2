@@ -12,6 +12,8 @@
 package Estructuras;
 import java.io.*;
 import java.net.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -19,11 +21,37 @@ import java.net.*;
  */
 public class Clock {
 
-    // Para obtener el tiempo, hacer NtpMessage.originateTimestamp
+    /* Todas los tiempos contienen MILISEGUNDOS */
+
+    // La última vez que se preguntó la hora al servidor NTP.
+    private long lastAskedTime = 0;
+    
+    // La última vez que se hizo una modificación (de cualquier archivo).
+    private long lastModifiedTime = 0;
+
+    // La última vez que se hizo una modificación (de cualquier archivo).
+    private long activationTime = 0;
+
+    /* Cuando se crea un reloj en un servidor, se pregunta la hora al NTP
+     * de modo que se sabe el momento en que se activó.
+     */
     public Clock(){
         askTime();
+        activationTime = lastAskedTime;
     }
 
+    /**
+     * Modifica el timestamp de un archivo según el servidor NTP
+     * Cuando pregunta la hora, permite modificar el valor de
+     * lastModifiedTime, el cual contiene la última vez que modificó un
+     * archivo ESTE servidor (en milisegundos de long).
+     */
+
+    public void setTimeStamp(File f){
+
+        askTime();
+        f.setLastModified(NtpMessage.toLongms(lastAskedTime));
+    }
     /**
      *
      * Solicita la hora a un servidor NTP que esté disponible.
@@ -40,11 +68,23 @@ public class Clock {
         socket.send(packet);
         socket.receive(packet);
         NtpMessage msg = new NtpMessage(buf);
+        lastAskedTime = NtpMessage.toLongms(msg.originateTimestamp);
 
-        System.out.println(msg.toString());
+        //System.out.println(msg.toString());
         }catch(Exception e){
             System.out.println("Imposible conectar con NTP");
         }
+    }
+
+    /*
+     * Produce un String con la fecha en formato entendible al usuario.
+     */
+
+    public String dateFormat(long ms){
+
+        String date = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").format(
+                new Date(ms));
+        return date;
     }
 
     public static void main(String args[]){
