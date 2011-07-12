@@ -32,8 +32,7 @@ public class Cliente {
         String directorioDescarga = Config.dirDes;
         final int puerto = Config.puerto;
        
-        //Instancia a servidor
-        interfazServicioRmi sr;
+       
     /**
      * @param args the command line arguments
      */
@@ -45,45 +44,48 @@ public class Cliente {
     
     
     public void iniciar(){
-        try {
+        
+        
                 //Se afilia al multicas
                 Multicast mul = new Multicast();
                 mul.setManjadorServArch(ma);
-                
-            
-                //Pregunta por servidores vivos.
-
-               
-                sr = (interfazServicioRmi)
-                Naming.lookup( "rmi://"+ip+":"+puerto+"/Servicio");                
-                //lista de ficheros en el servidor
-                this.listarArchivos(sr);
-
-                //para preguntar cuáles servidores están activos
-                this.servidoresActivos();
-                
-                //Detener proceso en servidor
-                //sr.terminarEjecucion("p.class");
-                
-                //ejecutar archivo en el servidor
-               // this.ejecutar(sr,"p2.class");
-                
-                //Si esta ocupado se agrega ejecución
-                
-                //Subir archivo
-                //this.enviarArchivo("manifest.mf");
-
-                //descargar archivo
-                //this.solicitarArchivo("pServidor.class");
-
-                
-                
-                
-                //sr.tamanoEjecucion();
                  
-                
-                
-                 
+                prueba();
+              
+    }
+    
+
+    
+    
+    
+    public void prueba(){
+        try{ 
+        //Pregunta por servidores vivos al multicast.
+        //Solicita la lista de ip a los servidores vivos
+        interfazServicioRmi sr;
+        sr = (interfazServicioRmi)
+        Naming.lookup( "rmi://"+ip+":"+puerto+"/Servicio");                
+        //lista de ficheros en el servidor
+        this.listarArchivos(sr);
+
+        //para preguntar cuáles servidores están activos
+        this.servidoresActivos();
+
+        //Detener proceso en servidor
+        //sr.terminarEjecucion("p.class");
+
+        //ejecutar archivo en el servidor
+       // this.ejecutar(sr,"p2.class");
+
+        //Si esta ocupado se agrega ejecución
+
+        //Subir archivo
+        //this.enviarArchivo("manifest.mf");
+
+        //descargar archivo
+        //this.solicitarArchivo("pServidor.class");
+
+        //sr.tamanoEjecucion();
         }
         catch (MalformedURLException murle ) {
         System.out.println ();
@@ -101,10 +103,10 @@ public class Cliente {
         catch (java.lang.ArithmeticException ae) {
         System.out.println ();
         System.out.println ("java.lang.Arithmetic Exception");
-        System.out.println (ae);}        
+        System.out.println (ae);}    
+
     }
     
-
     
     
     
@@ -113,7 +115,7 @@ public class Cliente {
     /**
      * Metodo para solicitar archivo al servidor desde el cliente
     */
-    public void solicitarArchivo(String nombre ) {
+    public void solicitarArchivo(String nombre ,interfazServicioRmi sr ) {
          byte [] buffer = null;
         try {
             buffer = sr.solicitarFichero(nombre);
@@ -149,7 +151,7 @@ public class Cliente {
      * Envia un archivo al servidor que se encuentr en el directorio de descarga
      * de nombre nombre
      */
-    public boolean enviarArchivo(String nombre){
+    public boolean enviarArchivo(String nombre,interfazServicioRmi sr){
         File f = new File(this.directorioDescarga+"/"+nombre);
         if(f.exists() && f.isFile() ){
             
