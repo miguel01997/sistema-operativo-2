@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  */
 public class Cliente {
         //ip del servidor
-        private String ip = "192.168.1.193";
+        private String ip = "192.168.1.40";
         
         
         //Para manejo de los servidores
@@ -335,7 +335,7 @@ public class Cliente {
      */
     private void servidoresActivos(){
          Multicast multi = new Multicast();
-                 multi.enviarMensaje("Activo?");
+                 multi.enviarMensaje("activo?");
                  multi.run();
     }
 }
