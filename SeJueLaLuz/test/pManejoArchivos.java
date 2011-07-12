@@ -1,5 +1,5 @@
 
-import Estructuras.manejoArchivo;
+import Estructuras.manejoServArch;
 
 /*
  * To change this template, choose Tools | Templates
@@ -14,13 +14,13 @@ public class pManejoArchivos {
   
     public static void main(String argv[]){
        
-    manejoArchivo mar = new manejoArchivo();
+    manejoServArch mar = new manejoServArch();
     mar.cargaArchivosLocales();
     String[] l = mar.listarFicheros();
     imp(l);
     //agregar archivos a la tabla de archivos de servidor compu1
     String [] l2 = {"d1","d3","d4","d5","d6"};
-    mar.agregarArchivosServidor("compu1", l2);
+    mar.agregarArchivosServidor("1.1.1.1","compu1", l2);
     
     //Listar servidores de la tabla
     String[] aux = mar.listarServidores();
@@ -32,11 +32,26 @@ public class pManejoArchivos {
     aux = mar.retorListArchServ("compu1");
     imp(aux);
     
+    
+    //Solicito nombres de servidores
+    System.out.println("Nombre de los servidores");
+    aux = mar.nombresServidores();
+    imp(aux);
+    
     //limpiar tabla
     mar.limpiarTabla();
     aux = mar.listarServidores();
-    System.out.println("Servidores:");
+    System.out.println("ip Servidores:");
     imp(aux);
+    
+    
+    
+    System.out.println("Nombre servidores:");
+    //Solicito nombres de servidores
+    aux = mar.nombresServidores();
+    imp(aux);
+    
+    
     
     
     

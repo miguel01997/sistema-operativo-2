@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 
 package Estructuras;
 
@@ -24,8 +21,13 @@ import java.util.logging.Logger;
  * @author necross
  */
 public class Cliente {
-//ip del servidor
-        String ip = "192.168.1.193";
+        //ip del servidor
+        private String ip = "192.168.1.193";
+        
+        
+        //Para manejo de los servidores
+        manejoServArch ma;
+        
         
         String directorioDescarga = Config.dirDes;
         final int puerto = Config.puerto;
@@ -44,7 +46,9 @@ public class Cliente {
     
     public void iniciar(){
         try {
+               //Pregunta por servidores vivos.
 
+               
                 sr = (interfazServicioRmi)
                 Naming.lookup( "rmi://"+ip+":"+puerto+"/Servicio");                
                 //lista de ficheros en el servidor

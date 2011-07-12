@@ -1,6 +1,7 @@
 package Estructuras;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -22,13 +23,15 @@ public class tablaArchivos {
     /*tabla de hash que almacena la ip y la lista de archivos de los servidores*/
     private HashMap<String, List<String>> mapaArchivos;
 
-     
+    private HashMap<String, String> mapaServidores;
      
     //CONSTRUCTOR 
     public tablaArchivos() {
         this.mapaArchivos = new HashMap();
+        this.mapaServidores = new HashMap();
         //agrega el servidor local
         mapaArchivos.put(infoRed.miIp(),new LinkedList<String>());
+        mapaServidores.put(infoRed.miIp(),infoRed.miHost());
     }
     
     /**
@@ -50,10 +53,11 @@ public class tablaArchivos {
     /*
      Agrega un servidor a la tabla, si existe no lo remplaza
      */
-    public synchronized  boolean agregarServidor(String ip){
+    public synchronized  boolean agregarServidor(String ip,String nombre){
        if(!mapaArchivos.containsKey(ip)){
            //crea la nueva entrada
-          mapaArchivos.put(infoRed.miIp(),new LinkedList<String>());
+          mapaArchivos.put(ip,new LinkedList<String>());
+          mapaServidores.put(ip,nombre);
           return true;
        }
        return false;
@@ -64,13 +68,15 @@ public class tablaArchivos {
     /**
      * Agrega archivo a la lista de de archivos de un servidor
      */
-    public synchronized  boolean agregarArchivo(String ip,String archivo){
+    public synchronized  boolean agregarArchivo(String ip,String nombre,
+            String archivo){
         if(ip==null)
                return false;
         
         if(!mapaArchivos.containsKey(ip)){
            //crea la nueva entrada al servidor si no existe
           mapaArchivos.put(ip,new LinkedList<String>());
+          mapaServidores.put(ip,nombre);
           //agrega el elemento
        }
        LinkedList<String> l = (LinkedList<String>) mapaArchivos.get(ip);
@@ -92,12 +98,15 @@ public class tablaArchivos {
     /**
      * Agrega archivo a la lista de de archivos de un servidor
      */
-    public synchronized  boolean agregarArchivos(String ip,String[] archivos){
+    public synchronized  boolean agregarArchivos(String ip,String nombre,
+            String[] archivos){
         
         if(!mapaArchivos.containsKey(ip)){
            //crea la nueva entrada al servidor si no existe
           mapaArchivos.put(ip,new LinkedList<String>());
           //agrega el elemento
+          mapaServidores.put(ip,nombre);
+          
        }
        LinkedList<String> l = (LinkedList<String>) mapaArchivos.get(ip);
        if(l!=null){
@@ -124,13 +133,15 @@ public class tablaArchivos {
     /**
      * Remplaza a lista de archivos de un servidor por archivos
      */
-    public synchronized boolean remplazarArchivos(String ip, String[] archivos){
+    public synchronized boolean remplazarArchivos(String ip, String nombre,
+            String[] archivos){
        if(ip!=null && archivos !=null){
             if(!mapaArchivos.containsKey(ip)){
            //crea la nueva entrada al servidor si no existe
                LinkedList<String> l =new LinkedList<String>();
                l.addAll(Arrays.asList(archivos));
                mapaArchivos.put(ip,l);
+               mapaServidores.put(ip,nombre);
           
             }
             else{ //Solo crea una nueva lista y la remplaza
@@ -170,7 +181,7 @@ public class tablaArchivos {
     }
     
     /**
-     * Retorna el arreglo de string asociado a un servidor
+     * Retorna el arreglo de string de archivos asociado a un servidor
      */
     public String[] retorListArchServ(String ip){
        if(ip !=null){
@@ -207,11 +218,28 @@ public class tablaArchivos {
        
     }
     
+    /*Retorna una lista con los nombres de los servidores registrados*/
+    public String[] nombresServidores(){
+       if(mapaArchivos!=null){
+           Collection nombres =   mapaServidores.values();
+           String [] re = new String[nombres.size()];
+                   nombres.toArray(re);
+           return re;
+       }
+       return null;
+       
+    }
+    
+    
+    
+    
+    
+    
     
     /*Elimina las todas las entradas de la tabla*/
     public boolean limpiarTabla(){
         mapaArchivos.clear();
-        
+        mapaServidores.clear();
         return true;
     }
     

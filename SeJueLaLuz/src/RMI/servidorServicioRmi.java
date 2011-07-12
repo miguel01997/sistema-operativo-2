@@ -8,7 +8,7 @@ package RMI;
 
 import Estructuras.Config;
 import Estructuras.infoRed;
-import Estructuras.manejoArchivo;
+import Estructuras.manejoServArch;
 import java.rmi.Naming;
 public class servidorServicioRmi {
 
@@ -21,7 +21,7 @@ final String ip = infoRed.miIp();
 final String directorio = Config.dirDes;
 
 /*Referencia a manejador de archivo*/
-private manejoArchivo ma;
+private manejoServArch ma;
     /*
      *Asocia el servicio a un puerto y a una ip
      */
@@ -43,7 +43,7 @@ private manejoArchivo ma;
     }
     
     /*Retorna la referencia al manejador de archivo*/
-    public manejoArchivo retManejadorArchivos(){
+    public manejoServArch retManejadorArchivos(){
        return ma;
     }
     

@@ -26,7 +26,7 @@ public class pMulticast {
             Logger.getLogger(pMulticast.class.getName()).log(Level.SEVERE, null, ex);
         }*/
         
-        m.enviarMensaje("Me escuchan yo creo que???");
+        m.enviarMensaje("Activo!!???");
         
         
     }
