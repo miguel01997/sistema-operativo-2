@@ -36,8 +36,8 @@ public class Mensajes implements Runnable{
 
     public void run() {
         
-        if(msj.equals("Activo?")){
-            respuesta = "Estoy activo ip: " + inf.miIp() + " host: "+ inf.miHost();
+        if(msj.equals("activo?")){
+            respuesta = "estoy " + inf.miIp() + " "+ inf.miHost();
             System.out.println("Esta es la respuesta "+ respuesta);
             
             multi.enviarMensaje(respuesta);
