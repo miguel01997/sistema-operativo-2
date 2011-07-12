@@ -24,13 +24,13 @@ public class Clock {
     /* Todas los tiempos contienen MILISEGUNDOS */
 
     // La última vez que se preguntó la hora al servidor NTP.
-    private long lastAskedTime = 0;
+    public long lastAskedTime = 0;
     
     // La última vez que se hizo una modificación (de cualquier archivo).
-    private long lastModifiedTime = 0;
+    public long lastModifiedTime = 0;
 
-    // La última vez que se hizo una modificación (de cualquier archivo).
-    private long activationTime = 0;
+    // El momento en que se activó el servidor actual.
+    public long activationTime = 0;
 
     /* Cuando se crea un reloj en un servidor, se pregunta la hora al NTP
      * de modo que se sabe el momento en que se activó.

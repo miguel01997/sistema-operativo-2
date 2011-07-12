@@ -9,6 +9,8 @@ import Estructuras.Config;
 import Estructuras.Mensajes;
 import Estructuras.Multicast;
 import Estructuras.infoRed;
+import Estructuras.Clock;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -221,6 +223,9 @@ class proceso implements Runnable{
                  //Thread.sleep(1000);
                 // System.out.println("AAA");
                  process.waitFor();
+                 File tempFile = new File(Config.dirDes+"/"+nclass);
+
+                 serviciosRmi.clock.setTimeStamp(tempFile);
                  //process.destroy();
                  //System.out.println("BBB");
                  
