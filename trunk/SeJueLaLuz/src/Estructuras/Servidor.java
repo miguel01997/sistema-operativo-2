@@ -17,7 +17,7 @@ public class Servidor {
         servidorServicioRmi s = new servidorServicioRmi();
         
         //Guarda una referencia a la tabla de Archivos
-        manejoArchivo m = s.retManejadorArchivos();
+        manejoServArch m = s.retManejadorArchivos();
         //Se subscribe al multicast
         
         Multicast multi = new Multicast();

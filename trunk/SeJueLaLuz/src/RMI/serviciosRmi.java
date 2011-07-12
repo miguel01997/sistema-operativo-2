@@ -5,7 +5,7 @@
 
 package RMI;
 
-import Estructuras.manejoArchivo;
+import Estructuras.manejoServArch;
 
 
 public class serviciosRmi extends java.rmi.server.UnicastRemoteObject
@@ -24,7 +24,7 @@ implements interfazServicioRmi {
     controlEjecucion ce;
     
     //Para manejar los archivos existentes en el servidor
-    private manejoArchivo ma;
+    private manejoServArch ma;
     
     //CONSTRUCTOR
     public serviciosRmi() throws java.rmi.RemoteException{
@@ -33,7 +33,7 @@ implements interfazServicioRmi {
         ocupado = false;
         ce=new controlEjecucion();
         //Crea el directorio de descarga
-        ma = new manejoArchivo(); 
+        ma = new manejoServArch(); 
     }
     
     //CONSTRUCTOR
@@ -42,7 +42,7 @@ implements interfazServicioRmi {
        ocupado = false;
        ce=new controlEjecucion();
        //Crea el directorio de descarga
-       ma = new manejoArchivo(directorio);
+       ma = new manejoServArch(directorio);
     }
     
     
@@ -84,7 +84,6 @@ implements interfazServicioRmi {
             Ocupar();
             ce.cargarProceso(nombre);
         }
-        
            ce.ejecutar();
            //System.out.println("Hola");
            this.eliminarArchivo(nombre);
@@ -152,7 +151,7 @@ implements interfazServicioRmi {
    
     
     /*Retorna una referencia al manejador de archivos*/
-    public manejoArchivo retManejadorArchivos(){
+    public manejoServArch retManejadorArchivos(){
        return this.ma;
     }
     

@@ -35,7 +35,7 @@ public class Multicast implements Runnable {
     private InetAddress grupo;
     
     /*Referencia al manejador de archivo*/
-    private manejoArchivo ma;
+    private manejoServArch ma;
     
     
     /**Constructor   */
@@ -122,7 +122,7 @@ public class Multicast implements Runnable {
     }
     
     /*Guarda referencia a manejador de archivo*/
-    public void setManjadorArchivo(manejoArchivo ma){
+    public void setManjadorArchivo(manejoServArch ma){
        this.ma = ma;
     }
     
