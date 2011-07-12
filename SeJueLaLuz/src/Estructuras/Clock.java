@@ -87,9 +87,4 @@ public class Clock {
         return date;
     }
 
-    public static void main(String args[]){
-
-        Clock e = new Clock();
-    }
-
 }
