@@ -31,12 +31,22 @@ public class Mensajes implements Runnable{
             System.out.println("Esta es la respuesta "+ respuesta);
             multi.enviarMensaje(respuesta);
          }else if(msj.startsWith("listo")){
-
+            String[] parte = msj.split(" ");
+            String ip = parte[1];
+            String nombre = parte[2];
+            String clase = parte[3];
+            String fecha = parte[4];
+            System.out.println("Esta listo ip "+ ip + " nombre "+ nombre
+                    + " clase "+ clase + " fecha "+ fecha);
 
          }else if(msj.startsWith("estoy")){
-            char[] chars = msj.toCharArray();
-            char ip = chars[2];
-           
+            String[] parte = msj.split(" ");
+            String ip = parte[1];
+            String nombre = parte[2];
+            
+            System.out.println("vive ip "+ ip + " nombre "+ nombre);
+
+
          }
     }
 }
