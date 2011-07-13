@@ -226,7 +226,7 @@ public class manejoServArch {
     
     
       /**
-     * Retorna el arreglo de string asociado a un servidor
+     * Retorna el arreglo de string con los archivos asociado a un servidor
      */
     public String[] retorListArchServ(String ip){
       return ta.retorListArchServ(ip);

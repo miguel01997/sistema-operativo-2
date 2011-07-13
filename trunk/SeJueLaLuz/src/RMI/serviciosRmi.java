@@ -78,17 +78,18 @@ implements interfazServicioRmi {
     /**
      * Ejecuta archivo en el servidor
      */
-    public byte[] ejecutar(byte[] fichero, String nombre) throws java.rmi.RemoteException {
+    public byte[] ejecutar(byte[] fichero, String nombre,String ipCliente) 
+            throws java.rmi.RemoteException {
         //recibe el fichero
         this.recibirFichero(fichero, nombre);
         
         
         if(ocupado){//Encola ejecución y bloquea
-           ce.agregarEjecucion(nombre);   
+           ce.agregarEjecucion(nombre,ipCliente);   
         }
         else{//Prepara el objeto para ejecutar
             Ocupar();
-            ce.cargarProceso(nombre);
+            ce.cargarProceso(nombre,ipCliente);
         }
            ce.ejecutar();
            //System.out.println("Hola");
@@ -145,8 +146,8 @@ implements interfazServicioRmi {
        ce.infoTamano();
     }
 
-    public void terminarEjecucion(String nombre){
-        ce.eliminarEjecucion(nombre);
+    public void terminarEjecucion(String nombre,String ipCliente){
+        ce.eliminarEjecucion(nombre,ipCliente);
         
     }
 

@@ -22,8 +22,9 @@ import java.util.logging.Logger;
  */
 public class Cliente {
         //ip del servidor
-        private String ip = "192.168.1.117";
-        
+
+        private String ip = "192.168.1.123";
+
         
         //Para manejo de los servidores
         private manejoServArch ma;
@@ -73,14 +74,13 @@ public class Cliente {
         this.listarArchivos(sr);
 
         //para preguntar cuáles servidores están activos
-        this.servidoresActivos();
+        //this.servidoresActivos();
 
         //Detener proceso en servidor
-        //sr.terminarEjecucion("p.class");
+        sr.terminarEjecucion("p.class",ip);
 
         //ejecutar archivo en el servidor
-        this.ejecutar(sr,"holaMundo.class");
-       
+
         //Si esta ocupado se agrega ejecución
 
         //Subir archivo
@@ -238,7 +238,7 @@ public class Cliente {
    /**
     Manda a ejecutar el archivo nombre en un servidor
     */
-    public void ejecutar(interfazServicioRmi sr,String nombre){
+    public void ejecutar(interfazServicioRmi sr,String nombre,String ipCliente){
        //File f = new File(this.directorioDescarga+"/"+nombre);
        File f = new File("../"+nombre);
         if(f.exists() && f.isFile() ){
@@ -254,7 +254,7 @@ public class Cliente {
                 }
                 try {
                     //SERVIDOR
-                    byte[] arch = sr.ejecutar(buffer, nombre);
+                    byte[] arch = sr.ejecutar(buffer, nombre,ipCliente);
                     //Si hay una respuesta
                     if(arch != null){
                     //Crea el archivo de respuesta en el cliente
