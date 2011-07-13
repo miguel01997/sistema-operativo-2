@@ -27,6 +27,10 @@ public class controlEjecucion {
 
     private List<String> actividad;
     private List<proceso> ejecucion;
+    private List<String> ips;
+    
+    //Ip del cliente del proceso
+    String ipCliente;
     
     //Aqui se guarda el hilo que se esta ejecutando
     private proceso ejecutando;
@@ -39,18 +43,19 @@ public class controlEjecucion {
     public controlEjecucion(){
        actividad = new ArrayList<String>();
        ejecucion = new ArrayList<proceso>();
+       ips = new ArrayList<String>();
     
     }
     
     /**
      * Agrega a la lista ejecución la siguiente clase
      */
-    public boolean agregarEjecucion(String nombre){
+    public boolean agregarEjecucion(String nombre,String cliente){
         //agregamos a la lista de actividades
         actividad.add(nombre);
         //Creamos el proceso
+        ips.add(cliente);
         proceso p = new proceso(nombre);
-        
         //Agregamos a la lista de ejcucion el proceso
         ejecucion.add(p);
         
@@ -64,11 +69,11 @@ public class controlEjecucion {
     /**
      * Elimina la primera ocurrencia del proceso
      */
-    public  boolean  eliminarEjecucion(String nombre) {
+    public  boolean  eliminarEjecucion(String nombre,String ip) {
         //Verifica primero si se esta ejecutando si es asi lo detiene
         if(claseEje != null && ejecutando !=null){
             //si tiene el mismo nombre el de la activad que se esta ejecutando
-            if(nombre.equals(claseEje)){
+            if(nombre.equals(claseEje) && ipCliente.equals(ip)){
                this.detenerEjecución();
                System.out.println("Terminado proceso "+nombre);
                return true;
@@ -79,6 +84,7 @@ public class controlEjecucion {
         if(actividad.contains(nombre)){
            int indice = actividad.indexOf(nombre);
            ejecucion.remove(indice);
+           ips.remove(indice);
         }
         return true;
     }
@@ -107,6 +113,7 @@ public class controlEjecucion {
               claseEje = null;
               ejecutando = null;
               hEje = null;
+              ipCliente = null;
     }
     
     
@@ -145,11 +152,12 @@ public class controlEjecucion {
     /**
      *Carga el proceso para que se ejecute
      */
-    public void cargarProceso(String nombre){
+    public void cargarProceso(String nombre,String ipcliente){
        if(actividad.isEmpty()){
            claseEje = nombre;
            ejecutando = new proceso(claseEje);
            hEje = new Thread(ejecutando);
+           ipCliente = ipcliente;
        }
     
     }
@@ -165,6 +173,9 @@ public class controlEjecucion {
               claseEje = act;
               proceso eje = ejecucion.remove(0);
               ejecutando = eje;
+              //ip
+              ipCliente = ips.remove(0);
+              
               //desbloquea la llamada de rmi
               eje.desbloquear();
          }

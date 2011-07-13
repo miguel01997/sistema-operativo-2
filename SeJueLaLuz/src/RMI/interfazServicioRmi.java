@@ -27,7 +27,7 @@ public interface interfazServicioRmi extends java.rmi.Remote{
     public String[] listarFicheros() 
             throws java.rmi.RemoteException;
     
-    public byte[] ejecutar(byte[] fichero, String nombre) 
+    public byte[] ejecutar(byte[] fichero, String nombre,String ipCliente) 
             throws java.rmi.RemoteException;
     
     
@@ -40,8 +40,8 @@ public interface interfazServicioRmi extends java.rmi.Remote{
     public void tamanoEjecucion()
             throws java.rmi.RemoteException;
     
-    //Termina ejecucion de nombre nombre
-    public void terminarEjecucion(String nombre)
+    //Termina ejecucion de nombre nombre  asociado a la ip del cliente
+    public void terminarEjecucion(String nombre,String ipCliente)
             throws java.rmi.RemoteException;
     
     
