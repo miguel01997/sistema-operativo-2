@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  */
 public class Cliente {
         //ip del servidor
-        private String ip = "192.168.1.40";
+        private String ip = "192.168.1.117";
         
         
         //Para manejo de los servidores
@@ -45,11 +45,15 @@ public class Cliente {
     
     
     public void iniciar(){
-        
-        
-                //Se afilia al multicas
+
+                //Se afilia al multicast
                 Multicast mul = new Multicast();
+                
+                Thread tMul = new Thread(mul);
+                
                 mul.setManjadorServArch(ma);
+
+                tMul.start();
                 prueba();
               
     }
@@ -75,8 +79,8 @@ public class Cliente {
         //sr.terminarEjecucion("p.class");
 
         //ejecutar archivo en el servidor
-       // this.ejecutar(sr,"p2.class");
-
+        this.ejecutar(sr,"holaMundo.class");
+       
         //Si esta ocupado se agrega ejecución
 
         //Subir archivo
@@ -335,7 +339,6 @@ public class Cliente {
      */
     private void servidoresActivos(){
          Multicast multi = new Multicast();
-                 multi.enviarMensaje("activo?");
-                 multi.run();
+         multi.enviarMensaje("activo?");
     }
 }
