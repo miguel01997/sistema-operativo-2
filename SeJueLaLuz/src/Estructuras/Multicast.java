@@ -99,7 +99,8 @@ public class Multicast implements Runnable {
                 
         //AQUI SE CREARIA UN HILO NUEVO PARA TRATAR LO QUE ESCUCHE DEL MULTICAST
         Mensajes mensaje = new Mensajes(msj);
-        mensaje.run();
+        Thread tMul = new Thread(mensaje);
+        tMul.start();
         System.out.println("Leo del Multicast: "+msj);
     }
 
@@ -124,6 +125,8 @@ public class Multicast implements Runnable {
     /*Guarda referencia a manejador de archivo*/
     public void setManjadorServArch(manejoServArch ma){
        this.ma = ma;
+
+       // agregar servidores
     }
     
     
