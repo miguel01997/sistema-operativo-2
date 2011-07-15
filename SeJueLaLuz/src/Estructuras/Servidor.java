@@ -20,9 +20,11 @@ public class Servidor {
         manejoServArch m = s.retManejadorArchivos();
         //Se subscribe al multicast
         
-        Multicast multi = new Multicast();
-        //Se envia a multicas referencia al manejador de archivos
-        multi.setManjadorServArch(m);
+        
+       Multicast multi = new Multicast();
+       //Se envia a multicas referencia al manejador de archivos       
+         multi.setManjadorServArch(m);
+       
         
         //Me quedo escuchando infinito
         multi.run();

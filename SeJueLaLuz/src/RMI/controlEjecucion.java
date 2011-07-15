@@ -106,6 +106,7 @@ public class controlEjecucion {
                 try {
                     //Espera hasta que muera el hilo
                     hEje.join();
+                    System.out.println("Termina ejecutar "+this.claseEje);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(controlEjecucion.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -210,7 +211,7 @@ class proceso implements Runnable{
            String mensaje = "listo "+ infoRed.miIp() +" "+ infoRed.miHost()+" "+
                    clase +" "+fecha;
            multi.enviarMensaje(mensaje);
-           multi.run();
+          // multi.run();  //se queda pegado al ejecturar >>
         }
 
     public proceso(String clase) {
@@ -269,7 +270,6 @@ class proceso implements Runnable{
     private boolean block = true;
     public void bloquear(){
        System.out.println("Bloqueado "+clase+".");
-       
             while(block){ 
                  try {
                      Thread.sleep(500);
