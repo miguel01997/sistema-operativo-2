@@ -10,8 +10,12 @@ import Estructuras.Mensajes;
 import Estructuras.Multicast;
 import Estructuras.infoRed;
 import Estructuras.Clock;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -75,7 +79,7 @@ public class controlEjecucion {
             //si tiene el mismo nombre el de la activad que se esta ejecutando
             if(nombre.equals(claseEje) && ipCliente.equals(ip)){
                this.detenerEjecución();
-               System.out.println("Terminado proceso "+nombre);
+               System.out.println("Interrumpida la ejecucion de "+nombre);
                return true;
             }
         }
@@ -109,6 +113,7 @@ public class controlEjecucion {
                     System.out.println("Termina ejecutar "+this.claseEje);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(controlEjecucion.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("Ejecucion de "+this.claseEje+" interrumpida.");
                 }
                // System.out.println("Ejecuto otro ");
               claseEje = null;
@@ -196,7 +201,7 @@ public class controlEjecucion {
  Clase creada para correr la aplicacion en un Hilo
  */
 class proceso implements Runnable{
-
+    /**Nombre de la clase en ejecucion*/
     private String clase;
   
    Thread th;
@@ -204,6 +209,11 @@ class proceso implements Runnable{
    Multicast multi = new Multicast();
     /*Proceso en ejecución*/
     private Process proc;
+    
+     public proceso(String clase) {
+        this.clase = clase;
+        this.th = new Thread();
+    }
     
         public void run() {
            ejecutarClase();
@@ -214,10 +224,7 @@ class proceso implements Runnable{
           // multi.run();  //se queda pegado al ejecturar >>
         }
 
-    public proceso(String clase) {
-        this.clase = clase;
-        this.th = new Thread();
-    }
+   
     
         
     public void ejecutarClase(){
@@ -231,9 +238,6 @@ class proceso implements Runnable{
                  Process   process = Runtime.getRuntime().exec(command);
                  this.proc  = process;
                  //Esperamos a que se termine de ejecutar
-                 //process.destroy();
-                 //Thread.sleep(1000);
-                // System.out.println("AAA");
                  process.waitFor();
                  File tempFile = new File(Config.dirDes+"/"+nclass);
 
@@ -243,9 +247,10 @@ class proceso implements Runnable{
                  
             } catch (InterruptedException ex) {
                 System.out.println("Proceso "+this.clase+" interrumpido,");
-                // Logger.getLogger(proceso.class.getName()).log(Level.SEVERE, null, ex);
+                //Logger.getLogger(proceso.class.getName()).log(Level.SEVERE, null, ex);
             }
              catch (IOException ex) {
+                 
                 Logger.getLogger(proceso.class.getName()).log(Level.SEVERE, null, ex);
             }
        }
@@ -264,7 +269,44 @@ class proceso implements Runnable{
     
     public void matar(){
        this.proc.destroy();
+       //Envia msj de kill por si el proceso sigue vivo
+       this.matarProcPegados(this.nombreClase(clase));
+       
+       
     }
+    
+    
+    /**Si un proceso no muere con destroy se busca su pid y se envia un kill*/
+    private void matarProcPegados(String nclass){
+       String dirD =    "java -classpath "+Config.dirDes+" "+nclass +" > " ;
+       //Solicita la lista de procesos ejecutados por la maquina virtual      
+       String[] command = {"sh","-c","jps -lv" };
+       Process   process;
+       String line;   
+        try {
+            process = Runtime.getRuntime().exec(command);
+            BufferedReader in = new BufferedReader(new InputStreamReader (process.getInputStream())); 
+             while ((line = in.readLine()) != null) {//buscamos el proceso nclass 
+                 String [] aux; 
+                 aux = line.split(" ");
+                 if(aux.length==2){
+                     if(aux[1].equals(nclass)){//si el proceso se esta ejecutando
+                         //lanzamos comando kill
+                         String [] ckill = {"sh","-c", "kill "+aux[0]};
+                         process = Runtime.getRuntime().exec(ckill);
+                     }
+                 }
+                     System.out.println(line);
+             }
+             in.close();     //cierra el buffer
+        } catch (IOException ex) {
+            Logger.getLogger(proceso.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    
+    }
+    
+    
     
     
     private boolean block = true;
