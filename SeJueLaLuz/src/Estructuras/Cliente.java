@@ -24,8 +24,8 @@ import java.util.logging.Logger;
 public class Cliente {
         //ip del servidor
 
-        private String ip = "192.168.1.123";
-
+        //private String ip = "127.0.0.1";
+        private String ip = infoRed.miIp();
         
         //Para manejo de los servidores
         private manejoServArch ma;
@@ -72,35 +72,17 @@ public class Cliente {
         //try{ 
         //Pregunta por servidores vivos al multicast.
         //Solicita la lista de ip a los servidores vivos
-        //interfazServicioRmi sr;
-        //sr = (interfazServicioRmi)
-        //Naming.lookup( "rmi://"+ip+":"+puerto+"/Servicio");                
-        //lista de ficheros en el servidor
-        //this.listarArchivos(sr);
-
-        //para preguntar cuáles servidores están activos
-        //this.servidoresActivos();
-
-        //Detener proceso en servidor
-        //sr.terminarEjecucion("p.class",ip);
+        interfazServicioRmi sr;
         
+        try{
+        sr = (interfazServicioRmi)
+        Naming.lookup( "rmi://"+ip+":"+puerto+"/Servicio");
+        sr.terminarEjecucion("p.class", "127.0.0.1");
         
+          System.out.println("Ocupado "+sr.ocupado() );
         
-
-        //ejecutar archivo en el servidor
-        me.ejecutarEnServidores("p2.class", ip);
-        
-        //Si esta ocupado se agrega ejecución
-
-        //Subir archivo
-        //this.enviarArchivo("manifest.mf");
-
-        //descargar archivo
-        //this.solicitarArchivo("pServidor.class");
-
-        //sr.tamanoEjecucion();
-    //}
-      /*  catch (MalformedURLException murle ) {
+        }
+        catch (MalformedURLException murle ) {
         System.out.println ();
         System.out.println (
         "MalformedURLException");
@@ -116,9 +98,36 @@ public class Cliente {
         catch (java.lang.ArithmeticException ae) {
         System.out.println ();
         System.out.println ("java.lang.Arithmetic Exception");
-        System.out.println (ae);}   */ 
+        System.out.println (ae);}   
+    
+        //lista de ficheros en el servidor
+        //this.listarArchivos(sr);
 
-    }
+        //para preguntar cuáles servidores están activos
+        //this.servidoresActivos();
+
+        //Detener proceso en servidor
+        //sr.terminarEjecucion("p.class",ip);
+        
+        
+        
+
+        //ejecutar archivo en el servidor, envia ip del cliente
+        //me.ejecutarEnServidores("p.class", ip);
+        
+        
+        
+        
+        //Si esta ocupado se agrega ejecución
+
+        //Subir archivo
+        //this.enviarArchivo("manifest.mf");
+
+        //descargar archivo
+        //this.solicitarArchivo("pServidor.class");
+
+        //sr.tamanoEjecucion();
+}
     
     
     
@@ -367,11 +376,7 @@ public class Cliente {
 }
 
 /*****************************************************************************/
-
-
-/*****************************************************************************/
-
-/*****************************************************************************//*Clase creada para manejar los hilos de ejecución*/
+//*Clase creada para manejar los hilos de ejecución*/
 class ManejadorEjecucion {
 
     
@@ -412,7 +417,7 @@ class ManejadorEjecucion {
               //Thread te = new Thread(this);
               //te.start();
               ejeTodosHilos();
-              System.out.println("Ejecuta todos los hilos "+aux.length);
+              //System.out.println("Ejecuta todos los hilos "+aux.length);
                 try {
                     wait();//Espera a que algun hijo termine
                 } catch (InterruptedException ex) {
@@ -512,6 +517,13 @@ class ManejadorEjecucion {
     }
     
     
+    public void detenerEjecucion(){
+       for(int i=0;i<arrEje.length;i++){
+          arrEje[i].detenerEjecucion();
+       }
+        
+    }
+    
 
     
 }
@@ -575,6 +587,7 @@ class Ejecucion implements Runnable{
                     Logger.getLogger(serviciosRmi.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 try {
+                    System.out.println("Ejecutando clase "+nombre);
                     //SERVIDOR
                     byte[] arch = sr.ejecutar(buffer, nombre,ipCliente);
                     //Si hay una respuesta
@@ -663,6 +676,16 @@ class Ejecucion implements Runnable{
     /**Retorna la ip del servidor asosicado a la ejecución*/
     public String servidor(){
        return ipCliente;
+    }
+    
+    public void detenerEjecucion(){
+        try {
+            this.rmiServ.terminarEjecucion(nombreClass, ipCliente);
+        } catch (RemoteException ex) {
+            Logger.getLogger(Ejecucion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        termine = true;
+    
     }
     
     
