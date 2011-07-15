@@ -12,6 +12,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,8 +26,10 @@ public class manejoServArch {
     //Directorio de descarga de los archivos;
     private String directorioDes = Config.dirDes;
     
+    /**Tabla que maneja los archivos y sevidores*/
     private tablaArchivos ta;
 
+    
     
     
     
@@ -40,6 +44,7 @@ public class manejoServArch {
         //crea tabla de archivos locales
         ta = new tablaArchivos();
         this.auxArchivosLocales();
+       
     }
     
     public manejoServArch() {
@@ -50,6 +55,7 @@ public class manejoServArch {
         ta = new tablaArchivos();
         //Carga los archivos locales
         this.auxArchivosLocales();
+        
     }
     
     
@@ -74,12 +80,20 @@ public class manejoServArch {
      */
     public String[] listarFicheros(){
         //carga los archivos en el servidor
-        auxArchivosLocales();
+        //auxArchivosLocales();
         //retorna la lista de archivos del servidor local
-        return ta.retorListArchServ(infoRed.miIp());
+        //return ta.retorListArchServ(infoRed.miIp());
+        return this.lFicheros();
     }
     
     
+    
+      /**
+     * Retorna el arreglo de string con los archivos asociado a un servidor
+     */
+    public String[] retorListArchServ(String ip){
+      return ta.retorListArchServ(ip);
+    }
     
     
     /**
@@ -88,7 +102,8 @@ public class manejoServArch {
     private void auxArchivosLocales(){
        String [] aLocales;
        aLocales = this.lFicheros();
-       ta.remplazarArchivos(infoRed.miIp(),infoRed.miHost(), aLocales);
+       
+       //ta.remplazarArchivos(infoRed.miIp(),infoRed.miHost(), aLocales);
     }
     
     
@@ -225,18 +240,11 @@ public class manejoServArch {
     }
     
     
-      /**
-     * Retorna el arreglo de string con los archivos asociado a un servidor
-     */
-    public String[] retorListArchServ(String ip){
-      return ta.retorListArchServ(ip);
-    }
     
     
-    
-    /*Retorna una lista de string con las ip de los servidores registrados*/
+    /**Retorna una lista de string con las ip de los servidores registrados*/
     public String[] listarServidores(){
-       return ta.listarServidores();
+        return ta.listarServidores();
     }
     
     
@@ -249,10 +257,19 @@ public class manejoServArch {
     }
     
     
-    /*Retorna una lista con los nombres de los servidores registrados*/
+    /**
+     * Retorna una lista con los nombres de los servidores registrados
+     */
     public String[] nombresServidores(){
        return ta.nombresServidores();
     }
+    
+    
+     /**Usa un criterio de seleccion del servidor*/
+    public String[] solicitarServidor(int i){
+      return ta.solicitarServidor(i)  ;
+    }
+    
     
     
     

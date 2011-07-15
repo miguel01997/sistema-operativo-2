@@ -26,5 +26,9 @@ public class Config {
 
     public final static String[] ntpServers = {"ntp.cais.rnp.br"};
     
+    
+    /*Numero de servidores que van a ejecutar la clase*/
+    public final static int numServidores = 1;
+    
 
 }

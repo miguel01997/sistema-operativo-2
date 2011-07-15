@@ -31,6 +31,7 @@ public class tablaArchivos {
         this.mapaServidores = new HashMap();
         //agrega el servidor local
         mapaArchivos.put(infoRed.miIp(),new LinkedList<String>());
+        //Comentar la linea de abajo
         mapaServidores.put(infoRed.miIp(),infoRed.miHost());
     }
     
@@ -203,10 +204,11 @@ public class tablaArchivos {
     
     
     
-    /*Retorna una lista de string con las ip de los servidores registrados*/
+    
+    /**Retorna una lista de string con las ip de los servidores registrados*/
     public String[] listarServidores(){
        if(mapaArchivos!=null){
-           Set conjunto = mapaArchivos.keySet();
+           Set conjunto = mapaServidores.keySet();
            String [] re = new String[conjunto.size()];
            Iterator t = conjunto.iterator();
            for(int i=0;t.hasNext();i++){
@@ -218,7 +220,7 @@ public class tablaArchivos {
        
     }
     
-    /*Retorna una lista con los nombres de los servidores registrados*/
+    /**Retorna una lista con los nombres de los servidores registrados*/
     public String[] nombresServidores(){
        if(mapaArchivos!=null){
            Collection nombres =   mapaServidores.values();
@@ -236,7 +238,7 @@ public class tablaArchivos {
     
     
     
-    /*Elimina las todas las entradas de la tabla*/
+    /**Elimina las todas las entradas de la tabla*/
     public boolean limpiarTabla(){
         mapaArchivos.clear();
         mapaServidores.clear();
@@ -244,6 +246,51 @@ public class tablaArchivos {
     }
     
     
+    
+    /**Usa un criterio de seleccion del servidor
+       retorna i servidores con ese criterio
+     */
+    public String[] solicitarServidor(int i ){
+        String[] re = new String[i];
+        boolean buscar = true;
+        //System.out.println("Solicita "+i);
+        
+        for(int j = 0;j<i;j++){
+           while(buscar){
+              String servAux = criRandom();  //CRITERIO
+              if(servAux==null)
+                  break;
+              for(int k=0;k<j;k++){
+                if(re[k].equals(servAux)){
+                   break;//Ya fue listado el servidor
+                }
+              }
+              re[j] = servAux;
+              break;
+           }
+        }   
+        return re;
+    }
+    
+    
+    /**Selecciona un servidor random*/
+    private String criRandom(){
+       int i;
+       i = mapaServidores.size();
+       
+       //System.out.println("Tam "+i);
+       int r = ((int) Math.random() *(i-1));  
+       String [] ser = this.listarServidores();
+       if(ser !=null){
+         //System.out.println("Consoguio lista de retorno "+ser[r]);
+         return ser[r];
+       }
+       else
+          System.out.println("Null lista en criRandom");
+       return null;
+       
+       
+    }
     
     
 }
