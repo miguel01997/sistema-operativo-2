@@ -64,6 +64,18 @@ public class tablaArchivos {
        return false;
     }
     
+    /**Elimina un servidor y la lista de archivos asociado al mismo*/
+    public synchronized  void eliminarServidor(String ip){
+       if(!mapaArchivos.containsKey(ip)){
+           //elimina la entrada
+          mapaArchivos.remove(ip);
+       }
+       if(!mapaServidores.containsKey(ip)){
+           //elimina la entrada
+          mapaServidores.remove(ip);
+       }
+        
+    }
     
     
     /**

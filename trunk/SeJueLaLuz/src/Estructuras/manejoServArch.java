@@ -271,6 +271,11 @@ public class manejoServArch {
     }
     
     
+    public void eliminarServidor(String ip){
+       ta.eliminarServidor(ip);
+    }
+    
+    
     
     
 }

@@ -113,7 +113,7 @@ public class Cliente {
         
 
         //ejecutar archivo en el servidor, envia ip del cliente
-        me.ejecutarEnServidores("p.class", ip);
+        me.ejecutarEnServidores("p2.class", ip);
         
         
         
@@ -402,48 +402,58 @@ class ManejadorEjecucion {
      nombre y le asocia la ip ipCliente
      */
     public  void ejecutarEnServidores(String nombreClass,String ipCliente){
-       String [] ipServidores = ma.listarServidores();
        
-       if(ipServidores !=null){
-           if(ipServidores.length>=numServi){//Ejecución segura
-              //selecciona los serviodores que ejecutan las clases
-              String [] aux = ma.solicitarServidor(numServi);
-              boolean res;
-              res = crearEjecucion(nombreClass, ipCliente, aux);
-              if(!res){//Si no se pudo conectar a un servidor se sale
-                 System.exit(0);
-              }
-              synchronized(this){
-              //Thread te = new Thread(this);
-              //te.start();
-              ejeTodosHilos();
-              //System.out.println("Ejecuta todos los hilos "+aux.length);
-                try {
-                    wait();//Espera a que algun hijo termine
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(ManejadorEjecucion.class.getName()).log(Level.SEVERE, null, ex);
-                }
-              }
-              //System.out.println("Sale del wait");
-              //verifica el servidor que termino
-              this.verificarHilos();
-              
-              
-              
-           }else{
-              System.out.println("Numero de servidores menor al numero minimo requerido");
-           
+       boolean ejecutar = false;
+       while(!ejecutar){
+           String [] ipServidores = ma.listarServidores();
+           if(ipServidores !=null){//Si hay suficientes servidores para ejecutar
+               if(ipServidores.length>=numServi){//Ejecución segura
+                  //selecciona los serviodores que ejecutan las clases
+                  String [] aux = ma.solicitarServidor(numServi);
+                  String res;
+                  res = crearEjecucion(nombreClass, ipCliente, aux);
+                  if(res!=null){//Si no se pudo conectar a un servidor se sale
+                     //Elimina el servidor al que no se pudo conectar
+                     //de la lista de servidores
+                      ma.eliminarServidor(res);
+                      //Vuelve a solicitar los servidores
+                      continue;
+                  }
+                  //Puede ejecutar
+                  ejecutar =  true;
+                  
+               }else{
+                  System.out.println("Numero de servidores menor al numero minimo requerido");
+                  System.out.println("No ejecuta "+nombreClass);
+                  return;
+
+               }
+           } 
+           else{//Ejecucion insegura
+              System.out.println("No hay Servidores disponibles");
+              return;
            }
-       } 
-       else{//Ejecucion insegura
-          System.out.println("Servidores no existen");
        }
+       //EJECUTA LA APLICACION
+       synchronized(this){
+          ejeTodosHilos();
+          //System.out.println("Ejecuta todos los hilos "+aux.length);
+            try {
+                wait();//Espera a que algun hijo termine
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ManejadorEjecucion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+          //System.out.println("Sale del wait");
+          //verifica el servidor que termino y manda a matar a los otros
+          this.verificarHilos();
     }
    
     
-    
-    private boolean crearEjecucion(String nombreClass,String ipCliente,
-            String[] ipServidor){
+    /**Retorna una lista con los servidores que no logro conectarse*/
+    private String crearEjecucion(String nombreClass,String ipCliente,
+                                   String[] ipServidor){
+        
         String ipAux = "";
       try{
         //Buscamos las ip de los servidores   
@@ -467,8 +477,9 @@ class ManejadorEjecucion {
         System.out.println ();
         System.out.println ( "RemoteException");
         System.out.println("Error al conectar con el servidor "+ipAux);
-        System.out.println (re); 
-        return false; 
+        
+        //System.out.println (re);
+        return ipAux; 
         }
         catch (NotBoundException nbe) {
         System.out.println ();
@@ -478,7 +489,7 @@ class ManejadorEjecucion {
         System.out.println ();
         System.out.println ("java.lang.Arithmetic Exception");
         System.out.println (ae);} 
-      return true;
+      return null;
     
     }
     

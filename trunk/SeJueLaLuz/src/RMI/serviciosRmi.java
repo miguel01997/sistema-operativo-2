@@ -151,9 +151,9 @@ implements interfazServicioRmi {
         
     }
 
-    public void agregarEjecucion(String nombre)  {
+   // public void agregarEjecucion(String nombre)  {
        
-    }
+   // }
 
    
     

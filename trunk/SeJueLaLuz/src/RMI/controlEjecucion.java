@@ -309,7 +309,7 @@ class proceso implements Runnable{
                          process = Runtime.getRuntime().exec(ckill);
                      }
                  }
-                     System.out.println(line);
+                     //System.out.println(line);
              }
              in.close();     //cierra el buffer
         } catch (IOException ex) {
