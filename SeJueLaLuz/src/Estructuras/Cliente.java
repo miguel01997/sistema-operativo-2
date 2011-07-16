@@ -113,7 +113,7 @@ public class Cliente {
         
 
         //ejecutar archivo en el servidor, envia ip del cliente
-        //me.ejecutarEnServidores("p2.class", ip);
+        this.ejecutarEnServidores("p2.class");
         
         
         
@@ -365,7 +365,7 @@ public class Cliente {
     /*Busca servidores activos y envia la solicitud de ejecución de la clase 
      nombre y le asocia la ip ipCliente
      */
-    public void enjecutarEnServidores(String nombre){
+    public void ejecutarEnServidores(String nombre){
        me.ejecutarEnServidores(nombre, ip);
     }
     
