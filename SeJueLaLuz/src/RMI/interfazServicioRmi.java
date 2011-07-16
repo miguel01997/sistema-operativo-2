@@ -45,8 +45,8 @@ public interface interfazServicioRmi extends java.rmi.Remote{
             throws java.rmi.RemoteException;
     
     
-    public void agregarEjecucion(String nombre)
-                     throws java.rmi.RemoteException;
+   // public void agregarEjecucion(String nombre)
+   //                  throws java.rmi.RemoteException;
     
     
     
