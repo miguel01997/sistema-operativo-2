@@ -16,6 +16,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -216,12 +219,22 @@ class proceso implements Runnable{
     }
     
         public void run() {
-           ejecutarClase();
-           Date fecha = new Date();
-           String mensaje = "listo "+ infoRed.miIp() +" "+ infoRed.miHost()+" "+
-                   clase +" "+fecha;
-           multi.enviarMensaje(mensaje);
-          // multi.run();  //se queda pegado al ejecturar >>
+      
+            ejecutarClase();
+            try {          
+                DateFormat formatter ;
+                Date fecha = new Date();  
+                String str_date = fecha.toString();
+                formatter = new SimpleDateFormat("dd-MMM-yy");
+                fecha = (Date)formatter.parse(str_date); 
+                long longDate=fecha.getTime();
+                String mensaje = "listo "+ infoRed.miIp() +" "+ infoRed.miHost()+" "+
+                        clase +" "+ longDate;
+                multi.enviarMensaje(mensaje);
+               // multi.run();  //se queda pegado al ejecturar >>
+            } catch (ParseException ex) {
+                Logger.getLogger(proceso.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
    
