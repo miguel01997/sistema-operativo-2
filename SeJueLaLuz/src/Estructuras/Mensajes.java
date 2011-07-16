@@ -38,9 +38,10 @@ public class Mensajes implements Runnable{
             String ip = parte[1];
             String nombre = parte[2];
             String clase = parte[3];
-            Long fecha = Long.valueOf(parte[4]);
+            String fecha = parte[4];
+            Long lFecha = Long.parseLong(fecha);
             System.out.println("Esta listo ip "+ ip + " nombre "+ nombre
-                    + " clase "+ clase + " fecha "+ fecha);
+                    + " clase "+ clase + " fecha "+ lFecha);
 
          }else if(msj.startsWith("estoy")){
             String[] parte = msj.split(" ");
