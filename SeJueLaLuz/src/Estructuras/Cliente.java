@@ -72,7 +72,7 @@ public class Cliente {
         //try{ 
         //Pregunta por servidores vivos al multicast.
         //Solicita la lista de ip a los servidores vivos
-        interfazServicioRmi sr;
+        /*interfazServicioRmi sr;
         
         try{
         sr = (interfazServicioRmi)
@@ -107,13 +107,13 @@ public class Cliente {
         //this.servidoresActivos();
 
         //Detener proceso en servidor
-        //sr.terminarEjecucion("p.class",ip);
+        //sr.terminarEjecucion("p.class",ip);*/
         
         
         
 
         //ejecutar archivo en el servidor, envia ip del cliente
-        //me.ejecutarEnServidores("p.class", ip);
+        me.ejecutarEnServidores("p.class", ip);
         
         
         
