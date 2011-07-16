@@ -114,6 +114,7 @@ public class controlEjecucion {
                     //Espera hasta que muera el hilo
                     hEje.join();
                     System.out.println("Termina ejecutar "+this.claseEje);
+                    enviarListo(ejecutando, this.claseEje);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(controlEjecucion.class.getName()).log(Level.SEVERE, null, ex);
                     System.out.println("Ejecucion de "+this.claseEje+" interrumpida.");
@@ -128,7 +129,17 @@ public class controlEjecucion {
     
    
     
-    
+    private void enviarListo(proceso proc,String clase){
+       try {          
+            Date fecha = new Date();  
+            long longDate= fecha.getTime();
+            String mensaje = "listo "+ infoRed.miIp() +" "+ infoRed.miHost()+" "+
+                    clase +" "+ longDate;
+            proc.multi.enviarMensaje(mensaje);
+        } catch (Exception ex) {
+            Logger.getLogger(proceso.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     
     //retorna true si no hay procesos ejecutandose
@@ -221,20 +232,7 @@ class proceso implements Runnable{
         public void run() {
       
             ejecutarClase();
-            try {          
-                DateFormat formatter ;
-                Date fecha = new Date();  
-                String str_date = fecha.toString();
-                formatter = new SimpleDateFormat("dd-MMM-yy");
-                fecha = (Date)formatter.parse(str_date); 
-                long longDate=fecha.getTime();
-                String mensaje = "listo "+ infoRed.miIp() +" "+ infoRed.miHost()+" "+
-                        clase +" "+ longDate;
-                multi.enviarMensaje(mensaje);
-               // multi.run();  //se queda pegado al ejecturar >>
-            } catch (ParseException ex) {
-                Logger.getLogger(proceso.class.getName()).log(Level.SEVERE, null, ex);
-            }
+           
         }
 
    
@@ -257,7 +255,6 @@ class proceso implements Runnable{
                  serviciosRmi.clock.setTimeStamp(tempFile);
                  //process.destroy();
                  //System.out.println("BBB");
-                 
             } catch (InterruptedException ex) {
                 System.out.println("Proceso "+this.clase+" interrumpido,");
                 //Logger.getLogger(proceso.class.getName()).log(Level.SEVERE, null, ex);
