@@ -113,7 +113,7 @@ public class Cliente {
         
 
         //ejecutar archivo en el servidor, envia ip del cliente
-        me.ejecutarEnServidores("p2.class", ip);
+        //me.ejecutarEnServidores("p2.class", ip);
         
         
         
@@ -365,9 +365,8 @@ public class Cliente {
     /*Busca servidores activos y envia la solicitud de ejecución de la clase 
      nombre y le asocia la ip ipCliente
      */
-    public void enjecutarEnServidores(String nombre,String ipCliente){
-       
-    
+    public void enjecutarEnServidores(String nombre){
+       me.ejecutarEnServidores(nombre, ip);
     }
     
     
@@ -408,6 +407,10 @@ class ManejadorEjecucion {
            String [] ipServidores = ma.listarServidores();
            if(ipServidores !=null){//Si hay suficientes servidores para ejecutar
                if(ipServidores.length>=numServi){//Ejecución segura
+                   //Se asigna el numero de servidores a comunicarse
+                   numServi = Config.numServidores;
+                   //Se crea arreglo de ejecucion
+                   arrEje = new Ejecucion[numServi];
                   //selecciona los serviodores que ejecutan las clases
                   String [] aux = ma.solicitarServidor(numServi);
                   String res;
@@ -422,15 +425,40 @@ class ManejadorEjecucion {
                   //Puede ejecutar
                   ejecutar =  true;
                   
-               }else{
-                  System.out.println("Numero de servidores menor al numero minimo requerido");
-                  System.out.println("No ejecuta "+nombreClass);
-                  return;
+               }else{//Ejecucion insegura
+                   if(Config.inseguro){
+                       System.out.println("Ejecutando en modo inseguro");
+                      /*Si se va a ejecutar aunque no haya el minimo de servidores
+                       solicitados*/
+                       //Se crea un nuevo arreglo de ejecucion
+                       numServi = ipServidores.length;
+                       arrEje = new Ejecucion[numServi];
+                       String [] aux = ma.solicitarServidor(numServi);
+                       String res;
+                      res = crearEjecucion(nombreClass, ipCliente, aux);
+                      if(res!=null){//Si no se pudo conectar a un servidor se sale
+                         //Elimina el servidor al que no se pudo conectar
+                         //de la lista de servidores
+                          ma.eliminarServidor(res);
+                          //Vuelve a solicitar los servidores
+                          continue;
+                      }
+                      //Puede ejecutar
+                      ejecutar =  true;
+                   }else{
+                     System.out.println("Numero de servidores conectados menor al numero minimo requerido");
+                     System.out.println("No ejecuta "+nombreClass);
+                     return; 
+                   }
+                   
+                   
+                   
+                  
 
                }
            } 
-           else{//Ejecucion insegura
-              System.out.println("No hay Servidores disponibles");
+           else{//No hay servidores
+              System.out.println("No hay Servidores disponibles.");
               return;
            }
        }
@@ -450,7 +478,9 @@ class ManejadorEjecucion {
     }
    
     
-    /**Retorna una lista con los servidores que no logro conectarse*/
+    /**
+     * Crea en arrEje un arrego de apuntadores a los servidores rmi
+     * Retorna una lista con los servidores que no logro conectarse*/
     private String crearEjecucion(String nombreClass,String ipCliente,
                                    String[] ipServidor){
         
