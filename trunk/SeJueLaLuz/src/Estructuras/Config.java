@@ -28,7 +28,11 @@ public class Config {
     
     
     /*Numero de servidores que van a ejecutar la clase*/
-    public final static int numServidores = 1;
+    public final static int numServidores = 2;
+    
+    /**Ejecuta la aplicacion asi no haya el numero minimo de servidores 
+     * disponibles es decir numServidres > numero de servidores conectados*/
+    public final static boolean inseguro = false;
     
 
 }

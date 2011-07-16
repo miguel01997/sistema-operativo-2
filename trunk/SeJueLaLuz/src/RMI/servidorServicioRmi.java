@@ -10,6 +10,7 @@ import Estructuras.Config;
 import Estructuras.infoRed;
 import Estructuras.manejoServArch;
 import java.rmi.Naming;
+import java.rmi.server.ExportException;
 public class servidorServicioRmi {
 
     
@@ -36,6 +37,11 @@ private manejoServArch ma;
         
         System.out.println("Iniciando servidor...");
         Naming.rebind("rmi://"+ip+":"+puerto+"/Servicio", sr);
+      }
+      catch(ExportException e){
+          System.out.println("Puerto "+puerto+" esta siendo usado.");
+          System.out.println("Terminando la ejecucion del servidor");
+          System.exit(0);
       }
       catch (Exception e) {System.out.println ("Problema: " + e);
       }
