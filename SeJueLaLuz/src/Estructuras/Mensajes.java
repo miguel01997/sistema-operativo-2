@@ -16,11 +16,14 @@ public class Mensajes implements Runnable{
 
     private String respuesta = "";
 
+    private manejoServArch msa;
+    
     Multicast multi = new Multicast();
 
 
-    public Mensajes(String mensaje) {
+    public Mensajes(String mensaje, manejoServArch maneja) {
         msj = mensaje;
+        msa = maneja;
     }
 
 
@@ -28,14 +31,14 @@ public class Mensajes implements Runnable{
 
         if(msj.equals("activo?")){
             respuesta = "estoy " + infoRed.miIp() + " "+ infoRed.miHost();
-            System.out.println("Esta es la respuesta "+ respuesta);
+            //System.out.println("Esta es la respuesta "+ respuesta);
             multi.enviarMensaje(respuesta);
          }else if(msj.startsWith("listo")){
             String[] parte = msj.split(" ");
             String ip = parte[1];
             String nombre = parte[2];
             String clase = parte[3];
-            String fecha = parte[4];
+            Long fecha = Long.valueOf(parte[4]);
             System.out.println("Esta listo ip "+ ip + " nombre "+ nombre
                     + " clase "+ clase + " fecha "+ fecha);
 
@@ -43,10 +46,10 @@ public class Mensajes implements Runnable{
             String[] parte = msj.split(" ");
             String ip = parte[1];
             String nombre = parte[2];
-            
-            System.out.println("vive ip "+ ip + " nombre "+ nombre);
-
-
+            this.msa.limpiarTabla();  
+            String [] archIp = msa.retorListArchServ(ip);
+            this.msa.agregarArchivosServidor(ip, nombre, archIp);
+            //System.out.println("vive ip "+ ip + " nombre "+ nombre);
          }
     }
 }
