@@ -40,6 +40,14 @@ implements interfazServicioRmi {
     /**Si la ejecucion fue interrumpida*/
     private boolean interumpido = false;
     
+    
+    /**Variable usada para matar proceso en ejecucion. Si se manda a cancelar
+     *una ejecucion A y el proc A no esta esta variable queda en false sino es 
+     * true
+     */
+    private boolean procEjecutando  = false;
+    
+    
     //CONSTRUCTOR
     public serviciosRmi() throws java.rmi.RemoteException{
         super();
@@ -94,8 +102,17 @@ implements interfazServicioRmi {
         
         
         if(ocupado){//Encola ejecución y bloquea
-           
-            ce.agregarEjecucion(nombre,ipCliente);
+           boolean ejecutar = true;
+           ejecutar= ce.agregarEjecucion(nombre,ipCliente);
+           if(!ejecutar){
+              if(ce.vacio() && ce.sinProc()){
+                //Desocupa
+                 Desocupar();
+              }
+              //retorna null
+              return null;
+           }
+               
            //recibe el fichero
            this.recibirFichero(fichero, nombre);
         }
@@ -173,8 +190,13 @@ implements interfazServicioRmi {
 
     public void terminarEjecucion(String nombre,String ipCliente){
         this.interrumpir();
-        //Elimina el archivo de respuesta referente a la ejecucion de nombre 
-        ma.eliminarArchivo(nombreClase(nombre));//elimina archivo respuesta
+        //Si no es el proceso en ejecucion no elimina el archivo de respuesta
+        if((ce.getClaseEje().equals(nombre)) && 
+           (ce.getIpCliente().equals(ipCliente)) ){
+           //Elimina el archivo de respuesta referente a la ejecucion de nombre 
+           ma.eliminarArchivo(nombreClase(nombre));//elimina archivo respuesta
+        }
+        
         ce.eliminarEjecucion(nombre,ipCliente);
         
         
