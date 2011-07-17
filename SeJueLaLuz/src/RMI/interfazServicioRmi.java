@@ -18,15 +18,18 @@ public interface interfazServicioRmi extends java.rmi.Remote{
             throws java.rmi.RemoteException;
     
     /**
-     * Orden para guardar un fichero de nombre nombre 
+     * Orden para guardar un fichero de nombre nombre en el sevidor 
      */
     public boolean recibirFichero(byte [] fichero, String nombre) 
             throws java.rmi.RemoteException;
     
-    
+    /**Lista los ficheros almacenados en el servidor*/
     public String[] listarFicheros() 
             throws java.rmi.RemoteException;
     
+    /**Ejecuta el fichero en el servidor
+     recibe el fichero, el nombre del fichero y la ip asociada al cliente
+     */
     public byte[] ejecutar(byte[] fichero, String nombre,String ipCliente) 
             throws java.rmi.RemoteException;
     

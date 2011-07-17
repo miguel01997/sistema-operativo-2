@@ -21,6 +21,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,9 +33,9 @@ import java.util.logging.Logger;
 
 public class controlEjecucion {
 
-    private List<String> actividad;
-    private List<proceso> ejecucion;
-    private List<String> ips;
+    private List<String> actividad; //nombre de las clases la cola
+    private List<proceso> ejecucion; //proceso asociado a la clase a ejecutar
+    private List<String> ips;  //ips de los servidores en la cola
     
     //Ip del cliente del proceso
     String ipCliente;
@@ -55,11 +56,13 @@ public class controlEjecucion {
     }
     
     /**
-     * Agrega a la lista ejecución la siguiente clase
+     * Agrega a la lista ejecución la siguiente clase nombre.class asociado
+     * al cliente cliente
      */
     public boolean agregarEjecucion(String nombre,String cliente){
         //agregamos a la lista de actividades
         actividad.add(nombre);
+        //System.out.println(">>>>>"+nombre);
         //Creamos el proceso
         ips.add(cliente);
         proceso p = new proceso(nombre);
@@ -159,13 +162,7 @@ public class controlEjecucion {
     private void detenerEjecución(){
        //Mata el proceso
        ejecutando.matar();
-        //Detien el hilo actual
-        //hEje.interrupt();
-       //ejecutando.interrupt();
-       //borra referencias del proceso actual
-        //claseEje = null;
-        //ejecutando = null;
-        //hEje = null;
+       
     }
     
     
@@ -203,9 +200,35 @@ public class controlEjecucion {
     }
     
     
-
-
-
+    
+    /**Busca si un proceso esta en la cola*/
+   /* 
+    public boolean procEnCola(String nomClass,String ipClien){
+        //buscamos si el cliente tiene un proceso en la cola
+        
+        String aux;
+        ArrayList<Integer> l = new ArrayList<Integer>();
+        String []  ip = new String[ips.size()];
+        ips.toArray(ip);
+        for(int i = 0;i<ip.length;i++){
+           if(ip[i].equals(ipClien)){
+              l.add(i);
+           }
+        }
+        int tam = l.size();
+        if(tam==0)//Si no hay procesos de ese cliente en la cola
+            return false;
+        
+        String[] clases = new String[tam];
+        l.toArray(clases);//Arreglo de nombre de las clases
+        for(int i = 0;i<clases.length;i++){
+           if(clases[i].equals(nomClass)){
+               return true;//hay un proceso con ese nombre en la cola
+           }
+        }
+        
+        return false;
+    }*/
 
 }
 
@@ -281,8 +304,6 @@ class proceso implements Runnable{
        this.proc.destroy();
        //Envia msj de kill por si el proceso sigue vivo
        this.matarProcPegados(this.nombreClase(clase));
-       
-       
     }
     
     

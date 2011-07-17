@@ -18,6 +18,12 @@ public class pManejoArchivos {
     mar.cargaArchivosLocales();
     String[] l = mar.listarFicheros();
     imp(l);
+    
+    
+    
+    
+    
+    /*
     //agregar archivos a la tabla de archivos de servidor compu1
     String [] l2 = {"d1","d3","d4","d5","d6"};
     mar.agregarArchivosServidor("1.1.1.1","compu1", l2);
@@ -51,7 +57,7 @@ public class pManejoArchivos {
     aux = mar.nombresServidores();
     imp(aux);
     
-    
+    */
     
     
     

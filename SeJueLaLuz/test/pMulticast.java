@@ -27,7 +27,7 @@ public class pMulticast {
             Logger.getLogger(pMulticast.class.getName()).log(Level.SEVERE, null, ex);
         }*/
         
-        m.enviarMensaje("Alguien me escucha ToT");
+        m.enviarMensaje("llamame al"+infoRed.miHost());
         
         
     }
