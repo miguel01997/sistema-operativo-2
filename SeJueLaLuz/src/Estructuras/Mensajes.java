@@ -42,6 +42,10 @@ public class Mensajes implements Runnable{
             Long lFecha = Long.parseLong(fecha);
             System.out.println("Esta listo ip "+ ip + " nombre "+ nombre
                     + " clase "+ clase + " fecha "+ lFecha);
+            ActualizarF actf = new ActualizarF();
+            if (actf.verifArch(clase, lFecha)){
+                actf.actualizarArchivo(ip, clase);
+            }
 
          }else if(msj.startsWith("estoy")){
             String[] parte = msj.split(" ");
