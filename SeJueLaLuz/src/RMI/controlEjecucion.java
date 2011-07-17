@@ -38,7 +38,7 @@ public class controlEjecucion {
     private List<String> ips;  //ips de los servidores en la cola
     
     //Ip del cliente del proceso
-    String ipCliente;
+    private String ipCliente;
     
     //Aqui se guarda el hilo que se esta ejecutando
     private proceso ejecutando;
@@ -54,6 +54,18 @@ public class controlEjecucion {
        ips = new ArrayList<String>();
     
     }
+
+    /**Retorna el nombre de la clase en ejecucion*/
+    public String getClaseEje() {
+        return claseEje;
+    }
+
+    /**Retorna la ip del cliente del proceso en ejecucion*/
+    public String getIpCliente() {
+        return ipCliente;
+    }
+    
+    
     
     /**
      * Agrega a la lista ejecución la siguiente clase nombre.class asociado
@@ -70,8 +82,9 @@ public class controlEjecucion {
         ejecucion.add(p);
         
         //Bloquea la llamada del rmi
-        p.bloquear();
-        return true;
+        //si retorna falso es porque se mando a eliminar la ejecucion
+        boolean ejecutar = p.bloquear();
+        return ejecutar;
         
     }
     
@@ -85,18 +98,14 @@ public class controlEjecucion {
             //si tiene el mismo nombre el de la activad que se esta ejecutando
             if(nombre.equals(claseEje) && ipCliente.equals(ip)){
                this.detenerEjecución();
-               System.out.println("Interrumpida la ejecucion de "+nombre);
+               System.out.println("Interrumpida la ejecucion de "+nombre +
+                       "  cliente: "+ip);
                return true;
             }
+            
+            return this.elimProcEnCola(nombre, ip);
         }
-        
-        
-        if(actividad.contains(nombre)){
-           int indice = actividad.indexOf(nombre);
-           ejecucion.remove(indice);
-           ips.remove(indice);
-        }
-        return true;
+        return false;
     }
     
     
@@ -200,6 +209,52 @@ public class controlEjecucion {
     }
     
     
+    /**Elimina la primera ocurrencia del proceso asociado 
+     * a un cliente en la cola*/
+    public boolean elimProcEnCola(String nomClass,String ipClien){
+       //buscamos si el cliente tiene un proceso en la cola
+       /* System.out.println(">>>>>");
+        System.out.println(ips);
+        System.out.println(actividad);
+        System.out.println(">>>>>");*/
+        
+        String aux;
+        ArrayList<Integer> l = new ArrayList<Integer>();
+        String []  ip = new String[ips.size()];
+        ips.toArray(ip);
+        //Buscamos todas las ocurrencias de ejecucion del cliente
+        for(int i = 0;i<ip.length;i++){
+           if(ip[i].equals(ipClien)){
+              l.add(i);
+           }
+        }
+        int tam = l.size();
+        if(tam==0)//Si no hay procesos de ese cliente en la cola
+            return false;
+        
+        
+        for(int i = 0;i<tam;i++){
+            int pos = l.remove(0).intValue();
+            String ac = actividad.get(pos);
+            //System.out.println("Actividad "+ac);
+           if(  ac.equals(nomClass)  ){
+               ips.remove(i);
+               actividad.remove(i);
+               proceso p = ejecucion.remove(i);
+               p.interrumpir();//Marca el proceso para que muera
+               p.desbloquear();//debloquea para que termine
+               System.out.println("Interrumpida la ejecucion de "+nomClass +
+                       " cliente: "+ipClien );
+               
+               
+               return true;//hay un proceso con ese nombre en la cola
+           }
+        }
+        
+        return false;
+        
+    }
+    
     
     /**Busca si un proceso esta en la cola*/
    /* 
@@ -242,6 +297,9 @@ class proceso implements Runnable{
     private String clase;
   
    Thread th;
+   
+   /**Si es true el proceso puede ejecutar sino el proceso fue interrumpido*/
+   private boolean ejecutar = true;
 
    Multicast multi = new Multicast();
     /*Proceso en ejecución*/
@@ -341,7 +399,7 @@ class proceso implements Runnable{
     
     
     private boolean block = true;
-    public void bloquear(){
+    public boolean bloquear(){
        System.out.println("Bloqueado "+clase+".");
             while(block){ 
                  try {
@@ -350,13 +408,17 @@ class proceso implements Runnable{
                      Logger.getLogger(proceso.class.getName()).log(Level.SEVERE, null, ex);
                  }
             }
-        
+        return ejecutar;
     }
    
     
     public void desbloquear(){
         block = false;
         
+    }
+    
+    public void interrumpir(){
+       ejecutar = false;
     }
     
 
