@@ -37,6 +37,9 @@ public class Cliente {
         
         /**Manejador de ejecucion*/
         private ManejadorEjecucion me;
+        
+        /**Si la ejecucion fue interrumpida*/
+        private boolean interumpido = false;
        
     /**
      * @param args the command line arguments
@@ -72,7 +75,7 @@ public class Cliente {
         //try{ 
         //Pregunta por servidores vivos al multicast.
         //Solicita la lista de ip a los servidores vivos
-        /*interfazServicioRmi sr;
+        interfazServicioRmi sr;
         
         try{
         sr = (interfazServicioRmi)
@@ -113,7 +116,7 @@ public class Cliente {
         
 
         //ejecutar archivo en el servidor, envia ip del cliente
-        this.ejecutarEnServidores("p2.class");
+        //this.ejecutarEnServidores("p2.class");
         
         
         

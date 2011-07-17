@@ -275,6 +275,11 @@ public class manejoServArch {
        ta.eliminarServidor(ip);
     }
     
+     
+    /**Retorna el numero de servidores registrados*/
+    public int numServidores(){
+       return ta.numServidores();
+    }
     
     
     
