@@ -15,6 +15,8 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
@@ -36,10 +38,13 @@ public class Cliente {
        
         
         /**Manejador de ejecucion*/
-        private ManejadorEjecucion me;
+        private HashMap<Integer,ManejadorEjecucion> mapaEjecucion;
         
         /**Si la ejecucion fue interrumpida*/
         private boolean interumpido = false;
+        
+        //Numero para indicar la transaccion
+        private static Integer indiTransa;
        
     /**
      * @param args the command line arguments
@@ -48,7 +53,11 @@ public class Cliente {
         //Crea directorio de descarga
         this.crearDirDescarga();
         ma = new manejoServArch();
-        me = new ManejadorEjecucion(ma);
+        mapaEjecucion = new HashMap<Integer, ManejadorEjecucion>();
+        if(indiTransa == null){
+          indiTransa = 0;
+        }
+       
     }
     
     
@@ -80,7 +89,7 @@ public class Cliente {
         try{
         sr = (interfazServicioRmi)
         Naming.lookup( "rmi://"+ip+":"+puerto+"/Servicio");
-        sr.terminarEjecucion("p.class", "127.0.0.1");
+        sr.terminarEjecucion("p.class", "127.0.0.1",1);
         
           System.out.println("Ocupado "+sr.ocupado() );
         
@@ -102,7 +111,7 @@ public class Cliente {
         System.out.println ();
         System.out.println ("java.lang.Arithmetic Exception");
         System.out.println (ae);}   
-    
+        
         //lista de ficheros en el servidor
         //this.listarArchivos(sr);
 
@@ -116,7 +125,17 @@ public class Cliente {
         
 
         //ejecutar archivo en el servidor, envia ip del cliente
-        this.ejecutarEnServidores("p.class");
+        /* this.ejecutarEnServidores("p.class");
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+        }//*/
+         
+        //this.ejecutarEnServidores("p.class");
+        //this.ejecutarEnServidores("p.class");
+        
+        
         
         
         
@@ -259,7 +278,8 @@ public class Cliente {
    /**
     Manda a ejecutar el archivo nombre en un servidor
     */
-    private void ejecutar(interfazServicioRmi sr,String nombre,String ipCliente){
+    private void ejecutar(interfazServicioRmi sr,String nombre,String ipCliente,
+                          int numTransac){
        //File f = new File(this.directorioDescarga+"/"+nombre);
        File f = new File("../"+nombre);
         if(f.exists() && f.isFile() ){
@@ -275,7 +295,7 @@ public class Cliente {
                 }
                 try {
                     //SERVIDOR
-                    byte[] arch = sr.ejecutar(buffer, nombre,ipCliente);
+                    byte[] arch = sr.ejecutar(buffer, nombre,ipCliente,numTransac);
                     //Si hay una respuesta
                     if(arch != null){
                     //Crea el archivo de respuesta en el cliente
@@ -369,7 +389,25 @@ public class Cliente {
      nombre y le asocia la ip ipCliente
      */
     public void ejecutarEnServidores(String nombre){
-       me.ejecutarEnServidores(nombre, ip);
+        int numTransa = this.indiTransa;
+        this.indiTransa = this.indiTransa +1;
+        ManejadorEjecucion me = new ManejadorEjecucion(ma);
+        mapaEjecucion.put(new Integer(numTransa), me); 
+        System.out.println("Cliente num transa "+indiTransa);
+        me.ejecutarEnServidores(nombre, ip,numTransa);
+    }
+    
+    
+    /**Detiene la ejecucion de la clase nomClass*/
+    public void detenerEjecucion(String nomClass,int indiTran ){
+        System.out.println(">>>"+mapaEjecucion);
+        ManejadorEjecucion me = mapaEjecucion.remove(indiTran);
+       
+       if(me==null){
+          System.out.println("No hay transaccion asociada a " +nomClass);
+          return;
+       }
+       me.detenerEjecucion();
     }
     
     
@@ -403,7 +441,8 @@ class ManejadorEjecucion {
     /**Busca servidores activos y envia la solicitud de ejecución de la clase 
      nombre y le asocia la ip ipCliente
      */
-    public  void ejecutarEnServidores(String nombreClass,String ipCliente){
+    public  void ejecutarEnServidores(String nombreClass,String ipCliente,
+            int numTransaccion){
        
        boolean ejecutar = false;
        while(!ejecutar){
@@ -417,14 +456,21 @@ class ManejadorEjecucion {
                   //selecciona los serviodores que ejecutan las clases
                   String [] aux = ma.solicitarServidor(numServi);
                   String res;
-                  res = crearEjecucion(nombreClass, ipCliente, aux);
+                  res = crearEjecucion(nombreClass, ipCliente, aux,numTransaccion);
                   if(res!=null){//Si no se pudo conectar a un servidor se sale
                      //Elimina el servidor al que no se pudo conectar
                      //de la lista de servidores
                       ma.eliminarServidor(res);
                       //Vuelve a solicitar los servidores
+                      if(res.equals("")){
+                         System.out.println("No hay servidores para ejecutar");
+                         return ;
+                      }
+                      
                       continue;
+                      
                   }
+                  
                   //Puede ejecutar
                   ejecutar =  true;
                   
@@ -438,12 +484,16 @@ class ManejadorEjecucion {
                        arrEje = new Ejecucion[numServi];
                        String [] aux = ma.solicitarServidor(numServi);
                        String res;
-                      res = crearEjecucion(nombreClass, ipCliente, aux);
+                      res = crearEjecucion(nombreClass, ipCliente, aux,numTransaccion);
                       if(res!=null){//Si no se pudo conectar a un servidor se sale
                          //Elimina el servidor al que no se pudo conectar
                          //de la lista de servidores
                           ma.eliminarServidor(res);
                           //Vuelve a solicitar los servidores
+                         /*if(res.equals("")){
+                            System.out.println("No hay servidores para ejecutar");
+                            return ;
+                         }*/
                           continue;
                       }
                       //Puede ejecutar
@@ -454,10 +504,6 @@ class ManejadorEjecucion {
                      return; 
                    }
                    
-                   
-                   
-                  
-
                }
            } 
            else{//No hay servidores
@@ -485,7 +531,7 @@ class ManejadorEjecucion {
      * Crea en arrEje un arrego de apuntadores a los servidores rmi
      * Retorna una lista con los servidores que no logro conectarse*/
     private String crearEjecucion(String nombreClass,String ipCliente,
-                                   String[] ipServidor){
+                                   String[] ipServidor,int numTransaccion){
         
         String ipAux = "";
       try{
@@ -496,7 +542,7 @@ class ManejadorEjecucion {
            sr = (interfazServicioRmi)
            Naming.lookup( "rmi://"+ipServidor[i]+":"+Config.puerto+"/Servicio");    
            //Guarda en la lista de ejecucion la referencia al rmi
-           arrEje[i] = new Ejecucion(sr, nombreClass, ipCliente,this);
+           arrEje[i] = new Ejecucion(sr, nombreClass, ipCliente,this,numTransaccion);
            System.out.println("Servidores "+ipServidor[i]);
         }
         
@@ -589,21 +635,26 @@ class Ejecucion implements Runnable{
     /**Para saber si termino la ejecución*/
     private boolean termine;
     
+    
+    private int numTransaccion;
+    
     /**Referencia al manejador de ejecucion*/
     private ManejadorEjecucion me;
     
     public Ejecucion(RMI.interfazServicioRmi rmi,String nombreClass,
-                     String ipCliente,ManejadorEjecucion me){
+                     String ipCliente,ManejadorEjecucion me,int numTransac){
        this.nombreClass = nombreClass;
        this.ipCliente = ipCliente;
        this.rmiServ = rmi;
        termine = false;
        this.me = me;
+       this.numTransaccion = numTransac;
     }
     
     
     public synchronized  void run() {
-        ejecutar(rmiServ, nombreClass, ipCliente);
+        System.out.println("Transaccion "+numTransaccion);
+        ejecutar(rmiServ, nombreClass, ipCliente,numTransaccion);
         termine = true;
         //System.out.println("Notifica al padre");
         me.despertar();
@@ -616,7 +667,8 @@ class Ejecucion implements Runnable{
     /**
     Manda a ejecutar el archivo nombre en un servidor
     */
-    private void ejecutar(interfazServicioRmi sr,String nombre,String ipCliente){
+    private void ejecutar(interfazServicioRmi sr,String nombre,String ipCliente,
+                          int numTransac  ){
        //File f = new File(this.directorioDescarga+"/"+nombre);
        File f = new File("../"+nombre);
         if(f.exists() && f.isFile() ){
@@ -633,7 +685,7 @@ class Ejecucion implements Runnable{
                 try {
                     System.out.println("Ejecutando clase "+nombre);
                     //SERVIDOR
-                    byte[] arch = sr.ejecutar(buffer, nombre,ipCliente);
+                    byte[] arch = sr.ejecutar(buffer, nombre,ipCliente,numTransac);
                     //Si hay una respuesta
                     if(arch != null){
                     //Crea el archivo de respuesta en el cliente
@@ -724,7 +776,7 @@ class Ejecucion implements Runnable{
     
     public void detenerEjecucion(){
         try {
-            this.rmiServ.terminarEjecucion(nombreClass, ipCliente);
+            this.rmiServ.terminarEjecucion(nombreClass, ipCliente,numTransaccion);
         } catch (RemoteException ex) {
             Logger.getLogger(Ejecucion.class.getName()).log(Level.SEVERE, null, ex);
         }
