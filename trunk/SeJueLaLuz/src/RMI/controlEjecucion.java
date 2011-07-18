@@ -36,6 +36,7 @@ public class controlEjecucion {
     private List<String> actividad; //nombre de las clases la cola
     private List<proceso> ejecucion; //proceso asociado a la clase a ejecutar
     private List<String> ips;  //ips de los servidores en la cola
+    private List<Integer> transacciones;  //numero de transacciones
     
     //Ip del cliente del proceso
     private String ipCliente;
@@ -44,6 +45,8 @@ public class controlEjecucion {
     private proceso ejecutando;
     //Nombre de la clase en ejecucion  x.class
     private String claseEje;
+    
+    private int numTransaccion;
    
     //Hilo ejecutando aplicacion
     private Thread hEje;
@@ -52,6 +55,7 @@ public class controlEjecucion {
        actividad = new ArrayList<String>();
        ejecucion = new ArrayList<proceso>();
        ips = new ArrayList<String>();
+       transacciones = new ArrayList<Integer>();
     
     }
 
@@ -66,12 +70,18 @@ public class controlEjecucion {
     }
     
     
+    /**Retorna el indice de la transaccion que se esta ejecutando*/
+    public int getNumTransaccion(){
+       return this.numTransaccion;
+    }
     
     /**
      * Agrega a la lista ejecución la siguiente clase nombre.class asociado
      * al cliente cliente
      */
-    public boolean agregarEjecucion(String nombre,String cliente){
+    public boolean agregarEjecucion(String nombre,String cliente,int numTransa){
+        
+        System.out.println("Encola "+nombre + " de "+cliente+ " trans num "+numTransa);
         //agregamos a la lista de actividades
         actividad.add(nombre);
         //System.out.println(">>>>>"+nombre);
@@ -80,7 +90,9 @@ public class controlEjecucion {
         proceso p = new proceso(nombre);
         //Agregamos a la lista de ejcucion el proceso
         ejecucion.add(p);
+        /**Agrega el numero a la transaccion a la lista*/
         
+        transacciones.add(numTransa);
         //Bloquea la llamada del rmi
         //si retorna falso es porque se mando a eliminar la ejecucion
         boolean ejecutar = p.bloquear();
@@ -92,18 +104,19 @@ public class controlEjecucion {
     /**
      * Elimina la primera ocurrencia del proceso
      */
-    public  boolean  eliminarEjecucion(String nombre,String ip) {
+    public  boolean  eliminarEjecucion(String nombre,String ip,int numTransa) {
         //Verifica primero si se esta ejecutando si es asi lo detiene
-        if(claseEje != null && ejecutando !=null){
+        if(claseEje != null && ejecutando !=null ){
             //si tiene el mismo nombre el de la activad que se esta ejecutando
-            if(nombre.equals(claseEje) && ipCliente.equals(ip)){
+            if(nombre.equals(claseEje) && ipCliente.equals(ip) 
+                    && numTransaccion==numTransa ){
                this.detenerEjecución();
                System.out.println("Interrumpida la ejecucion de "+nombre +
-                       "  cliente: "+ip);
+                       "  cliente: "+ip + " transa num "+numTransa);
                return true;
             }
             
-            return this.elimProcEnCola(nombre, ip);
+            return this.elimProcEnCola(nombre, ip,numTransa);
         }
         return false;
     }
@@ -130,12 +143,14 @@ public class controlEjecucion {
                 } catch (InterruptedException ex) {
                     Logger.getLogger(controlEjecucion.class.getName()).log(Level.SEVERE, null, ex);
                     System.out.println("Ejecucion de "+this.claseEje+" interrumpida.");
+                    
                 }
                // System.out.println("Ejecuto otro ");
               claseEje = null;
               ejecutando = null;
               hEje = null;
               ipCliente = null;
+              this.numTransaccion = -1;
     }
     
     
@@ -159,7 +174,7 @@ public class controlEjecucion {
         return actividad.isEmpty();
     }
     
-    
+    /**Retorna un booleano que indica si existe un proceso en ejecucion*/
     public boolean sinProc(){
        return claseEje == null;
     }
@@ -178,12 +193,13 @@ public class controlEjecucion {
     /**
      *Carga el proceso para que se ejecute
      */
-    public void cargarProceso(String nombre,String ipcliente){
+    public void cargarProceso(String nombre,String ipcliente,int numTransac){
        if(actividad.isEmpty()){
            claseEje = nombre;
            ejecutando = new proceso(claseEje);
            hEje = new Thread(ejecutando);
            ipCliente = ipcliente;
+           this.numTransaccion = numTransac;
        }
     
     }
@@ -194,6 +210,11 @@ public class controlEjecucion {
      Carga para ejecutar el siguiente proceso
      */
     public void siguienteProceso(){
+         try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            System.out.println("No pudo dormir el hilo en siguiente Proceso");
+        }
         if(!actividad.isEmpty()){//Mientras que pueda ejecutar
               String act = actividad.remove(0);
               claseEje = act;
@@ -201,7 +222,8 @@ public class controlEjecucion {
               ejecutando = eje;
               //ip
               ipCliente = ips.remove(0);
-              
+              //numero de transaccion
+              numTransaccion = transacciones.remove(0);
               //desbloquea la llamada de rmi
               eje.desbloquear();
          }
@@ -211,7 +233,7 @@ public class controlEjecucion {
     
     /**Elimina la primera ocurrencia del proceso asociado 
      * a un cliente en la cola*/
-    public boolean elimProcEnCola(String nomClass,String ipClien){
+    public boolean elimProcEnCola(String nomClass,String ipClien,int numTransa){
        //buscamos si el cliente tiene un proceso en la cola
        /* System.out.println(">>>>>");
         System.out.println(ips);
@@ -236,17 +258,18 @@ public class controlEjecucion {
         for(int i = 0;i<tam;i++){
             int pos = l.remove(0).intValue();
             String ac = actividad.get(pos);
+            //Numero de transaccion
+            int numTransac= transacciones.get(pos);
             //System.out.println("Actividad "+ac);
-           if(  ac.equals(nomClass)  ){
+           if(  ac.equals(nomClass) && numTransac==numTransa ){
                ips.remove(i);
                actividad.remove(i);
                proceso p = ejecucion.remove(i);
+               transacciones.remove(i);
                p.interrumpir();//Marca el proceso para que muera
                p.desbloquear();//debloquea para que termine
                System.out.println("Interrumpida la ejecucion de "+nomClass +
-                       " cliente: "+ipClien );
-               
-               
+                       " cliente: "+ipClien +" transa num "+numTransa);
                return true;//hay un proceso con ese nombre en la cola
            }
         }
@@ -295,8 +318,9 @@ public class controlEjecucion {
 class proceso implements Runnable{
     /**Nombre de la clase en ejecucion*/
     private String clase;
-  
-   Thread th;
+   
+   /**Hilo de ejecucion*/ 
+   private Thread th;
    
    /**Si es true el proceso puede ejecutar sino el proceso fue interrumpido*/
    private boolean ejecutar = true;

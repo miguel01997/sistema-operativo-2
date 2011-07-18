@@ -31,7 +31,8 @@ public class tablaArchivos {
         this.mapaServidores = new HashMap();
         //agrega el servidor local
         mapaArchivos.put(infoRed.miIp(),new LinkedList<String>());
-        //Comentar la linea de abajo
+        
+        //COMENTAR LINEA DE ABAJO CUANDO FUNCIONE PROTOCOLO ACTIVO
         mapaServidores.put(infoRed.miIp(),infoRed.miHost());
     }
     
@@ -67,11 +68,12 @@ public class tablaArchivos {
     /**Elimina un servidor y la lista de archivos asociado al mismo*/
     public synchronized  void eliminarServidor(String ip){
        //elimina la tabla de archivos asociada al servidor
-        if(!mapaArchivos.containsKey(ip)){
+        if(mapaArchivos.containsKey(ip)){
            //elimina la entrada
           mapaArchivos.remove(ip);
+          
        }//Elimina la entrada en el mapa deservidores
-       if(!mapaServidores.containsKey(ip)){
+       if(mapaServidores.containsKey(ip)){
            //elimina la entrada
           mapaServidores.remove(ip);
        }

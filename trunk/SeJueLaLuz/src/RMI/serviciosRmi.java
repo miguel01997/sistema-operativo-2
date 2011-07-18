@@ -29,7 +29,7 @@ implements interfazServicioRmi {
     //Para indicar si el servidor esta ocupado
     private boolean ocupado;
     //Manejador de procesos en ejecución
-    controlEjecucion ce;
+    private controlEjecucion ce;
     
     //Para manejar los archivos existentes en el servidor
     private manejoServArch ma;
@@ -56,7 +56,7 @@ implements interfazServicioRmi {
         ce=new controlEjecucion();
         //Crea el directorio de descarga
         ma = new manejoServArch();
-        clock = new Clock();
+        //clock = new Clock();
     }
     
     //CONSTRUCTOR
@@ -66,7 +66,7 @@ implements interfazServicioRmi {
        ce=new controlEjecucion();
        //Crea el directorio de descarga
        ma = new manejoServArch(directorio);
-       clock = new Clock();
+       // clock = new Clock();
     }
     
     
@@ -96,20 +96,17 @@ implements interfazServicioRmi {
     /**
      * Ejecuta archivo en el servidor
      */
-    public byte[] ejecutar(byte[] fichero, String nombre,String ipCliente) 
-            throws java.rmi.RemoteException {
-        
-        
-        
+    public byte[] ejecutar(byte[] fichero, String nombre,String ipCliente,
+                           int numTransaccion) throws java.rmi.RemoteException {
         if(ocupado){//Encola ejecución y bloquea
            boolean ejecutar = true;
-           ejecutar= ce.agregarEjecucion(nombre,ipCliente);
+           ejecutar= ce.agregarEjecucion(nombre,ipCliente,numTransaccion);
            if(!ejecutar){
               if(ce.vacio() && ce.sinProc()){
                 //Desocupa
                  Desocupar();
               }
-              //retorna null
+              //retorna null porque no pudo ejecutar
               return null;
            }
                
@@ -121,7 +118,7 @@ implements interfazServicioRmi {
             Ocupar();
             //recibe el fichero
             this.recibirFichero(fichero, nombre);
-            ce.cargarProceso(nombre,ipCliente);
+            ce.cargarProceso(nombre,ipCliente,numTransaccion);
            
         }
            
@@ -131,6 +128,8 @@ implements interfazServicioRmi {
              //Si no encontro el archivo para eliminarlo es porque hubo un error
              this.interrumpir();//Marca la ejecucion como si fuera sido interrumpida
            }
+           System.out.println("Siguiente proc");
+           
            ce.siguienteProceso();//Carga el siguiente proceso
         
         if(ce.vacio() && ce.sinProc()){
@@ -188,18 +187,25 @@ implements interfazServicioRmi {
        ce.infoTamano();
     }
 
-    public void terminarEjecucion(String nombre,String ipCliente){
+    public void terminarEjecucion(String nombre,String ipCliente,int numTransa){
         this.interrumpir();
+        // System.out.println(ce.getClaseEje()+" "+ce.getIpCliente()+ce.getNumTransaccion());
+        if(ce == null || ce.getClaseEje() == null || ce.getIpCliente() == null)
+            return;
+        
+        
+              
         //Si no es el proceso en ejecucion no elimina el archivo de respuesta
         if((ce.getClaseEje().equals(nombre)) && 
-           (ce.getIpCliente().equals(ipCliente)) ){
+           (ce.getIpCliente().equals(ipCliente)) &&
+            ce.getNumTransaccion()==numTransa
+           ){
+            
            //Elimina el archivo de respuesta referente a la ejecucion de nombre 
            ma.eliminarArchivo(nombreClase(nombre));//elimina archivo respuesta
         }
         
-        ce.eliminarEjecucion(nombre,ipCliente);
-        
-        
+        ce.eliminarEjecucion(nombre,ipCliente,numTransa);
     }
 
    // public void agregarEjecucion(String nombre)  {

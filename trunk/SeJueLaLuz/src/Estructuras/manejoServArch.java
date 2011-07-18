@@ -177,15 +177,17 @@ public class manejoServArch {
                 Logger.getLogger(manejoServArch.class.getName()).log(Level.SEVERE, null, ex);
             }
             try {
+                System.out.println("Creando archivo "+nombre);
                 output.write(buffer,0,buffer.length);
                 output.flush();
                 output.close();
-                System.out.println("Archivo "+nombre+" Creado");
+                
                 //Agrega a la lista de archivos el archivo creado
                 ta.agregarArchivo(infoRed.miIp(),infoRed.miHost(), nombre);
                 return true;
             } catch (IOException ex) {
                 Logger.getLogger(manejoServArch.class.getName()).log(Level.SEVERE, null, ex);
+                
             }
 
          }

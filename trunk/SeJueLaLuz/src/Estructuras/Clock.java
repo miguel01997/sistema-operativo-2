@@ -72,7 +72,9 @@ public class Clock {
 
         //System.out.println(msg.toString());
         }catch(Exception e){
-            System.out.println("Imposible conectar con NTP");
+            System.out.println("Imposible conectar con NTP. Saliendo");
+            //Aborta ejecucion
+            System.exit(0);
         }
     }
 
