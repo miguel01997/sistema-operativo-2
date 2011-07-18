@@ -331,9 +331,12 @@ class proceso implements Runnable{
                  this.proc  = process;
                  //Esperamos a que se termine de ejecutar
                  process.waitFor();
-                 File tempFile = new File(Config.dirDes+"/"+nclass);
 
-                 serviciosRmi.clock.setTimeStamp(tempFile);
+                 if (this.ejecutar == true){
+                    File tempFile = new File(Config.dirDes+"/"+nclass);
+
+                    serviciosRmi.clock.setTimeStamp(tempFile);
+                }
                  //process.destroy();
                  //System.out.println("BBB");
             } catch (InterruptedException ex) {
