@@ -104,6 +104,7 @@ public class ActualizarF {
         ProtectionDomain pd = c2.getProtectionDomain();
         PermissionCollection permissions = pol.getPermissions(pd);
         java.util.Enumeration<Permission> e = permissions.elements();
+        //Cambio de prueba
 
 
         } catch (Exception e){
