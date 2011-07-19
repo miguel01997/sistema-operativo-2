@@ -192,7 +192,7 @@ public class manejoServArch {
 
          }
          else{
-             System.out.println("No se creo el archivo "+nombre);
+             System.out.println("No se creo el archivo "+nombre+ ". buffer vacio");
              
          }
          return false;

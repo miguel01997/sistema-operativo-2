@@ -137,9 +137,10 @@ public class controlEjecucion {
               hEje.start();
                 try {
                     //Espera hasta que muera el hilo
+                    //System.out.println(">>>> ");
                     hEje.join();
                     System.out.println("Termina ejecutar "+this.claseEje);
-                    enviarListo(ejecutando, this.claseEje);
+                    //enviarListo(ejecutando, this.claseEje);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(controlEjecucion.class.getName()).log(Level.SEVERE, null, ex);
                     System.out.println("Ejecucion de "+this.claseEje+" interrumpida.");
@@ -216,6 +217,7 @@ public class controlEjecucion {
             System.out.println("No pudo dormir el hilo en siguiente Proceso");
         }
         if(!actividad.isEmpty()){//Mientras que pueda ejecutar
+              System.out.println("Carga el siguiente proceso");
               String act = actividad.remove(0);
               claseEje = act;
               proceso eje = ejecucion.remove(0);
@@ -359,7 +361,7 @@ class proceso implements Runnable{
                  if (this.ejecutar == true){
                     File tempFile = new File(Config.dirDes+"/"+nclass);
 
-                    serviciosRmi.clock.setTimeStamp(tempFile);
+//                    /serviciosRmi.clock.setTimeStamp(tempFile);
                 }
                  //process.destroy();
                  //System.out.println("BBB");
