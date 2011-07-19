@@ -57,7 +57,7 @@ implements interfazServicioRmi {
         ce=new controlEjecucion();
         //Crea el directorio de descarga
         ma = new manejoServArch();
-        //clock = new Clock();
+        clock = new Clock();
     }
     
     //CONSTRUCTOR
@@ -67,7 +67,7 @@ implements interfazServicioRmi {
        ce=new controlEjecucion();
        //Crea el directorio de descarga
        ma = new manejoServArch(directorio);
-       // clock = new Clock();
+       clock = new Clock();
     }
     
     
