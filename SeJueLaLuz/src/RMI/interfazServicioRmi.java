@@ -48,6 +48,9 @@ public interface interfazServicioRmi extends java.rmi.Remote{
     public void terminarEjecucion(String nombre,String ipCliente,int numTransa)
             throws java.rmi.RemoteException;
     
+    public String ip()
+            throws java.rmi.RemoteException;
+    
     
    // public void agregarEjecucion(String nombre)
    //                  throws java.rmi.RemoteException;

@@ -8,6 +8,7 @@ package RMI;
 import Estructuras.manejoServArch;
 import Estructuras.Clock;
 import Estructuras.Config;
+import Estructuras.infoRed;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -332,6 +333,10 @@ implements interfazServicioRmi {
         System.out.println ("java.lang.Arithmetic Exception");
         System.out.println (ae);} 
         return "";
+    }
+
+    public String ip() throws RemoteException {
+        return infoRed.miIp();
     }
     
 }
