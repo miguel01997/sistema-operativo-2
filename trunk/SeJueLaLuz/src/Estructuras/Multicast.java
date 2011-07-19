@@ -30,7 +30,7 @@ public class Multicast implements Runnable {
     //Para recibir los paquetes
     private DatagramPacket packet;
     
-    
+    private boolean esServ = true;
     //Direccion multicast del grupo en estructura Inet
     private InetAddress grupo;
     
@@ -67,6 +67,35 @@ public class Multicast implements Runnable {
         
     }
     
+    /**Constructor   */
+    public Multicast(boolean esServ){
+        this.esServ = esServ;
+        try {
+            socket = new MulticastSocket(puertoMulticast);
+        } catch (IOException ex) {
+            Logger.getLogger(Multicast.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+         try {
+            //direccion  del grupo multicast
+            grupo = InetAddress.getByName(ipMulti);
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(Multicast.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try {
+            //asocia el host a la direccion multicast
+            socket.joinGroup(grupo);
+        } catch (IOException ex) {
+            Logger.getLogger(Multicast.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //buffer
+        buffer = new byte[500];
+        packet = new DatagramPacket(buffer, buffer.length);
+       
+        
+        
+    }
     
     
     
@@ -98,7 +127,7 @@ public class Multicast implements Runnable {
         String msj = new String(packet.getData(),0,packet.getLength());
                 
         //AQUI SE CREARIA UN HILO NUEVO PARA TRATAR LO QUE ESCUCHE DEL MULTICAST
-        Mensajes mensaje = new Mensajes(msj, ma);
+        Mensajes mensaje = new Mensajes(msj, ma, esServ);
         Thread tMul = new Thread(mensaje);
         tMul.start();
         //System.out.println("Leo del Multicast: "+msj);
