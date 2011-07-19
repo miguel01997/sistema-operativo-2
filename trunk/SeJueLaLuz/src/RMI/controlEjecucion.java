@@ -351,13 +351,33 @@ class proceso implements Runnable{
                 String nclass = nombreClase(nombre);
                 //System.out.println("Nombre >> "+nclass+ " "+Config.dirDes);
                 //Usamos el classpath para indicar donde estaran las clases
-                String dirD =    "java -classpath "+Config.dirDes+" "+nclass +" > " ;
+                String dir_pol = seguridad.getPathPolicy();
+                String dirD =    "java -Djava.security.manager "+
+                        " -Djava.security.policy="+dir_pol+
+                        " -classpath "+Config.dirDes+" "+nclass +" > " ;
+                /*dirD =    "java -Djava.security.manager "+
+                        " -Djava.security.policy="+dir_pol+
+                        " -classpath "+Config.dirDes+" "+nclass +"  " ;*/
+                System.out.println(dirD);
                 String[] command = {"sh","-c",dirD + Config.dirDes+"/"+nclass };
                  Process   process = Runtime.getRuntime().exec(command);
+                 //Process   process = Runtime.getRuntime().exec(dirD);
                  this.proc  = process;
                  //Esperamos a que se termine de ejecutar
                  process.waitFor();
 
+                 //Verificamos si ocurrio algun error en la ejecucion
+                 InputStream errorS = process.getErrorStream();
+                 if (errorS != null){
+                     BufferedReader buf = new BufferedReader(
+                             new InputStreamReader(errorS));
+                     String mens = "";
+                     String line;
+                     while((line=buf.readLine())!=null){
+                         mens += line;
+                     }
+                     System.out.println(mens);
+                 }
                  
                  if (this.ejecutar == true){
                     File tempFile = new File(Config.dirDes+"/"+nclass+".class");
