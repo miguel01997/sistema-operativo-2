@@ -66,7 +66,7 @@ public class Cliente {
     public void iniciar(){
 
                 //Se afilia al multicast
-                mul = new Multicast();
+                mul = new Multicast(false);
                 Thread tMul = new Thread(mul);
                 
                 mul.setManjadorServArch(ma);
@@ -387,7 +387,6 @@ public class Cliente {
      */
     private void servidoresActivos(){
          mul.enviarMensaje("activo?");
-         System.out.println("pregunto activos");
     }
     
     
