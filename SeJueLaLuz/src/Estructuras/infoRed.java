@@ -65,13 +65,15 @@ public class infoRed {
         Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
         int i = 0;
         for (InetAddress inetAddress : Collections.list(inetAddresses)) {
-            if(i==1){
+            //if(i==1){
                String aux = inetAddress.getHostAddress();
-               if(!aux.substring(0,3).equals("127")){
-                  return aux;     
+               
+               if(aux.length() < 15 && !aux.substring(0,3).equals("127")){
+                   System.out.println(aux);
+                   return aux;
                }
                //if(aux.substring(0,2))
-            }
+            //}
             //System.out.printf("InetAddress: %s\n", inetAddress);
             i++;
         }
