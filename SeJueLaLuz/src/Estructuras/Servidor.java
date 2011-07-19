@@ -24,11 +24,16 @@ public class Servidor {
        Multicast multi = new Multicast();
        //Se envia a multicas referencia al manejador de archivos       
          multi.setManjadorServArch(m);
-       
-        
+         servidoresActivos();
         //Me quedo escuchando infinito
         multi.run();
         
     }
     
+       
+     private void servidoresActivos(){
+         Multicast mul = new Multicast();
+         mul.enviarMensaje("activo?");
+    }    
+       
 }
