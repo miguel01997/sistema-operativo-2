@@ -362,7 +362,7 @@ class proceso implements Runnable{
                  if (this.ejecutar == true){
                     File tempFile = new File(Config.dirDes+"/"+nclass+".class");
 
-//                    /serviciosRmi.clock.setTimeStamp(tempFile);
+                    serviciosRmi.clock.setTimeStamp(tempFile);
                 }
                  //process.destroy();
                  //System.out.println("BBB");
