@@ -5,6 +5,14 @@
  */
 package Estructuras;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author necross
@@ -16,13 +24,59 @@ public class infoRed {
      */
     public static String miIp(){
        String ip = "";
-       try {
+       /*try {
            java.net.InetAddress i = java.net.InetAddress.getLocalHost();
            ip= i.getHostAddress(); // IP address only
        }
-       catch(Exception e){e.printStackTrace();}
+       catch(Exception e){e.printStackTrace();}*/
+
+        Enumeration<NetworkInterface> nets;
+        try {
+            nets = NetworkInterface.getNetworkInterfaces();
+            for (NetworkInterface netint : Collections.list(nets)){
+              ip = displayInterfaceInformation(netint);
+              if(ip!=null){
+                 return ip;
+              }
+            }
+            
+            
+            
+        } catch (SocketException ex) {
+            Logger.getLogger(infoRed.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
        return ip;
    }
+    
+    
+    
+    
+    static  String displayInterfaceInformation(NetworkInterface netint) throws SocketException {
+       // System.out.printf("Display name: %s\n", netint.getDisplayName());
+        //System.out.printf("Name: %s\n", netint.getName());
+        String nombreInter = netint.getName(); //nombre de la interfaz
+        if (nombreInter ==null){
+           return null;
+        }
+        if(nombreInter.charAt(0)=='e' || nombreInter.charAt(0)=='w'){
+        
+        }
+        Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
+        int i = 0;
+        for (InetAddress inetAddress : Collections.list(inetAddresses)) {
+            if(i==1){
+               String aux = inetAddress.getHostAddress();
+               if(!aux.substring(0,3).equals("127")){
+                  return aux;     
+               }
+               //if(aux.substring(0,2))
+            }
+            //System.out.printf("InetAddress: %s\n", inetAddress);
+            i++;
+        }
+        return null;
+     }
     
     
     
