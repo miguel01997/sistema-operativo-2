@@ -69,7 +69,7 @@ public class infoRed {
                String aux = inetAddress.getHostAddress();
                
                if(aux.length() < 15 && !aux.substring(0,3).equals("127")){
-                   System.out.println(aux);
+                   //System.out.println(aux);
                    return aux;
                }
                //if(aux.substring(0,2))
