@@ -46,6 +46,7 @@ public class Cliente {
         //Numero para indicar la transaccion
         private static Integer indiTransa;
        
+        private static Multicast mul;
     /**
      * @param args the command line arguments
      */
@@ -65,13 +66,13 @@ public class Cliente {
     public void iniciar(){
 
                 //Se afilia al multicast
-                //Multicast mul = new Multicast();
+                mul = new Multicast();
+                Thread tMul = new Thread(mul);
                 
-                //Thread tMul = new Thread(mul);
+                mul.setManjadorServArch(ma);
                 
-               // mul.setManjadorServArch(ma);
-
-                //tMul.start();
+                tMul.start();
+                
                 prueba();
               
     }
@@ -83,6 +84,12 @@ public class Cliente {
     public void prueba(){
         //try{ 
         //Pregunta por servidores vivos al multicast.
+        servidoresActivos();
+        String process =
+                java.lang.management.ManagementFactory.getRuntimeMXBean().getName();
+        long pid = Long.parseLong(process.split("@")[0]);
+        System.out.println("My pid is "+ pid);
+
         //Solicita la lista de ip a los servidores vivos
         /*interfazServicioRmi sr;
         
@@ -379,8 +386,8 @@ public class Cliente {
      * para preguntar por los servidores activos
      */
     private void servidoresActivos(){
-         Multicast multi = new Multicast();
-         multi.enviarMensaje("activo?");
+         mul.enviarMensaje("activo?");
+         System.out.println("pregunto activos");
     }
     
     
