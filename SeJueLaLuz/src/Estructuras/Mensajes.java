@@ -52,10 +52,11 @@ public class Mensajes implements Runnable{
             String ip = parte[1];
             String nombre = parte[2];
             if(this.msa != null){
-                this.msa.limpiarTabla();  
-                String [] archIp = msa.retorListArchServ(ip);
-                this.msa.agregarArchivosServidor(ip, nombre, archIp);
+                this.msa.limpiarTabla();     
             }
+            String [] archIp = msa.retorListArchServ(ip);
+            this.msa.agregarArchivosServidor(ip, nombre, archIp);
+            
             System.out.println("Activo: ip "+ ip + " nombre "+ nombre );
          }
     }
