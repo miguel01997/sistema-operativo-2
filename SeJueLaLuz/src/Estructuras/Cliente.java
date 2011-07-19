@@ -73,7 +73,7 @@ public class Cliente {
                 
                 tMul.start();
                 servidoresActivos();
-               // prueba();
+                prueba();
               
     }
     
@@ -84,6 +84,8 @@ public class Cliente {
     public void prueba(){
         //try{ 
         //Pregunta por servidores vivos al multicast.
+        /*servidoresActivos();
+        String process =
        
        /* String process =
                 java.lang.management.ManagementFactory.getRuntimeMXBean().getName();
@@ -132,12 +134,8 @@ public class Cliente {
         
 
         //ejecutar archivo en el servidor, envia ip del cliente
-        /* this.ejecutarEnServidores("p.class");
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
-        }//*/
+         this.ejecutarEnServidores("p2.class");
+         System.exit(0); 
          
         //this.ejecutarEnServidores("p.class");
         //this.ejecutarEnServidores("p.class");
@@ -401,6 +399,7 @@ public class Cliente {
         mapaEjecucion.put(new Integer(numTransa), me); 
         System.out.println("Cliente num transa "+indiTransa);
         me.ejecutarEnServidores(nombre, ip,numTransa);
+        
     }
     
     

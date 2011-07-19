@@ -137,13 +137,13 @@ implements interfazServicioRmi {
            Desocupar();
         }
 
-           String nomArch = nombreClase(nombre);
+           String nomArch = nombreClase(nombre);//*/
            if(!interumpido){//Si no fue interrumpido replica
               //Replica los archivos
               System.out.println("Inicia replica");
               replicar(nomArch);
               System.out.println("Termina replica");
-              return solicitarFichero(nomArch);
+              //return solicitarFichero(nomArch);
            }
            this.iniInterrumpir();
            return null;
