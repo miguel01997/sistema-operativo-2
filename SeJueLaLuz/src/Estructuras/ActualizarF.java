@@ -44,8 +44,13 @@ public class ActualizarF {
                 Naming.lookup( "rmi://"+ipserv+":"+puerto+"/Servicio");
 
            byte[] content = sr.solicitarFichero(nombreArch);
-           manejoServArch manejArch = new manejoServArch(directorioDescarga);
-           manejArch.recibirFichero(content, nombreArch);
+           if (content != null){
+
+               manejoServArch manejArch = new manejoServArch(directorioDescarga);
+               manejArch.recibirFichero(content, nombreArch);
+            } else {
+               System.out.println("Buffer vacio");
+            }
 
         }
         catch (MalformedURLException murle ) {
