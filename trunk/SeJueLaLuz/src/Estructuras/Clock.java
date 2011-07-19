@@ -82,7 +82,7 @@ public class Clock {
      * Produce un String con la fecha en formato entendible al usuario.
      */
 
-    public String dateFormat(long ms){
+    public static String dateFormat(long ms){
 
         String date = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").format(
                 new Date(ms));
