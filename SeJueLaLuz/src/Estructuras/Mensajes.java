@@ -31,7 +31,7 @@ public class Mensajes implements Runnable{
 
         if(msj.equals("activo?")){
             respuesta = "estoy " + infoRed.miIp() + " "+ infoRed.miHost();
-            //System.out.println("Esta es la respuesta "+ respuesta);
+            //System.out.println(respuesta);
             multi.enviarMensaje(respuesta);
          }else if(msj.startsWith("listo")){
             String[] parte = msj.split(" ");
@@ -51,10 +51,12 @@ public class Mensajes implements Runnable{
             String[] parte = msj.split(" ");
             String ip = parte[1];
             String nombre = parte[2];
-            this.msa.limpiarTabla();  
-            String [] archIp = msa.retorListArchServ(ip);
-            this.msa.agregarArchivosServidor(ip, nombre, archIp);
-            //System.out.println("vive ip "+ ip + " nombre "+ nombre);
+            if(this.msa != null){
+                this.msa.limpiarTabla();  
+                String [] archIp = msa.retorListArchServ(ip);
+                this.msa.agregarArchivosServidor(ip, nombre, archIp);
+            }
+            System.out.println("Activo: ip "+ ip + " nombre "+ nombre );
          }
     }
 }
