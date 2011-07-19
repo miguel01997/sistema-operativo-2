@@ -42,9 +42,9 @@ public class Mensajes implements Runnable{
             String nombre = parte[2];
             String clase = parte[3];
             String fecha = parte[4];
-            Long lFecha = Long.parseLong(fecha);
+            long lFecha = Long.parseLong(fecha);
             System.out.println("Esta listo ip "+ ip + " nombre "+ nombre
-                    + " clase "+ clase + " fecha "+ lFecha);
+                    + " clase "+ clase + " fecha "+ Clock.dateFormat(lFecha));
             ActualizarF actf = new ActualizarF();
             if (actf.verifArch(clase, lFecha)){
                 actf.actualizarArchivo(ip, clase);
