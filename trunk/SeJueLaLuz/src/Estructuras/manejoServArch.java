@@ -181,7 +181,7 @@ public class manejoServArch {
                 output.write(buffer,0,buffer.length);
                 output.flush();
                 output.close();
-                
+                System.out.println("Creado archivo "+nombre);
                 //Agrega a la lista de archivos el archivo creado
                 ta.agregarArchivo(infoRed.miIp(),infoRed.miHost(), nombre);
                 return true;

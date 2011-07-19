@@ -60,7 +60,7 @@ public class Mensajes implements Runnable{
             String [] archIp = msa.retorListArchServ(ip);
             this.msa.agregarArchivosServidor(ip, nombre, archIp);
             
-            System.out.println("Activo: ip "+ ip + " nombre "+ nombre );
+            System.out.println("Estoy: ip "+ ip + " nombre "+ nombre );
          }
     }
 }

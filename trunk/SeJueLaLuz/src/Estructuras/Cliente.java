@@ -82,56 +82,60 @@ public class Cliente {
     
     
     public void prueba(){
-        //try{ 
-        //Pregunta por servidores vivos al multicast.
-        /*servidoresActivos();
-        String process =
        
-       /* String process =
-                java.lang.management.ManagementFactory.getRuntimeMXBean().getName();
-        long pid = Long.parseLong(process.split("@")[0]);
-        System.out.println("My pid is "+ pid);
+            //try{ 
+            //Pregunta por servidores vivos al multicast.
+            /*servidoresActivos();
+            String process =
+           
+           /* String process =
+                    java.lang.management.ManagementFactory.getRuntimeMXBean().getName();
+            long pid = Long.parseLong(process.split("@")[0]);
+            System.out.println("My pid is "+ pid);
 
-        //Solicita la lista de ip a los servidores vivos
-        /*interfazServicioRmi sr;
-        
-        try{
-        sr = (interfazServicioRmi)
-        Naming.lookup( "rmi://"+ip+":"+puerto+"/Servicio");
-        sr.terminarEjecucion("p.class", "127.0.0.1",1);
-        
-          System.out.println("Ocupado "+sr.ocupado() );
-        
+            //Solicita la lista de ip a los servidores vivos
+            /*interfazServicioRmi sr;
+            
+            try{
+            sr = (interfazServicioRmi)
+            Naming.lookup( "rmi://"+ip+":"+puerto+"/Servicio");
+            sr.terminarEjecucion("p.class", "127.0.0.1",1);
+            
+              System.out.println("Ocupado "+sr.ocupado() );
+            
+            }
+            catch (MalformedURLException murle ) {
+            System.out.println ();
+            System.out.println (
+            "MalformedURLException");
+            System.out.println ( murle ); }
+            catch (RemoteException re) {
+            System.out.println ();
+            System.out.println ( "RemoteException");
+            System.out.println (re); }
+            catch (NotBoundException nbe) {
+            System.out.println ();
+            System.out.println ("NotBoundException");
+            System.out.println (nbe);}
+            catch (java.lang.ArithmeticException ae) {
+            System.out.println ();
+            System.out.println ("java.lang.Arithmetic Exception");
+            System.out.println (ae);}   
+            
+            //lista de ficheros en el servidor
+            //this.listarArchivos(sr);
+
+            //para preguntar cuáles servidores están activos
+            //this.servidoresActivos();
+
+            //Detener proceso en servidor
+            //sr.terminarEjecucion("p.class",ip);*/
+            
+         try {    
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         }
-        catch (MalformedURLException murle ) {
-        System.out.println ();
-        System.out.println (
-        "MalformedURLException");
-        System.out.println ( murle ); }
-        catch (RemoteException re) {
-        System.out.println ();
-        System.out.println ( "RemoteException");
-        System.out.println (re); }
-        catch (NotBoundException nbe) {
-        System.out.println ();
-        System.out.println ("NotBoundException");
-        System.out.println (nbe);}
-        catch (java.lang.ArithmeticException ae) {
-        System.out.println ();
-        System.out.println ("java.lang.Arithmetic Exception");
-        System.out.println (ae);}   
-        
-        //lista de ficheros en el servidor
-        //this.listarArchivos(sr);
-
-        //para preguntar cuáles servidores están activos
-        //this.servidoresActivos();
-
-        //Detener proceso en servidor
-        //sr.terminarEjecucion("p.class",ip);*/
-        
-        
-        
 
         //ejecutar archivo en el servidor, envia ip del cliente
          this.ejecutarEnServidores("p2.class");
@@ -452,7 +456,9 @@ class ManejadorEjecucion {
        boolean ejecutar = false;
        while(!ejecutar){
            String [] ipServidores = ma.listarServidores();
+            //System.out.println("TAMMMM >> "+ipServidores.length);
            if(ipServidores !=null){//Si hay suficientes servidores para ejecutar
+               //System.out.println("TAMMMM >> "+ipServidores.length);
                if(ipServidores.length>=numServi){//Ejecución segura
                    //Se asigna el numero de servidores a comunicarse
                    numServi = Config.numServidores;
@@ -688,7 +694,8 @@ class Ejecucion implements Runnable{
                     Logger.getLogger(serviciosRmi.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 try {
-                    System.out.println("Ejecutando clase "+nombre);
+                    String ipServer = sr.ip();
+                    System.out.println("Ejecutando clase "+nombre + " en " + ipServer );
                     //SERVIDOR
                     byte[] arch = sr.ejecutar(buffer, nombre,ipCliente,numTransac);
                     //Si hay una respuesta

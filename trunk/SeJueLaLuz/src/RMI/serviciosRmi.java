@@ -233,6 +233,9 @@ implements interfazServicioRmi {
 
     
     
+    public String ip() throws RemoteException {
+        return infoRed.miIp();
+    }
     
 // PARA MANEJAR LAS REPLICAS ***********************************************/
    
@@ -250,6 +253,11 @@ implements interfazServicioRmi {
             int numReplicas = (numSerCon/2)+1;
             // System.out.println("Solicita "+numReplicas + " replicas.");
             servidores=  ma.solicitarServidor(numReplicas);
+            for(int o = 0;o<servidores.length;o++){
+              System.out.println("SERVIDORES PARA REPLICAR >>>"+servidores[o]);
+            }
+             
+            
             rmiServer = new interfazServicioRmi[servidores.length];
             String serError = "";
             serError = solicitarServidores(servidores, rmiServer);
@@ -335,8 +343,5 @@ implements interfazServicioRmi {
         return "";
     }
 
-    public String ip() throws RemoteException {
-        return infoRed.miIp();
-    }
     
 }
