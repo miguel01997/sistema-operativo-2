@@ -72,8 +72,8 @@ public class Cliente {
                 mul.setManjadorServArch(ma);
                 
                 tMul.start();
-                
-                prueba();
+                servidoresActivos();
+               // prueba();
               
     }
     
@@ -84,8 +84,8 @@ public class Cliente {
     public void prueba(){
         //try{ 
         //Pregunta por servidores vivos al multicast.
-        servidoresActivos();
-        String process =
+       
+       /* String process =
                 java.lang.management.ManagementFactory.getRuntimeMXBean().getName();
         long pid = Long.parseLong(process.split("@")[0]);
         System.out.println("My pid is "+ pid);
