@@ -55,6 +55,11 @@ public class manejoServArch {
         ta = new tablaArchivos();
         //Carga los archivos locales
         this.auxArchivosLocales();
+
+        //Crear el directorio de seguridad
+        RMI.seguridad seg = new RMI.seguridad();
+        seg.createSecurityDir();
+        seg.createPolicyFile();
         
     }
     
