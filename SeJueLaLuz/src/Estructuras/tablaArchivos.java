@@ -33,7 +33,7 @@ public class tablaArchivos {
         mapaArchivos.put(infoRed.miIp(),new LinkedList<String>());
         
         //COMENTAR LINEA DE ABAJO CUANDO FUNCIONE PROTOCOLO ACTIVO
-        mapaServidores.put(infoRed.miIp(),infoRed.miHost());
+       // mapaServidores.put(infoRed.miIp(),infoRed.miHost());
     }
     
     /**
@@ -151,18 +151,26 @@ public class tablaArchivos {
      */
     public synchronized boolean remplazarArchivos(String ip, String nombre,
             String[] archivos){
-       if(ip!=null && archivos !=null){
+       if(ip!=null ){
+             
+            
+           
             if(!mapaArchivos.containsKey(ip)){
            //crea la nueva entrada al servidor si no existe
+                //System.out.println("Agregado servidore "+ip);
                LinkedList<String> l =new LinkedList<String>();
-               l.addAll(Arrays.asList(archivos));
+               if(archivos != null){
+                 l.addAll(Arrays.asList(archivos));
+               }
                mapaArchivos.put(ip,l);
                mapaServidores.put(ip,nombre);
           
             }
             else{ //Solo crea una nueva lista y la remplaza
                LinkedList<String> l =new LinkedList<String>();
-               l.addAll(Arrays.asList(archivos));
+               if(archivos != null){
+                 l.addAll(Arrays.asList(archivos));
+               }
                mapaArchivos.put(ip,l);
             }
        }
@@ -266,7 +274,7 @@ public class tablaArchivos {
        retorna i servidores con ese criterio
      */
     public String[] solicitarServidor(int i ){
-        String[] re = new String[i];
+        /*String[] re = new String[i];
         boolean buscar = true;
         //System.out.println("Solicita "+i);
         
@@ -283,8 +291,9 @@ public class tablaArchivos {
               re[j] = servAux;
               break;
            }
-        }   
-        return re;
+        }   */
+        return serviSeguidos(i);
+        //return re;
     }
     
     
@@ -306,6 +315,24 @@ public class tablaArchivos {
        
        
     }
+    
+    /**Busca servidores seguidos*/
+    private String[] serviSeguidos(int numServi){
+       int i;
+         Set servidores = mapaServidores.keySet();
+         Iterator iter = servidores.iterator();
+         
+         i = mapaServidores.size();
+         if(numServi >i)
+             return null;
+         String[] servi = new String[i];
+         for(int j=0;j<numServi && iter.hasNext();j++){
+            servi[j] = (String)iter.next();
+         }
+       return servi;
+    }
+    
+    
     
     
     /**Retorna el numero de servidores registrados*/
