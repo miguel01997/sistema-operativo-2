@@ -89,4 +89,12 @@ public class Clock {
         return date;
     }
 
+    /*
+    public static void main(String args[]){
+
+        Clock c = new Clock();
+        System.out.println("Hora: "+c.dateFormat(lastAskedTime));
+    }*/
+     
+
 }

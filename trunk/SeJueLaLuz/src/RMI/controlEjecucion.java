@@ -358,8 +358,9 @@ class proceso implements Runnable{
                  //Esperamos a que se termine de ejecutar
                  process.waitFor();
 
+                 
                  if (this.ejecutar == true){
-                    File tempFile = new File(Config.dirDes+"/"+nclass);
+                    File tempFile = new File(Config.dirDes+"/"+nclass+".class");
 
 //                    /serviciosRmi.clock.setTimeStamp(tempFile);
                 }
