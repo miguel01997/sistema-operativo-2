@@ -18,18 +18,21 @@ public class Mensajes implements Runnable{
 
     private manejoServArch msa;
     
+    private boolean esServ = true;
+    
     Multicast multi = new Multicast();
+   
 
-
-    public Mensajes(String mensaje, manejoServArch maneja) {
+    public Mensajes(String mensaje, manejoServArch maneja, boolean servi) {
         msj = mensaje;
         msa = maneja;
+        esServ = servi;
     }
 
 
     public void run() {
 
-        if(msj.equals("activo?")){
+        if(msj.equals("activo?") && esServ){
             respuesta = "estoy " + infoRed.miIp() + " "+ infoRed.miHost();
             //System.out.println(respuesta);
             multi.enviarMensaje(respuesta);
