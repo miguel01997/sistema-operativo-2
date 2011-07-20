@@ -25,7 +25,7 @@ public class tablaArchivos {
     /*tabla de hash que almacena la ip y la lista de archivos de los servidores*/
     private HashMap<String, List<String>> mapaArchivos;
 
-    private HashMap<String, String> mapaServidores;
+    public HashMap<String, String> mapaServidores;
     
     /**Tabla cuya clave es el archivo y el valor son los servidores que lo tienen*/
     private HashMap<String, ArrayList<String>> mapaArcSer;

@@ -136,6 +136,7 @@ implements interfazServicioRmi {
            }
            System.out.println("Siguiente proc");
            
+           //System.out.println(">>>>>>"+ma.ta.mapaServidores);
            ce.siguienteProceso();//Carga el siguiente proceso
         
         if(ce.vacio() && ce.sinProc()){
@@ -143,14 +144,14 @@ implements interfazServicioRmi {
            Desocupar();
         }
 
-           String nomArch = nombreClase(nombre);//*/
-           if(!interumpido){//Si no fue interrumpido replica
+           //String nomArch = nombreClase(nombre);//*/
+           /*if(!interumpido){//Si no fue interrumpido replica
               //Replica los archivos
               System.out.println("Inicia replica");
               replicar(nomArch);
               System.out.println("Termina replica");
               //return solicitarFichero(nomArch);
-           }
+           }*/
            this.iniInterrumpir();
            return null;
     }
@@ -296,7 +297,7 @@ implements interfazServicioRmi {
             int numSerCon = this.ma.numServidores();
             if(numSerCon == 0 ) //No hay servidores para replicar
             return false; //no pudo replicar
-            //System.out.println("HAY SERVIDORESSS>>> "+numSerCon);
+            //System.out.println(ma.ta.mapaServidores+ "HAY SERVIDORESSS>>> "+numSerCon);
             int numReplicas = (numSerCon/2)+1;
             // System.out.println("Solicita "+numReplicas + " replicas.");
             servidores=  ma.solicitarServidor(numReplicas);
@@ -316,6 +317,7 @@ implements interfazServicioRmi {
             }
         }
         //PUEDE REPLICAR
+        System.out.println("Iniciando replica.");
         return replicarArchivo(nombreClass, rmiServer,servidores);
     }
     
@@ -331,13 +333,14 @@ implements interfazServicioRmi {
             
             for(int i = 0;i<si.length;i++){
               si[i].recibirFichero(archivo, nombreClass);
-              System.out.println("Replicando "+nombreClass +" en "+
+              System.out.println("\tReplicando "+nombreClass +" en "+
                       ipServ[i]);
             }
         } catch (RemoteException ex) {
             Logger.getLogger(serviciosRmi.class.getName()).log(Level.SEVERE, null, ex);
         }
          //System.out.println("Replicando respuesta de "+nombreClass);
+       System.out.println("Replica terminada replica.");
        return true;
     }
     
