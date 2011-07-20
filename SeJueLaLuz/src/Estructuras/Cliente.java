@@ -619,6 +619,8 @@ class ManejadorEjecucion {
        for(int i=0;i<arrEje.length;i++){
           if(arrEje[i].termine()){
              System.out.println("Termino servidor "+arrEje[i].servidor());
+             //Lo manda a replicar
+             arrEje[i].replicar();
           }
        }
     }
@@ -643,7 +645,7 @@ class Ejecucion implements Runnable{
     /*Servidor con servicio rmi*/
     private RMI.interfazServicioRmi rmiServ;
     
-    /*Nombre de la clase que esta ejecutando*/
+    /*Nombre de la clase que esta ejecutando p.class*/
     private String nombreClass ;
         
     /**La ip del cliente*/
@@ -800,6 +802,16 @@ class Ejecucion implements Runnable{
         }
         termine = true;
     
+    }
+    
+    /**Le indica al rmi que replique el archivo*/
+    public boolean replicar( ){
+        try {
+            return  rmiServ.replicar(nombreClase(nombreClass));
+        } catch (RemoteException ex) {
+            Logger.getLogger(Ejecucion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
     
     

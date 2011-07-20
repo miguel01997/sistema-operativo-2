@@ -28,7 +28,7 @@ public class manejoServArch {
     private String directorioDes = Config.dirDes;
     
     /**Tabla que maneja los archivos y sevidores*/
-    private tablaArchivos ta;
+    public tablaArchivos ta;
 
     
     
