@@ -336,10 +336,10 @@ public class tablaArchivos {
      */
     public String[] solicitarServidor(int i ){
          //Criterio 
-        return serviSeguidos(i);
+        //return serviSeguidos(i);
         
         //Criterio
-        //return criRandom(i);
+        return criRandom(i);
         //return re;
     }
     
@@ -356,15 +356,15 @@ public class tablaArchivos {
            return null;
        
        ArrayList<Integer> arr = new ArrayList<Integer>();
-       String[] servidos = new String[i];
+       String[] servidos = new String[numEje];
        
        
        //System.out.println("Tam "+i);
        int r;
        int numSer = 0;
        while(numSer<numEje){
-         r =   ((int) Math.random() *(i));
-         System.out.println(numSer+" "+numEje+"  "+"Num >>"+r);
+         r =   (int) (Math.random()*(i));
+         //System.out.println(numSer+" "+numEje+"  "+"Num >>"+r+ "   "+i);
          if(!arr.contains(r)){
              arr.add(r); 
              servidos[numSer] = serviString[numSer];
@@ -372,7 +372,7 @@ public class tablaArchivos {
          }
          
        }
-       return serviString;
+       return servidos;
        
        
     }
