@@ -552,7 +552,7 @@ class ManejadorEjecucion {
         String ipAux = "";
       try{
         //Buscamos las ip de los servidores   
-          System.out.println("Ips "+ipServidor.length + " "+arrEje.length);
+         // System.out.println("Ips "+ipServidor.length + " "+arrEje.length);
         for(int i=0;i<ipServidor.length;i++){
            //ipAux = ipServidor[i];
             interfazServicioRmi sr;
