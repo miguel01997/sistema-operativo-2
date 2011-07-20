@@ -206,6 +206,7 @@ implements interfazServicioRmi {
            ){
            //Elimina el archivo de respuesta referente a la ejecucion de nombre 
            ma.eliminarArchivo(nombreClase(nombre));//elimina archivo respuesta
+           
         }
         
         ce.eliminarEjecucion(nombre,ipCliente,numTransa);

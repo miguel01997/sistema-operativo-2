@@ -616,11 +616,15 @@ class ManejadorEjecucion {
     
     /**Verifica que hilo termino de ejecutar y manta a cancelar los demas*/
     private void verificarHilos(){
+       boolean replicado = false;
        for(int i=0;i<arrEje.length;i++){
           if(arrEje[i].termine()){
-             System.out.println("Termino servidor "+arrEje[i].servidor());
              //Lo manda a replicar
+             if(!replicado){
+             System.out.println("Termino servidor "+arrEje[i].servidor());    
              arrEje[i].replicar();
+             replicado = true;
+             }
           }
        }
     }
@@ -653,6 +657,8 @@ class Ejecucion implements Runnable{
     
     /**Para saber si termino la ejecución*/
     private boolean termine;
+    
+    
     
     
     private int numTransaccion;
@@ -791,7 +797,12 @@ class Ejecucion implements Runnable{
     
     /**Retorna la ip del servidor asosicado a la ejecución*/
     public String servidor(){
-       return ipCliente;
+        try {
+            return rmiServ.ip();
+        } catch (RemoteException ex) {
+            Logger.getLogger(Ejecucion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "";
     }
     
     public void detenerEjecucion(){
