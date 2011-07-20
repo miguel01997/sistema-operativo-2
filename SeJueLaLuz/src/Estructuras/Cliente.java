@@ -73,7 +73,7 @@ public class Cliente {
                 
                 tMul.start();
                 servidoresActivos();
-                prueba();
+                //prueba();
               
     }
     
@@ -138,7 +138,7 @@ public class Cliente {
         }
 
         //ejecutar archivo en el servidor, envia ip del cliente
-         this.ejecutarEnServidores("p2.class");
+         this.ejecutarEnServidores("../","p2.class");
          System.exit(0); 
          
         //this.ejecutarEnServidores("p.class");
@@ -396,7 +396,7 @@ public class Cliente {
     /*Busca servidores activos y envia la solicitud de ejecución de la clase 
      nombre y le asocia la ip ipCliente
      */
-    public void ejecutarEnServidores(String nombre){
+    public void ejecutarEnServidores(String url,String nombre){
         
         int numTransa = this.indiTransa;
         this.indiTransa = this.indiTransa +1;
@@ -404,7 +404,7 @@ public class Cliente {
         mapaEjecucion.put(new Integer(numTransa), me); 
         System.out.println("Cliente num transa "+indiTransa);
         
-        me.ejecutarEnServidores(nombre, ip,numTransa);
+        me.ejecutarEnServidores(url,nombre, ip,numTransa);
         
     }
     
@@ -421,7 +421,10 @@ public class Cliente {
        me.detenerEjecucion();
     }
     
-    
+    /**Retorna el numero de la ultima transaccion*/
+    public int retTransa(){
+       return Cliente.indiTransa;
+    }
     
     
 }
@@ -452,7 +455,7 @@ class ManejadorEjecucion {
     /**Busca servidores activos y envia la solicitud de ejecución de la clase 
      nombre y le asocia la ip ipCliente
      */
-    public  void ejecutarEnServidores(String nombreClass,String ipCliente,
+    public  void ejecutarEnServidores(String url,String nombreClass,String ipCliente,
             int numTransaccion){
        
        boolean ejecutar = false;
@@ -472,7 +475,7 @@ class ManejadorEjecucion {
                   for(int y=0;y<aux.length;y++){
                //System.out.println(">>>>>>"+aux[y]);
             }
-                  res = crearEjecucion(nombreClass, ipCliente, aux,numTransaccion);
+                  res = crearEjecucion(url,nombreClass, ipCliente, aux,numTransaccion);
                   if(res!=null){//Si no se pudo conectar a un servidor se sale
                      //Elimina el servidor al que no se pudo conectar
                      //de la lista de servidores
@@ -500,7 +503,7 @@ class ManejadorEjecucion {
                        arrEje = new Ejecucion[numServi];
                        String [] aux = ma.solicitarServidor(numServi);
                        String res;
-                      res = crearEjecucion(nombreClass, ipCliente, aux,numTransaccion);
+                      res = crearEjecucion(url,nombreClass, ipCliente, aux,numTransaccion);
                       if(res!=null){//Si no se pudo conectar a un servidor se sale
                          //Elimina el servidor al que no se pudo conectar
                          //de la lista de servidores
@@ -546,7 +549,7 @@ class ManejadorEjecucion {
     /**
      * Crea en arrEje un arrego de apuntadores a los servidores rmi
      * Retorna una lista con los servidores que no logro conectarse*/
-    private String crearEjecucion(String nombreClass,String ipCliente,
+    private String crearEjecucion(String url,String nombreClass,String ipCliente,
                                    String[] ipServidor,int numTransaccion){
         
         String ipAux = "";
@@ -559,7 +562,7 @@ class ManejadorEjecucion {
            sr = (interfazServicioRmi)
            Naming.lookup( "rmi://"+ipServidor[i]+":"+Config.puerto+"/Servicio");    
            //Guarda en la lista de ejecucion la referencia al rmi
-           arrEje[i] = new Ejecucion(sr, nombreClass, ipCliente,this,numTransaccion);
+           arrEje[i] = new Ejecucion(sr,url, nombreClass, ipCliente,this,numTransaccion);
            System.out.println("Servidores "+ipServidor[i]);
         }
         
@@ -658,6 +661,7 @@ class Ejecucion implements Runnable{
     /**Para saber si termino la ejecución*/
     private boolean termine;
     
+    private String url = "";
     
     
     
@@ -666,7 +670,7 @@ class Ejecucion implements Runnable{
     /**Referencia al manejador de ejecucion*/
     private ManejadorEjecucion me;
     
-    public Ejecucion(RMI.interfazServicioRmi rmi,String nombreClass,
+    public Ejecucion(RMI.interfazServicioRmi rmi,String url,String nombreClass,
                      String ipCliente,ManejadorEjecucion me,int numTransac){
        this.nombreClass = nombreClass;
        this.ipCliente = ipCliente;
@@ -674,12 +678,14 @@ class Ejecucion implements Runnable{
        termine = false;
        this.me = me;
        this.numTransaccion = numTransac;
+       this.url = url;
+       
     }
     
     
     public synchronized  void run() {
         System.out.println("Transaccion "+numTransaccion);
-        ejecutar(rmiServ, nombreClass, ipCliente,numTransaccion);
+        ejecutar(rmiServ, url ,nombreClass, ipCliente,numTransaccion);
         termine = true;
         //System.out.println("Notifica al padre");
         me.despertar();
@@ -692,10 +698,10 @@ class Ejecucion implements Runnable{
     /**
     Manda a ejecutar el archivo nombre en un servidor
     */
-    private void ejecutar(interfazServicioRmi sr,String nombre,String ipCliente,
+    private void ejecutar(interfazServicioRmi sr,String url,String nombre,String ipCliente,
                           int numTransac  ){
        //File f = new File(this.directorioDescarga+"/"+nombre);
-       File f = new File("../"+nombre);
+       File f = new File(url+nombre);
         if(f.exists() && f.isFile() ){
             
             byte[] buffer = new byte[(int)f.length()];
@@ -824,8 +830,6 @@ class Ejecucion implements Runnable{
         }
         return false;
     }
-    
-    
 }
 
 
