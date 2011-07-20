@@ -13,6 +13,11 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.AbstractSet;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -193,15 +198,11 @@ implements interfazServicioRmi {
         // System.out.println(ce.getClaseEje()+" "+ce.getIpCliente()+ce.getNumTransaccion());
         if(ce == null || ce.getClaseEje() == null || ce.getIpCliente() == null)
             return;
-        
-        
-              
         //Si no es el proceso en ejecucion no elimina el archivo de respuesta
         if((ce.getClaseEje().equals(nombre)) && 
            (ce.getIpCliente().equals(ipCliente)) &&
             ce.getNumTransaccion()==numTransa
            ){
-            
            //Elimina el archivo de respuesta referente a la ejecucion de nombre 
            ma.eliminarArchivo(nombreClase(nombre));//elimina archivo respuesta
         }
@@ -237,6 +238,52 @@ implements interfazServicioRmi {
         return infoRed.miIp();
     }
     
+    
+    
+    
+    public String[] todosArchivos() throws RemoteException {
+        return ma.todosArchivos();
+    }
+    
+    
+    /**Busca un archivo*/
+     public byte[] buscarArch(String nArchivo) throws RemoteException {
+        String ipServ = ma.busArch(nArchivo);
+        if(ipServ != null){
+            //Solicita la lista de ip a los servidores vivos
+            interfazServicioRmi sr;
+            
+            try{
+            sr = (interfazServicioRmi)
+            Naming.lookup( "rmi://"+ipServ+":"+Config.puerto+"/Servicio");
+            return sr.buscarArch(nArchivo);
+            }
+            catch (MalformedURLException murle ) {
+            System.out.println ();
+            System.out.println (
+            "MalformedURLException");
+            System.out.println ( murle ); }
+            catch (RemoteException re) {
+            System.out.println ();
+            System.out.println ( "RemoteException");
+            System.out.println (re); }
+            catch (NotBoundException nbe) {
+            System.out.println ();
+            System.out.println ("NotBoundException");
+            System.out.println (nbe);}
+            catch (java.lang.ArithmeticException ae) {
+            System.out.println ();
+            System.out.println ("java.lang.Arithmetic Exception");
+            System.out.println (ae);}   
+        
+        }
+        return null;
+    }
+
+    
+    
+    
+    
 // PARA MANEJAR LAS REPLICAS ***********************************************/
    
     
@@ -246,20 +293,18 @@ implements interfazServicioRmi {
          String [] servidores = null;
         while(!ejecutar){
             //Numero Servidores conectados
-            int numSerCon = ma.numServidores();
+            int numSerCon = this.ma.numServidores();
             if(numSerCon == 0 ) //No hay servidores para replicar
             return false; //no pudo replicar
-            
+            //System.out.println("HAY SERVIDORESSS>>> "+numSerCon);
             int numReplicas = (numSerCon/2)+1;
             // System.out.println("Solicita "+numReplicas + " replicas.");
             servidores=  ma.solicitarServidor(numReplicas);
-            for(int o = 0;o<servidores.length;o++){
-              System.out.println("SERVIDORES PARA REPLICAR >>>"+servidores[o]);
-            }
-             
-            
             rmiServer = new interfazServicioRmi[servidores.length];
             String serError = "";
+            //for(int o = 0;o<servidores.length;o++){
+              //System.out.println("SERVIDORES PARA REPLICAR >>>"+servidores[o]);
+           // }
             serError = solicitarServidores(servidores, rmiServer);
             if(serError == null)//no hubo errores
                 ejecutar = true;
@@ -342,6 +387,8 @@ implements interfazServicioRmi {
         System.out.println (ae);} 
         return "";
     }
+
+   
 
     
 }

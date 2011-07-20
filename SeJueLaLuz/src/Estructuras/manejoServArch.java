@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,6 +62,19 @@ public class manejoServArch {
         seg.createSecurityDir();
         seg.createPolicyFile();
         
+    }
+    
+    
+    
+    /**Busca un archivo y retorna la ip del servidor donde se encuentra*/
+    public String busArch(String nArchivo){
+       return ta.busArch(nArchivo);
+    }
+    
+    
+    /**Retorna una lista con todos los archivos*/
+    public String[] todosArchivos(){
+       return ta.todosArchivos();
     }
     
     

@@ -1,5 +1,6 @@
 package Estructuras;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -7,6 +8,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import javax.sql.rowset.spi.SyncResolver;
 
 
 
@@ -24,6 +26,9 @@ public class tablaArchivos {
     private HashMap<String, List<String>> mapaArchivos;
 
     private HashMap<String, String> mapaServidores;
+    
+    /**Tabla cuya clave es el archivo y el valor son los servidores que lo tienen*/
+    private HashMap<String, ArrayList<String>> mapaArcSer;
      
     //CONSTRUCTOR 
     public tablaArchivos() {
@@ -31,6 +36,8 @@ public class tablaArchivos {
         this.mapaServidores = new HashMap();
         //agrega el servidor local
         mapaArchivos.put(infoRed.miIp(),new LinkedList<String>());
+        
+        mapaArcSer = new HashMap<String, ArrayList<String>>();
         
         //COMENTAR LINEA DE ABAJO CUANDO FUNCIONE PROTOCOLO ACTIVO
        // mapaServidores.put(infoRed.miIp(),infoRed.miHost());
@@ -48,6 +55,58 @@ public class tablaArchivos {
         }
         
         mapaArchivos.put(infoRed.miIp(),l);
+    }
+    
+    
+    /**Retorna una lista de todos los archivos en los servidores*/
+    public String[] todosArchivos(){
+       retTablaSerArch();
+       Set<String> valores = mapaArcSer.keySet();
+       String[] val = new String[valores.size()];
+       valores.toArray(val);
+       return val;  
+    }
+    
+    
+    
+    
+     /**Retorna la tabla que contiene la lista de archivos */
+    private HashMap<String,ArrayList<String>> retTablaSerArch(){
+       HashMap<String, ArrayList<String>> archServ ;
+        archServ  = new HashMap<String, ArrayList<String>>();
+        
+        //Obtiene los valores
+        Set val = mapaArchivos.keySet();
+        Iterator valores = val.iterator();
+        while(valores.hasNext()){
+           //ip servidor 
+           String serv = (String)valores.next();
+           //Lista de archivos
+           List l = mapaArchivos.get(serv);
+           Iterator lis = l.iterator();
+           while(lis.hasNext()){//itera sobre lista de arhcivos
+               String arch = (String)lis.next();
+              if(!archServ.containsKey(arch)){
+                  ArrayList<String> laux = new ArrayList<String>();
+                  laux.add(serv);
+                  archServ.put(arch, laux);
+              }
+              else{//Si ya existe la lista solo lo agrega
+                  archServ.get(arch).add(serv);
+              }
+           }
+           
+        }
+        mapaArcSer = archServ;
+        return archServ;
+    }
+    
+    
+    /**Busca el archivo y retorna la ip del servidor*/
+    public String busArch(String nArchivo){
+       this.retTablaSerArch();//crea la tabla de archivo - servidor
+       ArrayList<String> serv = mapaArcSer.get(nArchivo);
+       return serv.get(0);
     }
     
     
@@ -149,12 +208,10 @@ public class tablaArchivos {
     /**
      * Remplaza a lista de archivos de un servidor por archivos
      */
-    public synchronized boolean remplazarArchivos(String ip, String nombre,
+    public synchronized  boolean remplazarArchivos(String ip, String nombre,
             String[] archivos){
        if(ip!=null ){
-             
-            
-           
+            System.out.println();           
             if(!mapaArchivos.containsKey(ip)){
            //crea la nueva entrada al servidor si no existe
                 //System.out.println("Agregado servidore "+ip);
@@ -172,11 +229,13 @@ public class tablaArchivos {
                  l.addAll(Arrays.asList(archivos));
                }
                mapaArchivos.put(ip,l);
+               mapaServidores.put(ip,nombre);
             }
        }
        else{
           return false;
        }
+       //System.out.println("Agrega servidor "+ip);  
        return true;
     }
      
@@ -203,6 +262,8 @@ public class tablaArchivos {
        }//No existe la lista
        return false;
     }
+    
+    
     
     /**
      * Retorna el arreglo de string de archivos asociado a un servidor
@@ -263,8 +324,8 @@ public class tablaArchivos {
     
     /**Elimina las todas las entradas de la tabla*/
     public boolean limpiarTabla(){
-        mapaArchivos.clear();
         mapaServidores.clear();
+        mapaArchivos.clear();
         return true;
     }
     
@@ -274,44 +335,44 @@ public class tablaArchivos {
        retorna i servidores con ese criterio
      */
     public String[] solicitarServidor(int i ){
-        /*String[] re = new String[i];
-        boolean buscar = true;
-        //System.out.println("Solicita "+i);
-        
-        for(int j = 0;j<i;j++){
-           while(buscar){
-              String servAux = criRandom();  //CRITERIO
-              if(servAux==null)
-                  break;
-              for(int k=0;k<j;k++){
-                if(re[k].equals(servAux)){
-                   break;//Ya fue listado el servidor
-                }
-              }
-              re[j] = servAux;
-              break;
-           }
-        }   */
+         //Criterio 
         return serviSeguidos(i);
+        
+        //Criterio
+        //return criRandom(i);
         //return re;
     }
     
     
     /**Selecciona un servidor random*/
-    private String criRandom(){
+    private String[] criRandom(int numEje){
        int i;
        i = mapaServidores.size();
        
+       Set servidores = mapaServidores.keySet();
+       String[] serviString  = new String[i];
+       servidores.toArray(serviString);
+       if(numEje>i)
+           return null;
+       
+       ArrayList<Integer> arr = new ArrayList<Integer>();
+       String[] servidos = new String[i];
+       
+       
        //System.out.println("Tam "+i);
-       int r = ((int) Math.random() *(i-1));  
-       String [] ser = this.listarServidores();
-       if(ser !=null){
-         //System.out.println("Consoguio lista de retorno "+ser[r]);
-         return ser[r];
+       int r;
+       int numSer = 0;
+       while(numSer<numEje){
+         r =   ((int) Math.random() *(i));
+         System.out.println(numSer+" "+numEje+"  "+"Num >>"+r);
+         if(!arr.contains(r)){
+             arr.add(r); 
+             servidos[numSer] = serviString[numSer];
+             numSer++;
+         }
+         
        }
-       else
-          System.out.println("Null lista en criRandom");
-       return null;
+       return serviString;
        
        
     }
@@ -323,12 +384,20 @@ public class tablaArchivos {
          Iterator iter = servidores.iterator();
          
          i = mapaServidores.size();
+         //System.out.println(i+" MAPASERVER>>" +mapaServidores);
          if(numServi >i)
              return null;
-         String[] servi = new String[i];
-         for(int j=0;j<numServi && iter.hasNext();j++){
-            servi[j] = (String)iter.next();
+         String[] servi = new String[numServi];
+         int indi = 0;
+         while(iter.hasNext()){
+            String aux = (String)iter.next();
+             servi[indi] = aux;
+             //System.out.println("AAAA>>>" + aux);
+             indi++;
+             if(indi >= numServi)
+                 break;
          }
+         
        return servi;
     }
     
@@ -337,6 +406,7 @@ public class tablaArchivos {
     
     /**Retorna el numero de servidores registrados*/
     public int numServidores(){
+       // System.out.println(mapaServidores);
         return mapaServidores.size();
     }
     
