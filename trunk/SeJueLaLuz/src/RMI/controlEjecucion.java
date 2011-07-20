@@ -4,7 +4,7 @@
  */
 
 package RMI;
-
+//
 import Estructuras.Config;
 import Estructuras.Mensajes;
 import Estructuras.Multicast;

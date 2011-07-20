@@ -395,8 +395,10 @@ public class SeJueLaLuzInterfazView extends FrameView {
         String url = re[0];
         String clase = re[1];
         int transa = cliente.retTransa();
-        agregarColaEjecucion(clase, transa);
-//        /listaEjecucion.
+        agregarColaEjecucion(clase, transa); 
+        System.out.println("Agregado "+clase+transa);
+        listaEjecucion.repaint();
+        listaEjecucion.revalidate();
         cliente.ejecutarEnServidores(url, clase);
         //cuando termina saca de la lista de ejecucion
         int i = buscarIndiEjec(clase, transa);
