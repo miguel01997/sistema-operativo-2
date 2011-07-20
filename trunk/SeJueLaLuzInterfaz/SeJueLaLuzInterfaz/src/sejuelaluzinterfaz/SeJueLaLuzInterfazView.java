@@ -4,6 +4,7 @@
 
 package sejuelaluzinterfaz;
 
+import Estructuras.Cliente;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
@@ -36,6 +37,8 @@ public class SeJueLaLuzInterfazView extends FrameView {
     DefaultListModel modeLog = new DefaultListModel();
     
     //javax.swing.JList listaEjecucion2 = new javax.swing.JList();
+    
+    private Cliente cliente;
     
     
     public SeJueLaLuzInterfazView(SingleFrameApplication app) {
@@ -96,6 +99,11 @@ public class SeJueLaLuzInterfazView extends FrameView {
                 }
             }
         });
+        //Inicia el cliente 
+        
+        cliente = new Cliente();
+        cliente.iniciar();
+        
     }
 
     @Action
@@ -140,7 +148,7 @@ public class SeJueLaLuzInterfazView extends FrameView {
         statusMessageLabel = new javax.swing.JLabel();
         statusAnimationLabel = new javax.swing.JLabel();
         progressBar = new javax.swing.JProgressBar();
-        jTextField1 = new javax.swing.JTextField();
+        urlArchivo = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
 
         mainPanel.setName("mainPanel"); // NOI18N
@@ -247,41 +255,41 @@ public class SeJueLaLuzInterfazView extends FrameView {
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
-                .addGap(25, 25, 25)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE))
-                .addGap(41, 41, 41)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(descargar, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(25, 25, 25)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)))
+                        .addGap(41, 41, 41)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(descargar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE))
+                        .addGap(65, 65, 65)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(24, 24, 24))
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGap(132, 132, 132)
+                        .addComponent(jLabel1)
+                        .addGap(133, 133, 133)
+                        .addComponent(jLabel2)
+                        .addGap(128, 128, 128)
+                        .addComponent(jLabel3)))
                 .addContainerGap())
-            .addGroup(mainPanelLayout.createSequentialGroup()
-                .addGap(132, 132, 132)
-                .addComponent(jLabel1)
-                .addGap(127, 127, 127)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addGap(117, 117, 117))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel2)
-                        .addComponent(jLabel3)))
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
                 .addGap(18, 18, 18)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 368, Short.MAX_VALUE)
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane2)
@@ -292,7 +300,8 @@ public class SeJueLaLuzInterfazView extends FrameView {
                             .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
                                 .addComponent(descargar, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(14, 14, 14)))
+                        .addGap(54, 54, 54))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -328,8 +337,8 @@ public class SeJueLaLuzInterfazView extends FrameView {
 
         progressBar.setName("progressBar"); // NOI18N
 
-        jTextField1.setText(resourceMap.getString("jTextField1.text")); // NOI18N
-        jTextField1.setName("jTextField1"); // NOI18N
+        urlArchivo.setText(resourceMap.getString("urlArchivo.text")); // NOI18N
+        urlArchivo.setName("urlArchivo"); // NOI18N
 
         jLabel4.setText(resourceMap.getString("jLabel4.text")); // NOI18N
         jLabel4.setName("jLabel4"); // NOI18N
@@ -341,13 +350,13 @@ public class SeJueLaLuzInterfazView extends FrameView {
             .addGroup(statusPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(statusMessageLabel)
-                .addGap(31, 31, 31)
+                .addGap(39, 39, 39)
                 .addComponent(jLabel4)
-                .addGap(26, 26, 26)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(134, 134, 134)
+                .addGap(30, 30, 30)
+                .addComponent(urlArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
                 .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
+                    .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 534, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, statusPanelLayout.createSequentialGroup()
                         .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -363,13 +372,13 @@ public class SeJueLaLuzInterfazView extends FrameView {
                     .addComponent(statusMessageLabel)
                     .addComponent(statusAnimationLabel)
                     .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(3, 3, 3))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, statusPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(12, 12, 12))
+            .addGroup(statusPanelLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addComponent(urlArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         setComponent(mainPanel);
@@ -381,14 +390,30 @@ public class SeJueLaLuzInterfazView extends FrameView {
     //
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        agregarColaEjecucion("ClasePrueba",p);
-        agregarArchivo("mmmmm");
-        agregarLog("Carjo");
-        p++;
-        listaEjecucion.addMouseListener(mouseListener);
+        String urlArch = urlArchivo.getText();
+        String[] re = buscarUrlClass(urlArch);
+        String url = re[0];
+        String clase = re[1];
+        int transa = cliente.retTransa();
+        agregarColaEjecucion(clase, transa);
+//        /listaEjecucion.
+        cliente.ejecutarEnServidores(url, clase);
+        //cuando termina saca de la lista de ejecucion
+        int i = buscarIndiEjec(clase, transa);
+        if(i!=-1){
+            modelo.remove(i);
+        }
+        
+        //System.out.println("AA" +urlArch);
+        
+        //agregarColaEjecucion("ClasePrueba",p);
+        //agregarArchivo("mmmmm");
+        //agregarLog("Carjo");
+        //p++;
+        //listaEjecucion.addMouseListener(mouseListener);
         
     }//GEN-LAST:event_jButton2ActionPerformed
-
+//Elimina de la lista de ejecucion
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
            int posicion = ejeSelecListaEje();
            if(posicion != -1){
@@ -400,7 +425,7 @@ public class SeJueLaLuzInterfazView extends FrameView {
        int pos = ejeSelecArchivo();
        if(pos!=-1){
           String archivo = (String)modeArchivos.get(pos);
-          System.out.println("Archivo>> "+archivo);
+          //System.out.println("Archivo>> "+archivo);
           //Solicita al servidor el archivo
        }
     }//GEN-LAST:event_descargarActionPerformed
@@ -421,7 +446,6 @@ public class SeJueLaLuzInterfazView extends FrameView {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JList listaEjecucion;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
@@ -429,6 +453,7 @@ public class SeJueLaLuzInterfazView extends FrameView {
     private javax.swing.JLabel statusAnimationLabel;
     private javax.swing.JLabel statusMessageLabel;
     private javax.swing.JPanel statusPanel;
+    private javax.swing.JTextField urlArchivo;
     // End of variables declaration//GEN-END:variables
 
     private final Timer messageTimer;
@@ -447,7 +472,8 @@ public class SeJueLaLuzInterfazView extends FrameView {
     
     /**Para agregar una ejecucion a la lista de ejecucion**/
     public void agregarColaEjecucion(String nClass, int numTransa){
-       modelo.addElement(nClass+"        "+numTransa);
+        
+        modelo.addElement(nClass+"        "+numTransa);
     }
     
     /**Para agregar una ejecucion a la lista de ejecucion**/
@@ -471,7 +497,7 @@ public class SeJueLaLuzInterfazView extends FrameView {
         if (e.getClickCount() == 2) // Se mira si es doble click
         {
             int posicion = listaEjecucion.locationToIndex(e.getPoint());
-            System.out.println("La posicion es " + posicion);
+           // System.out.println("La posicion es " + posicion);
          }
     }
 };
@@ -489,6 +515,27 @@ public class SeJueLaLuzInterfazView extends FrameView {
   return listaEjecucion.getSelectedIndex();
 
  }
+ 
+ 
+/**Retorna la url y el nombre de la clase que va a ejecutar*/
+ public String [] buscarUrlClass(String url ){
+     String [] re = new String[2];
+     int i = url.lastIndexOf('/');
+     re[0] = url.substring(0,i+1);
+     //System.out.println("URL >"+re[0]);
+     re[1] = url.substring(i+1,url.length());
+     //System.out.println("CLASS >"+re[1]);
+     return re;
+ }
+ 
+ /**Busca en la ejecucion la ejecucion de nombre nombre y num de transa y
+  retorna el indice donde se encuentra
+  */
+ public int buscarIndiEjec(String nClass,int numTransa){
+     int indi = modelo.indexOf(nClass+"        "+numTransa);
+     return indi;
+ }
+ 
  
  
 
