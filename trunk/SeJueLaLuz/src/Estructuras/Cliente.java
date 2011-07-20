@@ -132,7 +132,7 @@ public class Cliente {
             //sr.terminarEjecucion("p.class",ip);*/
             
          try {    
-            Thread.sleep(1000);
+            Thread.sleep(2000);
         } catch (InterruptedException ex) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -397,11 +397,13 @@ public class Cliente {
      nombre y le asocia la ip ipCliente
      */
     public void ejecutarEnServidores(String nombre){
+        
         int numTransa = this.indiTransa;
         this.indiTransa = this.indiTransa +1;
         ManejadorEjecucion me = new ManejadorEjecucion(ma);
         mapaEjecucion.put(new Integer(numTransa), me); 
         System.out.println("Cliente num transa "+indiTransa);
+        
         me.ejecutarEnServidores(nombre, ip,numTransa);
         
     }
@@ -409,7 +411,7 @@ public class Cliente {
     
     /**Detiene la ejecucion de la clase nomClass*/
     public void detenerEjecucion(String nomClass,int indiTran ){
-        System.out.println(">>>"+mapaEjecucion);
+        //System.out.println(">>>"+mapaEjecucion);
         ManejadorEjecucion me = mapaEjecucion.remove(indiTran);
        
        if(me==null){
@@ -467,6 +469,9 @@ class ManejadorEjecucion {
                   //selecciona los serviodores que ejecutan las clases
                   String [] aux = ma.solicitarServidor(numServi);
                   String res;
+                  for(int y=0;y<aux.length;y++){
+               //System.out.println(">>>>>>"+aux[y]);
+            }
                   res = crearEjecucion(nombreClass, ipCliente, aux,numTransaccion);
                   if(res!=null){//Si no se pudo conectar a un servidor se sale
                      //Elimina el servidor al que no se pudo conectar
@@ -547,6 +552,7 @@ class ManejadorEjecucion {
         String ipAux = "";
       try{
         //Buscamos las ip de los servidores   
+          System.out.println("Ips "+ipServidor.length + " "+arrEje.length);
         for(int i=0;i<ipServidor.length;i++){
            //ipAux = ipServidor[i];
             interfazServicioRmi sr;

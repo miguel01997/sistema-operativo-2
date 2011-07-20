@@ -56,7 +56,18 @@ public interface interfazServicioRmi extends java.rmi.Remote{
    //                  throws java.rmi.RemoteException;
     
     
-    
+    /**Retorna una lista con todos los archivos en los sevidores*/
+   public String[] todosArchivos()
+           throws java.rmi.RemoteException;
    
 
+   
+   /**Busca el archivo nArchivo y retorna el archivo**/
+   public byte[] buscarArch(String nArchivo) throws java.rmi.RemoteException;
+   
+   
+   /**Replica la respuesta del archivo entre los servidores**/
+   public boolean replicar(String nombreClass)
+           throws java.rmi.RemoteException;
+   
 }
