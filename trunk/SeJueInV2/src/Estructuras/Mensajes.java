@@ -31,14 +31,17 @@ public class Mensajes implements Runnable{
 
 
     public  void run() {
-        
-        if(msj.equals("activo?") && esServ){
-            if(this.msa != null){
-              this.msa.limpiarTabla();     
+        if(msj.equals("activo?") ){
+            if(esServ){
+               if(this.msa != null){
+                 this.msa.limpiarTabla();     
+                 respuesta = "estoy " + infoRed.miIp() + " "+ infoRed.miHost();
+                //System.out.println(respuesta);
+                 multi.enviarMensaje(respuesta);
+               }
+            }else{
+                this.msa.limpiarTabla();                 
             }
-            respuesta = "estoy " + infoRed.miIp() + " "+ infoRed.miHost();
-            //System.out.println(respuesta);
-            multi.enviarMensaje(respuesta);
          }else if(msj.startsWith("listo")){
             String[] parte = msj.split(" ");
             String ip = parte[1];
