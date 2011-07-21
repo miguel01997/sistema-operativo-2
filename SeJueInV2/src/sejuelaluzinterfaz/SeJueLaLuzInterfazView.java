@@ -265,30 +265,28 @@ public class SeJueLaLuzInterfazView extends FrameView {
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
+                .addGap(37, 37, 37)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
                     .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)))
-                        .addGap(41, 41, 41)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(descargar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE))
-                        .addGap(65, 65, 65)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(24, 24, 24))
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(132, 132, 132)
-                        .addComponent(jLabel1)
-                        .addGap(133, 133, 133)
-                        .addComponent(jLabel2)
-                        .addGap(128, 128, 128)
-                        .addComponent(jLabel3)))
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)))
+                .addGap(41, 41, 41)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(descargar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE))
+                .addGap(65, 65, 65)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addGap(132, 132, 132)
+                .addComponent(jLabel1)
+                .addGap(133, 133, 133)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 161, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addGap(101, 101, 101))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -429,7 +427,7 @@ public class SeJueLaLuzInterfazView extends FrameView {
     static int p = 0;
     //
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+       // TODO add your handling code here:
         //urlArch es como /p/l/o/o/p.class
         String urlArch = urlArchivo.getText();
         String[] re = buscarUrlClass(urlArch);
@@ -437,37 +435,27 @@ public class SeJueLaLuzInterfazView extends FrameView {
         String clase = re[1];
         int transa = cliente.retTransa();
         agregarColaEjecucion(clase, transa); 
-        agregarColaEjecucion(clase, transa); 
-        System.out.println("Agregado "+clase+transa);
+//        agregarColaEjecucion(clase, transa); 
         
-        cliente.ejecutarEnServidores(url, clase);
         
-        int i = buscarIndiEjec(clase, transa);
-        if(i!=-1){
-            modelo.remove(i);
-        }
-         i = buscarIndiEjec(clase, transa);
-        if(i!=-1){
-            modelo.remove(i);
-        }
+        //System.out.println("Agregado "+clase+transa);
+        ejecucionHilo eje = new ejecucionHilo(cliente, url, clase,this,transa);
+        Thread th = new Thread(eje);
+        th.start();
+       // cliente.ejecutarEnServidores(url, clase);
+       
         listaEjecucion.repaint();
         listaEjecucion.revalidate();
-        
-        //System.out.println("AA" +urlArch);
-        
-        //agregarColaEjecucion("ClasePrueba",p);
-        //agregarArchivo("mmmmm");
-        //agregarLog("Carjo");
-        //p++;
-        //listaEjecucion.addMouseListener(mouseListener);
         
     }//GEN-LAST:event_jButton2ActionPerformed
 //Elimina de la lista de ejecucion
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-           int posicion = ejeSelecListaEje();
+            int posicion = ejeSelecListaEje();
+            
            if(posicion != -1){
               String ejecucion = (String)modelo.get(posicion);
-              String[] eje = ejecucion.split(" ");
+              String[] eje = ejecucion.split("        ");
+              System.out.println(eje[0]+" >>> "+eje[1]);
               cliente.detenerEjecucion(eje[0], Integer.valueOf(eje[1]));
               modelo.remove(posicion);
            }
@@ -623,10 +611,54 @@ public class SeJueLaLuzInterfazView extends FrameView {
  }
  
  
+ /**Elimina de la lista de ejecucion */
+ public void elimListaEje(String nClase,int numTransa){
+System.out.println(nClase+" >>> "+numTransa);
+     int indi = buscarIndiEjec(nClase, numTransa);
+    if(indi!=-1){
+       modelo.remove(indi);
+    }
+ }
+    
  
 
 //.addMouseListener(mouseListener);
     
     
+
+ class ejecucionHilo implements Runnable{
+      Cliente cli;
+      
+      String nClase;
+      
+      String url;
+      
+      SeJueLaLuzInterfazView ss;
+      
+      int numTransa;
+     
+      DefaultListModel ejecu;
+      public ejecucionHilo(Cliente cli,String url ,String nClase,SeJueLaLuzInterfazView s,
+                            int nt){
+         this.cli = cli;
+         this.nClase = nClase;
+         this.url = url;
+         this.ss = s;
+         this.numTransa = nt;
+      }
+      
+     
+      
+      
+        public void run() {
+            cliente.ejecutarEnServidores(this.url,this.nClase);
+            //cuando termina elimina la instancia de los archivos
+            ss.elimListaEje(nClase, numTransa);
+            
+        }
+ 
+     
+ 
+ }
     
 }
