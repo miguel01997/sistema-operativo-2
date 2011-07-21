@@ -273,8 +273,10 @@
                   <Component id="urlArchivo" min="-2" pref="278" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="statusPanelSeparator" alignment="0" pref="534" max="32767" attributes="0"/>
+                      <Component id="statusPanelSeparator" alignment="0" pref="481" max="32767" attributes="0"/>
                       <Group type="102" alignment="1" attributes="0">
+                          <Component id="browse" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="243" max="32767" attributes="0"/>
                           <Component id="progressBar" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="statusAnimationLabel" min="-2" max="-2" attributes="0"/>
@@ -294,15 +296,16 @@
                       <Component id="statusAnimationLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="progressBar" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
               </Group>
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="urlArchivo" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="browse" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="21" max="32767" attributes="0"/>
+                  <EmptySpace pref="25" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -356,6 +359,18 @@
             <Property name="text" type="java.lang.String" resourceKey="jLabel4.text"/>
             <Property name="name" type="java.lang.String" value="jLabel4" noResource="true"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="browse">
+          <Properties>
+            <Property name="text" type="java.lang.String" resourceKey="browse.text"/>
+            <Property name="name" type="java.lang.String" value="browse" noResource="true"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="browseActionPerformed"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="SeJueLaLuzInterfazView_jButton3"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
