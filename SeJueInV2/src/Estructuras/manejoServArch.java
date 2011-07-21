@@ -18,6 +18,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+
 /**
  *
  * @author necross
@@ -301,7 +305,59 @@ public class manejoServArch {
     public int numServidores(){
        return ta.numServidores();
     }
-    
+
+    /*
+     * Sustituye el contenido del archivo por el mensaje
+     */
+    public static void reempContent(File arch, String mens){
+        try{
+
+            FileWriter fw = new FileWriter(arch);
+            fw.write(mens);
+            fw.close();
+        } catch (Exception e){
+            System.out.println("Error reemplazando el contenido del "+
+                    "archivo "+arch.getName());
+        }
+
+    }
+
+    public boolean verifErrorArch(String nArch){
+        File tempFile = new File(this.directorioDes+"/"+nArch);
+        if (!tempFile.exists()){
+            System.out.println("verifErrorArch: El archivo no existe");
+            return false;
+        } else {
+            try {
+            FileReader fr = new FileReader(tempFile);
+            BufferedReader br = new BufferedReader(fr);
+            String primeraLinea = br.readLine();
+            fr.close();
+            if (primeraLinea.equals("Error")){
+                System.out.println("Ocurrio un error durante la ejecucion"
+                        + " del archivo "+nArch+".class");
+                return false;
+            }
+
+            return true;
+            } catch (Exception e){
+
+                return false;
+            }
+        }
+    }
+
+    public void mostrarTodosArchivos(){
+        String[] todos = this.todosArchivos();
+
+        int tam = todos.length;
+
+        sejuelaluzinterfaz.SeJueLaLuzInterfazView.limpiarListaArchivos();
+        for(int i=0;i<tam;i++){
+            String arch = todos[i];
+            sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarArchivo(arch);
+        }
+    }
     
     
 }
