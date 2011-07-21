@@ -414,7 +414,7 @@ public class Cliente {
         this.indiTransa = this.indiTransa +1;
         ManejadorEjecucion me = new ManejadorEjecucion(ma);
         mapaEjecucion.put(new Integer(numTransa), me); 
-        System.out.println("Cliente num transa "+indiTransa);
+        //System.out.println("Cliente num transa "+indiTransa);
        sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("Cliente num transa "+indiTransa);
         me.ejecutarEnServidores(url,nombre, ip,numTransa);
         
