@@ -41,7 +41,7 @@ public class SeJueLaLuzInterfazView extends FrameView {
     DefaultListModel modeArchivos = new DefaultListModel();
    
     //Para el log
-    DefaultListModel modeLog = new DefaultListModel();
+    static DefaultListModel modeLog = new DefaultListModel();
     
     //javax.swing.JList listaEjecucion2 = new javax.swing.JList();
     
@@ -361,11 +361,7 @@ public class SeJueLaLuzInterfazView extends FrameView {
             }
         });
 
-        textoEscondido.setBackground(resourceMap.getColor("textoEscondido.background")); // NOI18N
         textoEscondido.setBorder(null);
-        textoEscondido.setFont(resourceMap.getFont("textoEscondido.font")); // NOI18N
-        textoEscondido.setForeground(resourceMap.getColor("textoEscondido.foreground")); // NOI18N
-        textoEscondido.setText(resourceMap.getString("textoEscondido.text")); // NOI18N
         textoEscondido.setName("textoEscondido"); // NOI18N
         textoEscondido.setOpaque(false);
 
@@ -394,7 +390,7 @@ public class SeJueLaLuzInterfazView extends FrameView {
                 .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(statusPanelLayout.createSequentialGroup()
                         .addGap(70, 70, 70)
-                        .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE))
+                        .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, statusPanelLayout.createSequentialGroup()
                         .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -570,9 +566,9 @@ public class SeJueLaLuzInterfazView extends FrameView {
        modeArchivos.addElement(nArch);
     }
     
-    
+        
     /**Para agregar un mensaje al log  **/
-     public void agregarLog(String msj){
+     public static void agregarLog(String msj){
        modeLog.addElement(msj);
     }
     
