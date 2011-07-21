@@ -24,6 +24,11 @@ import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
+// importadas para la parte de browse
+import javax.swing.JFileChooser; //Permite elegir un archivo por dialogo
+import javax.swing.filechooser.FileNameExtensionFilter; // Filtro de archivos
+import java.io.File;
+
 /**
  * The application's main frame.
  */
@@ -152,6 +157,7 @@ public class SeJueLaLuzInterfazView extends FrameView {
         progressBar = new javax.swing.JProgressBar();
         urlArchivo = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+        browse = new javax.swing.JButton();
 
         mainPanel.setName("mainPanel"); // NOI18N
 
@@ -345,6 +351,14 @@ public class SeJueLaLuzInterfazView extends FrameView {
         jLabel4.setText(resourceMap.getString("jLabel4.text")); // NOI18N
         jLabel4.setName("jLabel4"); // NOI18N
 
+        browse.setText(resourceMap.getString("browse.text")); // NOI18N
+        browse.setName("browse"); // NOI18N
+        browse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                browseActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout statusPanelLayout = new javax.swing.GroupLayout(statusPanel);
         statusPanel.setLayout(statusPanelLayout);
         statusPanelLayout.setHorizontalGroup(
@@ -358,8 +372,10 @@ public class SeJueLaLuzInterfazView extends FrameView {
                 .addComponent(urlArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(46, 46, 46)
                 .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 534, Short.MAX_VALUE)
+                    .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, statusPanelLayout.createSequentialGroup()
+                        .addComponent(browse)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 243, Short.MAX_VALUE)
                         .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(statusAnimationLabel)
@@ -374,20 +390,21 @@ public class SeJueLaLuzInterfazView extends FrameView {
                     .addComponent(statusMessageLabel)
                     .addComponent(statusAnimationLabel)
                     .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12))
+                .addGap(14, 14, 14))
             .addGroup(statusPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(urlArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addContainerGap(21, Short.MAX_VALUE))
+                    .addComponent(jLabel4)
+                    .addComponent(browse))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         setComponent(mainPanel);
         setMenuBar(menuBar);
         setStatusBar(statusPanel);
     }// </editor-fold>//GEN-END:initComponents
-  
+ 
     static int p = 0;
     //
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -445,10 +462,29 @@ public class SeJueLaLuzInterfazView extends FrameView {
        }
     }//GEN-LAST:event_descargarActionPerformed
 
+    /** Permite hacer "Browse" del .class que se quiere mandar
+     * a los servidores
+     */
+    private void browseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseActionPerformed
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "Archivos class de java","class");
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(filter);
+        fileChooser.setDialogTitle("Selecciona un .class ...");
+        int result = fileChooser.showOpenDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION){
+
+            File file = fileChooser.getSelectedFile();
+            urlArchivo.setText(String.valueOf(file));
+
+        }
+    }//GEN-LAST:event_browseActionPerformed
+
     
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton browse;
     private javax.swing.JButton descargar;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
