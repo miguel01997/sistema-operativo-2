@@ -290,7 +290,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
-                          <Component id="statusPanelSeparator" pref="320" max="32767" attributes="0"/>
+                          <Component id="statusPanelSeparator" pref="302" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <Component id="progressBar" min="-2" max="-2" attributes="0"/>
@@ -397,13 +397,9 @@
         </Component>
         <Component class="javax.swing.JTextPane" name="textoEscondido">
           <Properties>
-            <Property name="background" type="java.awt.Color" resourceKey="textoEscondido.background"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="null"/>
             </Property>
-            <Property name="font" type="java.awt.Font" resourceKey="textoEscondido.font"/>
-            <Property name="foreground" type="java.awt.Color" resourceKey="textoEscondido.foreground"/>
-            <Property name="text" type="java.lang.String" resourceKey="textoEscondido.text"/>
             <Property name="name" type="java.lang.String" value="textoEscondido" noResource="true"/>
             <Property name="opaque" type="boolean" value="false"/>
           </Properties>
