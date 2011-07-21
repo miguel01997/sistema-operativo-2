@@ -10,6 +10,7 @@ import Estructuras.Mensajes;
 import Estructuras.Multicast;
 import Estructuras.infoRed;
 import Estructuras.Clock;
+import Estructuras.manejoServArch;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -377,6 +378,14 @@ class proceso implements Runnable{
                          mens += line;
                      }
                      System.out.println(mens);
+                     if (!mens.equals("")){
+                         mens="Error\n"+mens;
+                         File tempFile = new File(Config.dirDes+"/"+nclass+".class");
+                         if(tempFile.exists()){
+                             manejoServArch.reempContent(tempFile, mens);
+                         }
+
+                     }
                  }
                  
                  if (this.ejecutar == true){

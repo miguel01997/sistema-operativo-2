@@ -38,7 +38,7 @@ public class SeJueLaLuzInterfazView extends FrameView {
     DefaultListModel modelo = new DefaultListModel();
     
     //Para los archivos en los servidores
-    DefaultListModel modeArchivos = new DefaultListModel();
+    static DefaultListModel modeArchivos = new DefaultListModel();
    
     //Para el log
     static DefaultListModel modeLog = new DefaultListModel();
@@ -552,9 +552,16 @@ public class SeJueLaLuzInterfazView extends FrameView {
     }
     
     /**Para agregar una ejecucion a la lista de ejecucion**/
-     public void agregarArchivo(String nArch){
+     public static void agregarArchivo(String nArch){
        modeArchivos.addElement(nArch);
+       
     }
+     /*
+      * Elimina toda la lista de archivos de los servidores en el log
+      */
+     public static void limpiarListaArchivos(){
+         modeArchivos.removeAllElements();
+     }
     
         
     /**Para agregar un mensaje al log  **/

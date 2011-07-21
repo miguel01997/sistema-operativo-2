@@ -290,6 +290,11 @@ implements interfazServicioRmi {
    
     
     public boolean replicar(String nombreClass){
+        //Verificando que no ocurrio un error en la ejecucion de la clase
+        if (!this.ma.verifErrorArch(nombreClass)){
+            System.out.println("No se puede replicar este archivo");
+            return false;
+        }
         boolean ejecutar = false;
          interfazServicioRmi [] rmiServer = null;
          String [] servidores = null;
