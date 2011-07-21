@@ -48,6 +48,8 @@ public class Mensajes implements Runnable{
             long lFecha = Long.parseLong(fecha);
             System.out.println("Esta listo ip "+ ip + " nombre "+ nombre
                     + " clase "+ clase + " fecha "+ Clock.dateFormat(lFecha));
+            sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("Esta listo ip "+ ip + " nombre "+ nombre
+                    + " clase "+ clase + " fecha "+ Clock.dateFormat(lFecha));
             ActualizarF actf = new ActualizarF();
             if (actf.verifArch(clase, lFecha)){
                 actf.actualizarArchivo(ip, clase);
@@ -63,6 +65,7 @@ public class Mensajes implements Runnable{
             this.msa.agregarArchivosServidor(ip, nombre, archIp);
             
             System.out.println("Estoy: ip "+ ip + " nombre "+ nombre );
+            sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("Estoy: ip "+ ip + " nombre "+ nombre );
          }
     }
 }
