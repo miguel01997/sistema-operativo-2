@@ -19,7 +19,7 @@ public class Config {
     
     
     //Directorio de descarga y subida de archivos
-    public final static String dirDes = "../D";
+    public final static String dirDes = "D";
     
     
     public final static String dirMulticast = "224.0.0.24";
@@ -29,7 +29,7 @@ public class Config {
     
     
     /*Numero de servidores que van a ejecutar la clase*/
-    public final static int numServidores = 1;
+    public final static int numServidores = 3;
     
     
     
