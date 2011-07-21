@@ -52,7 +52,7 @@ public class Mensajes implements Runnable{
                     + " clase "+ clase + " fecha "+ Clock.dateFormat(lFecha));
             ActualizarF actf = new ActualizarF();
             if (actf.verifArch(clase, lFecha)){
-                actf.actualizarArchivo(ip, clase);
+                actf.actualizarArchivo(ip, nombreClase(clase));
             }
 
          }else if(msj.startsWith("estoy")){
@@ -71,5 +71,16 @@ public class Mensajes implements Runnable{
             System.out.println("Estoy: ip "+ ip + " nombre "+ nombre );
             sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("Estoy: ip "+ ip + " nombre "+ nombre );
          }
+    }
+
+    //Retorna el nombre de la clase
+    private String nombreClase(String nombre){
+       if(nombre !=null){
+            int tam = nombre.length();
+            if(tam > 6){
+               return nombre.substring(0, tam-6);
+            }
+       }
+       return "";
     }
 }
