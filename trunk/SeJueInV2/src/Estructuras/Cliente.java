@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import sejuelaluzinterfaz.SeJueLaLuzInterfazView;
 /**
  *
  * @author necross
@@ -47,6 +48,7 @@ public class Cliente {
         private static Integer indiTransa;
        
         private static Multicast mul;
+        
     /**
      * @param args the command line arguments
      */
@@ -144,11 +146,7 @@ public class Cliente {
         //this.ejecutarEnServidores("p.class");
         //this.ejecutarEnServidores("p.class");
         
-        
-        
-        
-        
-        
+                
         //Si esta ocupado se agrega ejecución
 
         //Subir archivo
@@ -159,10 +157,6 @@ public class Cliente {
 
         //sr.tamanoEjecucion();
 }
-    
-    
-    
-    
     
     
     /**
@@ -184,6 +178,7 @@ public class Cliente {
                     output.flush();
                     output.close();
                     System.out.println("Archivo "+nombre+" Creado");
+                    sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("Archivo "+nombre+" Creado");
                 } catch (IOException ex) {
                     Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -195,6 +190,7 @@ public class Cliente {
          }
          else{
              System.out.println("No se encontro el archivo "+nombre);
+             sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("No se encontro el archivo "+nombre);
          }
     
     }
@@ -221,9 +217,12 @@ public class Cliente {
                     boolean enviado = sr.recibirFichero(buffer, nombre);
                     if(enviado){
                        System.out.println("Archivo "+nombre+" enviado.");
+                       sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("Archivo "+nombre+" enviado.");
+                 
                     }
                     else{
                        System.out.println("Archivo "+nombre+" no pudo ser enviado.");
+                       sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("Archivo "+nombre+" no pudo ser enviado.");
                     }
                     return  enviado;
                 } catch (RemoteException ex) {
@@ -254,11 +253,15 @@ public class Cliente {
                f.mkdir();
                System.out.println("Directorio de descarga "+
                        this.directorioDescarga+" creado.");
+               sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("Directorio de descarga "+
+                       this.directorioDescarga+" creado.");
             }
         }
         else{
            f.mkdir();
             System.out.println("Directorio de descarga "+
+                       this.directorioDescarga+" creado.");
+            sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("Directorio de descarga "+
                        this.directorioDescarga+" creado.");
         }
     }
@@ -270,11 +273,14 @@ public class Cliente {
      */
     public void listarArchivos(interfazServicioRmi sr){
         System.out.println("Listando Archivos:");
+        sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("Listando Archivos: ");
+        
         try {
             String [] lista = sr.listarFicheros();
             if(lista!=null){
                for(int i =0;i<lista.length;i++){
                   System.out.println(lista[i]);
+                 sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog(lista[i]);
                }
             }
             
@@ -329,6 +335,8 @@ public class Cliente {
         }
         else{
             System.out.println("No se encontro archivo "+nombre);
+            sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("No se encontro archivo "+ nombre);
+          
         }
           // return false;
       }
@@ -353,6 +361,7 @@ public class Cliente {
                     output.flush();
                     output.close();
                     System.out.println("Archivo "+nombre+" Creado");
+                    sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("Archivo "+nombre+" Creado");
                     return true;
                 } catch (IOException ex) {
                     Logger.getLogger(serviciosRmi.class.getName()).log(Level.SEVERE, null, ex);
@@ -360,12 +369,14 @@ public class Cliente {
             }
              else{
              System.out.println("No se creo el archivo "+nombre);
+             sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("No se creo el archivo "+ nombre);
+            
             }
 
          }
          else{
              System.out.println("No se creo el archivo "+nombre);
-             
+             sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("No se creo el archivo "+ nombre);
          }
          return false;
     
@@ -389,6 +400,7 @@ public class Cliente {
      */
     private void servidoresActivos(){
          mul.enviarMensaje("activo?");
+         sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("Servidores Activos: ");
     }
     
     
@@ -403,7 +415,7 @@ public class Cliente {
         ManejadorEjecucion me = new ManejadorEjecucion(ma);
         mapaEjecucion.put(new Integer(numTransa), me); 
         System.out.println("Cliente num transa "+indiTransa);
-        
+       sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("Cliente num transa "+indiTransa);
         me.ejecutarEnServidores(url,nombre, ip,numTransa);
         
     }
@@ -416,6 +428,7 @@ public class Cliente {
        
        if(me==null){
           System.out.println("No hay transaccion asociada a " +nomClass);
+          sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("No hay transaccion asociada a " +nomClass);
           return;
        }
        me.detenerEjecucion();
@@ -443,6 +456,8 @@ class ManejadorEjecucion {
     private Ejecucion[] arrEje;
     /**Grupo de hilos*/
     private ThreadGroup tg;
+    
+    private SeJueLaLuzInterfazView log = null;
     
     
     /*Constructor que recibe el manejador de servidores*/
@@ -483,6 +498,7 @@ class ManejadorEjecucion {
                       //Vuelve a solicitar los servidores
                       if(res.equals("")){
                          System.out.println("No hay servidores para ejecutar");
+                         sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("No hay servidores para ejecutar");
                          return ;
                       }
                       
@@ -496,6 +512,7 @@ class ManejadorEjecucion {
                }else{//Ejecucion insegura
                    if(Config.inseguro){
                        System.out.println("Ejecutando en modo inseguro");
+                       sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("Ejecutando en modo inseguro");
                       /*Si se va a ejecutar aunque no haya el minimo de servidores
                        solicitados*/
                        //Se crea un nuevo arreglo de ejecucion
@@ -520,6 +537,8 @@ class ManejadorEjecucion {
                    }else{
                      System.out.println("Numero de servidores conectados menor al numero minimo requerido");
                      System.out.println("No ejecuta "+nombreClass);
+                     sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("Numero de servidores conectados menor al numero minimo requerido");
+                     sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("No ejecuta "+nombreClass);
                      return; 
                    }
                    
@@ -527,6 +546,7 @@ class ManejadorEjecucion {
            } 
            else{//No hay servidores
               System.out.println("No hay Servidores disponibles.");
+              sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("No hay Servidores disponibles");
               return;
            }
        }
@@ -564,6 +584,7 @@ class ManejadorEjecucion {
            //Guarda en la lista de ejecucion la referencia al rmi
            arrEje[i] = new Ejecucion(sr,url, nombreClass, ipCliente,this,numTransaccion);
            System.out.println("Servidores "+ipServidor[i]);
+           sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("Servidores "+ipServidor[i]);                
         }
         
       }
@@ -576,7 +597,7 @@ class ManejadorEjecucion {
         System.out.println ();
         System.out.println ( "RemoteException");
         System.out.println("Error al conectar con el servidor "+ipAux);
-        
+        sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("Error al conectar con el servidor "+ipAux);                
         //System.out.println (re);
         return ipAux; 
         }
@@ -624,7 +645,8 @@ class ManejadorEjecucion {
           if(arrEje[i].termine()){
              //Lo manda a replicar
              if(!replicado){
-             System.out.println("Termino servidor "+arrEje[i].servidor());    
+             System.out.println("Termino servidor "+arrEje[i].servidor());
+             sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("Termino servidor "+arrEje[i].servidor()); 
              arrEje[i].replicar();
              replicado = true;
              }
@@ -716,6 +738,7 @@ class Ejecucion implements Runnable{
                 try {
                     String ipServer = sr.ip();
                     System.out.println("Ejecutando clase "+nombre + " en " + ipServer );
+                    sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("Ejecutando clase "+nombre + " en " + ipServer); 
                     //SERVIDOR
                     byte[] arch = sr.ejecutar(buffer, nombre,ipCliente,numTransac);
                     //Si hay una respuesta
@@ -740,6 +763,7 @@ class Ejecucion implements Runnable{
         }
         else{
             System.out.println("No se encontro archivo "+nombre);
+            sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("No se encontro archivo "+nombre);             
         }
           // return false;
       }
@@ -778,6 +802,7 @@ class Ejecucion implements Runnable{
                     output.flush();
                     output.close();
                     System.out.println("Archivo "+nombre+" Creado");
+                    sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("Archivo "+nombre+" Creado");             
                     return true;
                 } catch (IOException ex) {
                     Logger.getLogger(serviciosRmi.class.getName()).log(Level.SEVERE, null, ex);
@@ -785,12 +810,13 @@ class Ejecucion implements Runnable{
             }
              else{
              System.out.println("No se creo el archivo "+nombre);
+             sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("No se creo el archivo "+nombre);             
             }
 
          }
          else{
              System.out.println("No se creo el archivo "+nombre);
-             
+             sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("No se creo el archivo "+nombre);             
          }
          return false;
     
