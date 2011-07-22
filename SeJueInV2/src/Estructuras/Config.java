@@ -29,7 +29,7 @@ public class Config {
     
     
     /*Numero de servidores que van a ejecutar la clase*/
-    public final static int numServidores = 1;
+    public final static int numServidores = 3;
     
     
     
