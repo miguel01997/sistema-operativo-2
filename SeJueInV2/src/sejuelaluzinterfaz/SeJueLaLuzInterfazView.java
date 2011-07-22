@@ -148,7 +148,6 @@ public class SeJueLaLuzInterfazView extends FrameView {
         jList2 = new javax.swing.JList();
         jLabel3 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
-        ActualizarListaArchivos = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
@@ -272,14 +271,6 @@ public class SeJueLaLuzInterfazView extends FrameView {
             }
         });
 
-        ActualizarListaArchivos.setText(resourceMap.getString("ActualizarListaArchivos.text")); // NOI18N
-        ActualizarListaArchivos.setName("ActualizarListaArchivos"); // NOI18N
-        ActualizarListaArchivos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ActualizarListaArchivosActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
@@ -297,11 +288,9 @@ public class SeJueLaLuzInterfazView extends FrameView {
                                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
                                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(descargar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE))
-                            .addComponent(ActualizarListaArchivos, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(descargar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(mainPanelLayout.createSequentialGroup()
@@ -333,9 +322,7 @@ public class SeJueLaLuzInterfazView extends FrameView {
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
                             .addComponent(descargar, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(ActualizarListaArchivos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)))
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE))
                 .addGap(30, 30, 30))
         );
@@ -528,10 +515,6 @@ public class SeJueLaLuzInterfazView extends FrameView {
         
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void ActualizarListaArchivosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActualizarListaArchivosActionPerformed
-        actualizarListaArchivosDeDescarga();
-    }//GEN-LAST:event_ActualizarListaArchivosActionPerformed
-
     
     
     private  void actualizarListaArchivosDeDescarga(){
@@ -555,7 +538,6 @@ public class SeJueLaLuzInterfazView extends FrameView {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton ActualizarListaArchivos;
     private javax.swing.JButton browse;
     private javax.swing.JButton descargar;
     private javax.swing.JButton jButton1;

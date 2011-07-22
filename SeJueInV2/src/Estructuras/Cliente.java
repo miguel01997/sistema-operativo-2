@@ -529,9 +529,11 @@ class ManejadorEjecucion {
                   //selecciona los serviodores que ejecutan las clases
                   String [] aux = ma.solicitarServidor(numServi);
                   String res;
-                  for(int y=0;y<aux.length;y++){
+                  
+                  //if(aux!=null)
+                  //for(int y=0;y<aux.length;y++){
                //System.out.println(">>>>>>"+aux[y]);
-            }
+                  //}
                   res = crearEjecucion(url,nombreClass, ipCliente, aux,numTransaccion);
                   if(res!=null){//Si no se pudo conectar a un servidor se sale
                      //Elimina el servidor al que no se pudo conectar
@@ -620,9 +622,11 @@ class ManejadorEjecucion {
          // System.out.println("Ips "+ipServidor.length + " "+arrEje.length);
         for(int i=0;i<ipServidor.length;i++){
            //ipAux = ipServidor[i];
-            interfazServicioRmi sr;
+           interfazServicioRmi sr;
+           ipAux = ipServidor[i];
            sr = (interfazServicioRmi)
-           Naming.lookup( "rmi://"+ipServidor[i]+":"+Config.puerto+"/Servicio");    
+           Naming.lookup( "rmi://"+ipServidor[i]+":"+Config.puerto+"/Servicio");  
+           
            //Guarda en la lista de ejecucion la referencia al rmi
            arrEje[i] = new Ejecucion(sr,url, nombreClass, ipCliente,this,numTransaccion);
            System.out.println("Servidores "+ipServidor[i]);
