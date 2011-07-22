@@ -63,16 +63,28 @@ public class Mensajes implements Runnable{
             String ip = parte[1];
             String nombre = parte[2];
             
-            String [] archIp = msa.retorListArchServ(ip);
+            String [] archIp = msa.solicitarArchivosAServidor(ip);
             //System.out.println("Agrego servidor "+ip);
             this.msa.agregarArchivosServidor(ip, nombre, archIp);
-            if (!esServ){
+            /*if (!esServ){
 
                 this.msa.mostrarTodosArchivos();
-            }
+            }*/
             
             System.out.println("Estoy: ip "+ ip + " nombre "+ nombre );
             sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarLog("Estoy: ip "+ ip + " nombre "+ nombre );
+            //Si soy servidor actualizo la interfaz
+            
+            if(!esServ){
+                        sejuelaluzinterfaz.SeJueLaLuzInterfazView.limpiarArchivosDescarga();
+               String[] archivos = msa.mostrarTodosArchivos();
+                if(archivos!=null){
+                   for(int i = 0;i<archivos.length;i++){
+                       sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarArchivo(archivos[i]);
+                   }
+                }
+            }
+            
          }
     }
 

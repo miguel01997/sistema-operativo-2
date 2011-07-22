@@ -348,7 +348,7 @@ public class Cliente {
     private boolean crearArchivoSolicitado(byte [] buffer, String nombre){
        if(buffer != null){
             //File file = new File(directorioDescarga+"/"+nombre);
-            File file = new File("../"+nombre);
+            File file = new File(Config.dirDes+"/"+nombre);
             if(!file.isDirectory()){
                     BufferedOutputStream output = null;
                 try {
@@ -438,6 +438,48 @@ public class Cliente {
     public int retTransa(){
        return Cliente.indiTransa;
     }
+    
+    
+    
+    /**Pide la lista de archivos de todos los servidores*/
+    public String[] listarTodosArchivos(){
+         return ma.mostrarTodosArchivos();
+    }
+    
+    
+    /**Busca el archivo en alguno de los servidores**/
+    public void rastrearArchivos(String nArchivo){
+        
+        String ip = ma.busArch(nArchivo);
+        interfazServicioRmi sr;
+        //System.out.println(ip+ "   "+nArchivo);    
+            try{
+            sr = (interfazServicioRmi)
+            Naming.lookup( "rmi://"+ip+":"+puerto+"/Servicio");
+            byte[] ficherp = sr.solicitarFichero(nArchivo);
+            //System.out.println(">>>>>> "+ficherp);
+            this.crearArchivoSolicitado(ficherp,nArchivo);
+            }
+            catch (MalformedURLException murle ) {
+            System.out.println ();
+            System.out.println (
+            "MalformedURLException");
+            System.out.println ( murle ); }
+            catch (RemoteException re) {
+            System.out.println ();
+            System.out.println ( "RemoteException");
+            System.out.println (re); }
+            catch (NotBoundException nbe) {
+            System.out.println ();
+            System.out.println ("NotBoundException");
+            System.out.println (nbe);}
+            catch (java.lang.ArithmeticException ae) {
+            System.out.println ();
+            System.out.println ("java.lang.Arithmetic Exception");
+            System.out.println (ae);}  
+    }
+    
+    
     
     
 }

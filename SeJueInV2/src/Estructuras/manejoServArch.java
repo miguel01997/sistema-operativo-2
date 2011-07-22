@@ -5,6 +5,7 @@
 
 package Estructuras;
 
+import RMI.interfazServicioRmi;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -21,6 +22,10 @@ import java.util.logging.Logger;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 
 /**
  *
@@ -75,6 +80,14 @@ public class manejoServArch {
        return ta.busArch(nArchivo);
     }
     
+    /**Busca entre todos los servidores el archivo**/
+    public void rastrearArchivos(String nClase){
+       String ipServer = busArch(nClase);
+       
+       
+       
+    }
+    
     
     /**Retorna una lista con todos los archivos*/
     public String[] todosArchivos(){
@@ -126,7 +139,7 @@ public class manejoServArch {
        String [] aLocales;
        aLocales = this.lFicheros();
        
-       //ta.remplazarArchivos(infoRed.miIp(),infoRed.miHost(), aLocales);
+       ta.remplazarArchivos(infoRed.miIp(),infoRed.miHost(), aLocales);
     }
     
     
@@ -346,17 +359,52 @@ public class manejoServArch {
             }
         }
     }
+    
+    
+    
+    
+    /**Solicita al servidor rmi la lista de directorios**/
+    public String[] solicitarArchivosAServidor(String ip){
+            interfazServicioRmi sr;
+            try{
+            sr = (interfazServicioRmi)
+            Naming.lookup( "rmi://"+ip+":"+Config.puerto+"/Servicio");
+            return sr.listarFicheros();
+            }
+            catch (MalformedURLException murle ) {
+            System.out.println ();
+            System.out.println (
+            "MalformedURLException");
+            System.out.println ( murle ); }
+            catch (RemoteException re) {
+            System.out.println ();
+            System.out.println ( "RemoteException");
+            System.out.println (re); }
+            catch (NotBoundException nbe) {
+            System.out.println ();
+            System.out.println ("NotBoundException");
+            System.out.println (nbe);}
+            catch (java.lang.ArithmeticException ae) {
+            System.out.println ();
+            System.out.println ("java.lang.Arithmetic Exception");
+            System.out.println (ae);}   
+            return null;
+    
+    }
+    
+    
+    
 
-    public void mostrarTodosArchivos(){
-        String[] todos = this.todosArchivos();
+    public String[] mostrarTodosArchivos(){
+        return this.todosArchivos();
 
-        int tam = todos.length;
+        //int tam = todos.length;
 
-        sejuelaluzinterfaz.SeJueLaLuzInterfazView.limpiarListaArchivos();
-        for(int i=0;i<tam;i++){
-            String arch = todos[i];
-            sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarArchivo(arch);
-        }
+       // sejuelaluzinterfaz.SeJueLaLuzInterfazView.limpiarListaArchivos();
+        //for(int i=0;i<tam;i++){
+           // String arch = todos[i];
+            //sejuelaluzinterfaz.SeJueLaLuzInterfazView.agregarArchivo(arch);
+        //}
     }
     
     

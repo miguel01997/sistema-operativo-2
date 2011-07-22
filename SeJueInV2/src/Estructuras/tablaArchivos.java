@@ -60,7 +60,10 @@ public class tablaArchivos {
     
     /**Retorna una lista de todos los archivos en los servidores*/
     public String[] todosArchivos(){
-       retTablaSerArch();
+        retTablaSerArch();
+       // System.out.println(retTablaSerArch());
+        
+//       / System.out.println("ARCHIVOS\n"+retTablaSerArch());
        Set<String> valores = mapaArcSer.keySet();
        String[] val = new String[valores.size()];
        valores.toArray(val);
@@ -77,10 +80,12 @@ public class tablaArchivos {
         
         //Obtiene los valores
         Set val = mapaArchivos.keySet();
+        //System.out.println("ARCHIVOS>>>\n"+mapaArchivos);
         Iterator valores = val.iterator();
         while(valores.hasNext()){
            //ip servidor 
            String serv = (String)valores.next();
+           
            //Lista de archivos
            List l = mapaArchivos.get(serv);
            Iterator lis = l.iterator();
