@@ -141,13 +141,14 @@ public class SeJueLaLuzInterfazView extends FrameView {
         listaEjecucion = new javax.swing.JList();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
+        listaDescarga = new javax.swing.JList();
         jLabel2 = new javax.swing.JLabel();
         descargar = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jList2 = new javax.swing.JList();
         jLabel3 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
+        ActualizarListaArchivos = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
@@ -223,15 +224,15 @@ public class SeJueLaLuzInterfazView extends FrameView {
         jScrollPane2.setName("jScrollPane2"); // NOI18N
 
         /*
-        jList1.setModel(new javax.swing.AbstractListModel() {
+        listaDescarga.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
         */
-        jList1.setModel(modeArchivos);
-        jList1.setName("archivosRemotos"); // NOI18N
-        jScrollPane2.setViewportView(jList1);
+        listaDescarga.setModel(modeArchivos);
+        listaDescarga.setName("archivosRemotos"); // NOI18N
+        jScrollPane2.setViewportView(listaDescarga);
 
         jLabel2.setFont(resourceMap.getFont("jLabel2.font")); // NOI18N
         jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
@@ -271,6 +272,14 @@ public class SeJueLaLuzInterfazView extends FrameView {
             }
         });
 
+        ActualizarListaArchivos.setText(resourceMap.getString("ActualizarListaArchivos.text")); // NOI18N
+        ActualizarListaArchivos.setName("ActualizarListaArchivos"); // NOI18N
+        ActualizarListaArchivos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ActualizarListaArchivosActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
@@ -280,18 +289,20 @@ public class SeJueLaLuzInterfazView extends FrameView {
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addGap(37, 37, 37)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
                             .addGroup(mainPanelLayout.createSequentialGroup()
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE))))
+                                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
+                                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(descargar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(descargar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE))
+                            .addComponent(ActualizarListaArchivos, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addGap(165, 165, 165)
@@ -322,7 +333,9 @@ public class SeJueLaLuzInterfazView extends FrameView {
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
                             .addComponent(descargar, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(ActualizarListaArchivos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE))
                 .addGap(30, 30, 30))
         );
@@ -441,14 +454,6 @@ public class SeJueLaLuzInterfazView extends FrameView {
     static int p = 0;
     //
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       // TODO add your handling code here:
-       //urlArch es como /p/l/o/o/p.class
-        //Multicast m = new  Multicast(false);
-        //m.enviarMensaje("activo?");
-        
-        
-        
-        
         String urlArch = urlArchivo.getText();
         String[] re = buscarUrlClass(urlArch);
         String url = re[0];
@@ -483,12 +488,13 @@ public class SeJueLaLuzInterfazView extends FrameView {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void descargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_descargarActionPerformed
-       int pos = ejeSelecArchivo();
-       if(pos!=-1){
-          String archivo = (String)modeArchivos.get(pos);
-          //System.out.println("Archivo>> "+archivo);
-          //Solicita al servidor el archivo
-       }
+      int indi = ejeSelecDescarga();
+      if(indi!=-1){
+          String nArchivo = (String)modeArchivos.get(indi);
+          //System.out.println("Rastrear "+nArchivo);
+          cliente.rastrearArchivos(nArchivo);
+          
+      }
     }//GEN-LAST:event_descargarActionPerformed
 
     /** Permite hacer "Browse" del .class que se quiere mandar
@@ -522,10 +528,34 @@ public class SeJueLaLuzInterfazView extends FrameView {
         
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void ActualizarListaArchivosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActualizarListaArchivosActionPerformed
+        actualizarListaArchivosDeDescarga();
+    }//GEN-LAST:event_ActualizarListaArchivosActionPerformed
+
+    
+    
+    private  void actualizarListaArchivosDeDescarga(){
+       modeArchivos.clear();
+         String[] archivos = cliente.listarTodosArchivos();
+        if(archivos!=null){
+           for(int i = 0;i<archivos.length;i++){
+               agregarArchivo(archivos[i]);
+           }
+        }
+    }
+    
+    public static void  p(String nArchivo){
+      agregarArchivo(nArchivo);
+    }
+    
+    public static void limpiarArchivosDescarga(){
+       modeArchivos.clear();
+    }
     
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton ActualizarListaArchivos;
     private javax.swing.JButton browse;
     private javax.swing.JButton descargar;
     private javax.swing.JButton jButton1;
@@ -535,11 +565,11 @@ public class SeJueLaLuzInterfazView extends FrameView {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JList jList1;
     private javax.swing.JList jList2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JList listaDescarga;
     private javax.swing.JList listaEjecucion;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
@@ -589,6 +619,12 @@ public class SeJueLaLuzInterfazView extends FrameView {
      public static void limpiarListaArchivos(){
          modeArchivos.removeAllElements();
      }
+     
+     
+     
+     //public void  agregarNombreArchivo(){
+      //   mode
+    // }
     
         
     /**Para agregar un mensaje al log  **/
@@ -626,6 +662,12 @@ public class SeJueLaLuzInterfazView extends FrameView {
  }
  
  
+ 
+ public int ejeSelecDescarga(){
+  return  listaDescarga.getSelectedIndex();
+ }
+ 
+ 
 /**Retorna la url y el nombre de la clase que va a ejecutar*/
  public String [] buscarUrlClass(String url ){
      String [] re = new String[2];
@@ -644,6 +686,16 @@ public class SeJueLaLuzInterfazView extends FrameView {
      int indi = modelo.indexOf(nClass+"        "+numTransa);
      return indi;
  }
+ 
+ 
+ 
+ /**Busca el indice del archivo dentro de la lista de descarga**/
+ public int buscarIndiDescarga(String nArchivo){
+     int indi = modelo.indexOf(nArchivo);
+     return indi;
+ }
+ 
+ 
  
  
  /**Elimina de la lista de ejecucion */
